@@ -32,7 +32,37 @@ jobs:
 
       - name: Fetch verification from public site
         run: |
-          echo "Fetching https://mkopaji.com/ to confirm headers"
-          curl -I https://mkopaji.com/ || true
+          echo "Fetching https://kopesh.mkopaji.com/ to confirm headers"
+          curl -I https://kopesh.mkopaji.com/ || true
+
+    deploy-kopesha:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Deploy to EC2 with SCP
+          uses: appleboy/scp-action@v0.1.7
+          with:
+            host: ${{ secrets.EC2_HOST }}
+            username: root
+            key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+            source: .
+            target: /var/www/html/kopesha-loan-app
+            strip_components: 1
+            port: 22
+            timeout: 30s
+            command_timeout: 10m
+            use_insecure_cipher: false
+            rm: false
+            debug: false
+            overwrite: false
+            tar_dereference: false
+            tar_exec: tar
+            proxy_port: 22
+            proxy_timeout: 30s
+            proxy_use_insecure_cipher: false
+          env:
+            NODE_VERSION: 18
 
 # IMPORTANT: Add repository secrets: EC2_HOST, EC2_USERNAME, EC2_SSH_PRIVATE_KEY (private key contents)
