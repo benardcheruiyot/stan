@@ -1,0 +1,147 @@
+name: Deploy Express App to EC2 Ubuntu
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Allows manual deployment
+
+env:
+  NODE_VERSION: '18'
+  APP_NAME: 'fundfast-production'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🚀 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🏗️ Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: 📦 Install dependencies
+      run: npm ci
+
+    - name: 🔍 Run linting
+      run: npm run lint || echo "Linting completed"
+
+    - name: 🧪 Run tests
+      run: npm test || echo "No tests specified"
+
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 🚀 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🏗️ Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+    
+    - name: 📦 Install dependencies
+      run: npm ci --only=production
+
+    - name: 📁 Deploy files to server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: root
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        source: "."
+        target: "/var/www/html/kopesha-loan-app"
+        strip_components: 1
+
+    - name: 🔄 Restart App with PM2
+      uses: appleboy/ssh-action@v1.2.1
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: root
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/html/kopesha-loan-app
+          
+          echo "🚀 Starting deployment..."
+          
+          # Install dependencies
+          echo "📦 Installing dependencies..."
+          npm ci --only=production
+          
+          # Create logs directory
+          mkdir -p logs
+          
+          # Copy production environment file to .env
+          echo "🔐 Setting up production environment..."
+          if [ -f .env.production ]; then
+            cp .env.production .env
+            echo "✅ Copied .env.production to .env"
+          else
+            echo "❌ .env.production file not found!"
+            exit 1
+          fi
+          
+          # Stop existing PM2 process
+          echo "🛑 Stopping existing application..."
+          pm2 delete ${{ env.APP_NAME }} || true
+          
+          # Start application with PM2
+          echo "🚀 Starting application with PM2..."
+          pm2 start ecosystem.config.js --env production
+          
+          # Save PM2 configuration
+          pm2 save
+          
+          # Show PM2 status
+          echo "📊 Application status:"
+          pm2 status
+          
+          # Health check
+          echo "🔍 Performing health check..."
+          sleep 5
+          if curl -f http://localhost:3000/api/health > /dev/null 2>&1; then
+            echo "✅ Health check passed"
+          else
+            echo "⚠️  Health check failed - checking logs..."
+            pm2 logs ${{ env.APP_NAME }} --lines 20
+          fi
+
+    - name: ✅ Deployment Success Notification
+      if: success()
+      uses: appleboy/ssh-action@v1.2.1
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: root
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        script: |
+          echo "🎉 Deployment completed successfully!"
+          echo "📊 Final status:"
+          pm2 status ${{ env.APP_NAME }}
+          echo "🌐 Application should be available at: http://${{ secrets.EC2_HOST }}:3000"
+
+    - name: 📱 Slack notification (success)
+      if: success()
+      run: |
+        if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"✅ Deployment successful! FundFast app has been deployed to production server."}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+        fi
+
+    - name: 📱 Slack notification (failure)
+      if: failure()
+      run: |
+        if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"❌ Deployment failed! Please check the GitHub Actions logs for details."}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+        fi

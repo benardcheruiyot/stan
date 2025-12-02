@@ -1,0 +1,2516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Online - Modern Finance App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="assets/css/theme-merged.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Favicon and app icons -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+    <link rel="shortcut icon" href="assets/icons/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/favicon-180x180.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="assets/icons/favicon.svg" color="#647dee">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="msapplication-TileColor" content="#0f172a">
+    <meta name="msapplication-TileImage" content="/assets/icons/favicon-144x144.png">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <style>
+        /* Page-specific styles for apply.html */
+
+        .loan-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Mobile responsive container */
+        @media (max-width: 768px) {
+            .loan-container {
+                padding: 15px 10px;
+            }
+            
+            .container-fluid {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            .page-header p {
+                font-size: 1rem !important;
+                margin-bottom: 1rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .loan-container {
+                padding: 10px 8px;
+            }
+            
+            .container-fluid {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.7rem !important;
+                margin-bottom: 0.3rem !important;
+            }
+            
+            .page-header p {
+                font-size: 0.9rem !important;
+                margin-bottom: 0.8rem !important;
+            }
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #a1c4fd 0%, #647dee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            letter-spacing: -1px;
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .loan-card {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border: 3px solid transparent;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Mobile responsive styles for smaller cards */
+        @media (max-width: 768px) {
+            .loan-card {
+                padding: 15px;
+                border-radius: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .loan-amount {
+                font-size: 1.8rem !important;
+            }
+            
+            .loan-header {
+                margin-bottom: 12px !important;
+            }
+            
+            .loan-badge {
+                font-size: 0.7rem !important;
+                padding: 4px 8px !important;
+            }
+            
+            .loan-info {
+                font-size: 0.85rem !important;
+            }
+            
+            .loan-features {
+                margin-top: 12px !important;
+            }
+            
+            .feature-item {
+                font-size: 0.8rem !important;
+                margin-bottom: 6px !important;
+            }
+            
+            .btn-apply {
+                padding: 10px 20px !important;
+                font-size: 0.9rem !important;
+            }
+        }
+
+        /* Extra small devices (phones, 320px and up) */
+        @media (max-width: 480px) {
+            .loan-card {
+                padding: 12px;
+                border-radius: 12px;
+                margin-bottom: 12px;
+            }
+            
+            .loan-amount {
+                font-size: 1.5rem !important;
+            }
+            
+            .loan-badge {
+                font-size: 0.65rem !important;
+                padding: 3px 6px !important;
+            }
+            
+            .loan-info {
+                font-size: 0.8rem !important;
+            }
+            
+            .feature-item {
+                font-size: 0.75rem !important;
+                margin-bottom: 4px !important;
+            }
+            
+            .btn-apply {
+                padding: 8px 16px !important;
+                font-size: 0.85rem !important;
+                width: 100%;
+            }
+        }
+
+        .loan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-gold);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .loan-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(245, 158, 11, 0.2);
+        }
+
+        .loan-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .loan-card.selected {
+            border-color: var(--primary-gold);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(255, 255, 255, 0.95) 100%);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(245, 158, 11, 0.3);
+        }
+
+        .loan-card.selected::before {
+            transform: scaleX(1);
+        }
+
+        .loan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .loan-amount {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .loan-badge {
+            background: var(--gradient-gold);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .loan-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(245, 158, 11, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.1);
+        }
+
+        .detail-icon {
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+            margin-bottom: 8px;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .loan-highlight {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .highlight-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--success-green);
+            margin: 0;
+        }
+
+        .apply-btn {
+            background: var(--gradient-gold);
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
+        }
+
+        .apply-btn:disabled {
+            opacity: 0.6;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+            cursor: not-allowed;
+        }
+
+        .user-status {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-soft);
+            border: 2px solid rgba(245, 158, 11, 0.2);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+
+        .loan-categories {
+            margin-bottom: 40px;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gentle-bounce {
+            0%, 100% { 
+                transform: translateY(0) scale(1); 
+            }
+            25% { 
+                transform: translateY(-8px) scale(1.02); 
+            }
+            50% { 
+                transform: translateY(-4px) scale(1.01); 
+            }
+            75% { 
+                transform: translateY(-2px) scale(1.005); 
+            }
+        }
+
+        .loan-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .loan-card:nth-child(2) { animation-delay: 0.1s; }
+        .loan-card:nth-child(3) { animation-delay: 0.2s; }
+        .loan-card:nth-child(4) { animation-delay: 0.3s; }
+
+        @media (max-width: 768px) {
+            .loan-details {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .loan-header {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Success Stories Popup Styles */
+        .success-stories-popup .swal2-popup {
+            border-radius: 20px !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+        }
+
+        .success-stories-popup .swal2-timer-progress-bar {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            height: 4px !important;
+        }
+
+        /* Flying Notifications Styles - Ultra Minimized */
+        .flying-notification {
+            position: fixed;
+            top: 15px;
+            right: -160px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 4px 6px;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(16, 185, 129, 0.2);
+            z-index: 9999;
+            animation: flyInOut 6s ease-in-out;
+            min-width: 140px;
+            max-width: 160px;
+            border-left: 1px solid #f59e0b;
+            font-size: 0.65rem;
+            line-height: 1.2;
+        }
+
+        .flying-notification .notification-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1px;
+        }
+
+        .flying-notification .notification-icon {
+            background: rgba(255, 255, 255, 0.2);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 4px;
+            font-size: 6px;
+        }
+
+        .flying-notification .notification-content {
+            flex: 1;
+        }
+
+        .flying-notification .notification-name {
+            font-weight: 600;
+            font-size: 0.6rem;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .flying-notification .notification-details {
+            font-size: 0.55rem;
+            opacity: 0.9;
+            margin: 1px 0;
+            line-height: 1;
+        }
+
+        .flying-notification .notification-amount {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #f59e0b;
+            line-height: 1;
+        }
+
+        .flying-notification .notification-time {
+            font-size: 0.5rem;
+            opacity: 0.8;
+            text-align: right;
+            margin-top: 1px;
+        }
+
+        @keyframes flyInOut {
+            0% { right: -160px; opacity: 0; }
+            20% { right: 15px; opacity: 1; }
+            85% { right: 20px; opacity: 1; }
+            100% { right: -400px; opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animated {
+            animation-duration: 0.6s;
+            animation-fill-mode: both;
+        }
+
+        .fadeInUp {
+            animation-name: fadeInUp;
+        }
+
+        /* Eligibility Form Styles (Matching kopesha.epesaloan.com) */
+        .eligibility-input:focus {
+            border-color: #10b981 !important;
+            box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25) !important;
+            outline: none !important;
+        }
+
+        .btn-check-eligibility:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4) !important;
+        }
+
+        .eligibility-section {
+            display: block;
+        }
+
+        .loan-options-section {
+            display: none;
+        }
+
+        .loan-options-section.show {
+            display: block;
+        }
+
+        /* Mobile responsive for eligibility form */
+        @media (max-width: 768px) {
+            .btn-check-eligibility {
+                width: 100% !important;
+                max-width: none !important;
+            }
+        }
+
+        /* Checkmark animation for selected loan cards */
+        @keyframes checkmarkPop {
+            0% { 
+                transform: scale(0) rotate(-45deg); 
+                opacity: 0; 
+            }
+            50% { 
+                transform: scale(1.2) rotate(-45deg); 
+                opacity: 0.8; 
+            }
+            100% { 
+                transform: scale(1) rotate(0deg); 
+                opacity: 1; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="loan-container">
+                    <!-- Simple Header for Eligibility Check -->
+                    <div class="page-header">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                        </div>
+                    </div>
+
+                    <!-- Loan Eligibility Check Form (Matching kopesha.epesaloan.com) -->
+                    <div class="eligibility-section" style="margin-bottom: 3rem;">
+                        <div style="background: var(--glass-bg); border-radius: 20px; padding: 2rem; box-shadow: var(--shadow-soft); border: 3px solid transparent; backdrop-filter: blur(20px);">
+                            <h3 style="text-align: center; margin-bottom: 1.5rem; color: #1e293b; font-weight: 700;">
+                                <i class="fas fa-check-circle" style="color: #10b981; margin-right: 10px;"></i>
+                                Check Your Loan Eligibility
+                            </h3>
+                            
+                            <p style="text-align: center; margin-bottom: 2rem; color: #6b7280; font-size: 1rem;">
+                                Qualify for Ksh. 1,500 – 100,000
+                            </p>
+                            
+                            <div class="row justify-content-center">
+                                <div class="col-md-8">
+                                    <!-- Name Field -->
+                                    <div class="mb-3">
+                                        <label class="form-label" style="font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                            <i class="fas fa-user" style="color: #f59e0b; margin-right: 5px;"></i>
+                                            Enter Your Name
+                                        </label>
+                                        <input type="text" class="form-control eligibility-input" id="applicantName" placeholder="Full Name" style="border-radius: 12px; border: 2px solid #e5e7eb; padding: 12px; transition: all 0.3s ease;">
+                                    </div>
+                                    
+                                    <!-- Phone Number Field -->
+                                    <div class="mb-3">
+                                        <label class="form-label" style="font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                            <i class="fas fa-mobile-alt" style="color: #f59e0b; margin-right: 5px;"></i>
+                                            Phone Number
+                                        </label>
+                                        <div style="position: relative; display: flex; align-items: center; border: 2px solid #e5e7eb; border-radius: 12px; background: white;">
+                                            <span style="padding: 12px; background: #f3f4f6; border-radius: 10px 0 0 10px; font-weight: 600; color: #374151; border-right: 2px solid #e5e7eb;">254</span>
+                                            <input type="tel" class="form-control eligibility-input" id="applicantPhone" placeholder="712345678" maxlength="9" pattern="[0-9]{9}" style="border: none; border-radius: 0 10px 10px 0; padding: 12px; flex: 1; transition: all 0.3s ease; outline: none;" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9)">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- ID Number Field -->
+                                    <div class="mb-3">
+                                        <label class="form-label" style="font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                            <i class="fas fa-id-card" style="color: #f59e0b; margin-right: 5px;"></i>
+                                            ID Number
+                                        </label>
+                                        <input type="text" class="form-control eligibility-input" id="applicantId" placeholder="12345678" maxlength="8" pattern="[0-9]{1,8}" style="border-radius: 12px; border: 2px solid #e5e7eb; padding: 12px; transition: all 0.3s ease;" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)">
+                                    </div>
+                                    
+                                    <!-- Loan Type Dropdown -->
+                                    <div class="mb-4">
+                                        <label class="form-label" style="font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                            <i class="fas fa-tags" style="color: #f59e0b; margin-right: 5px;"></i>
+                                            Loan Type
+                                        </label>
+                                        <select class="form-control eligibility-input" id="loanType" style="border-radius: 12px; border: 2px solid #e5e7eb; padding: 12px; transition: all 0.3s ease;">
+                                            <option value="">Select Loan Type</option>
+                                            <option value="emergency">Emergency Loan</option>
+                                            <option value="business">Business Loan</option>
+                                            <option value="personal">Personal Loan</option>
+                                            <option value="education">Education Loan</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- Features List -->
+                                    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%); border-radius: 12px; padding: 1rem; margin-bottom: 2rem;">
+                                        <div class="row text-center">
+                                            <div class="col-6 col-md-3 mb-2">
+                                                <div style="color: #10b981; font-weight: 600; font-size: 0.9rem;">
+                                                    <i class="fas fa-check" style="margin-right: 5px;"></i>
+                                                    No CRB Check
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-md-3 mb-2">
+                                                <div style="color: #10b981; font-weight: 600; font-size: 0.9rem;">
+                                                    <i class="fas fa-check" style="margin-right: 5px;"></i>
+                                                    No Guarantors
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-md-3 mb-2">
+                                                <div style="color: #10b981; font-weight: 600; font-size: 0.9rem;">
+                                                    <i class="fas fa-check" style="margin-right: 5px;"></i>
+                                                    No Paperwork
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-md-3 mb-2">
+                                                <div style="color: #10b981; font-weight: 600; font-size: 0.9rem;">
+                                                    <i class="fas fa-check" style="margin-right: 5px;"></i>
+                                                    No Collateral
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Check Eligibility Button -->
+                                    <div style="text-align: center;">
+                                        <button type="button" class="btn btn-check-eligibility" id="checkEligibility" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 15px 40px; border-radius: 12px; font-weight: 700; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); width: 100%; max-width: 300px;">
+                                            <i class="fas fa-check-double" style="margin-right: 8px;"></i>
+                                            Check Eligibility
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loan Options Section (Initially Hidden) -->
+                    <div class="loan-options-section">
+                    <!-- Enhanced Header -->
+                    <div style="text-align: center; margin-bottom: 3rem; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);">
+                        <h2 style="background: linear-gradient(135deg, #1e293b 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            💰 Select Your Loan Amount
+                        </h2>
+                        <p style="color: #475569; font-size: 1.1rem; margin: 0; font-weight: 500;">
+                            Choose the amount that perfectly fits your needs
+                        </p>
+                        <div style="margin-top: 1rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 8px 20px; border-radius: 25px; display: inline-block; font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
+                            🚀 Instant Approval • No Collateral Required
+                        </div>
+                    </div>
+
+                    <!-- Loan Selection Grid -->
+                    <div style="margin-bottom: 2rem;">
+                        <!-- Quick Loans -->
+                        <div style="margin-bottom: 2rem;">
+                            <div class="row" id="quickLoans"></div>
+                        </div>
+                        
+                        <!-- Extended Loans -->
+                        <div style="margin-bottom: 2rem;">
+                            <div class="row" id="extendedLoans"></div>
+                        </div>
+                    </div>
+
+                    <!-- Apply Button -->
+                    <button class="apply-btn" id="applyBtn" disabled>
+                        <i class="fas fa-rocket"></i>
+                        Choose a loan amount to get started
+                    </button>
+                    </div>
+                    <!-- End Loan Options Section -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Loan Type Registration Variables
+        let customerData = {
+            name: '',
+            phone: '',
+            loanType: '',
+            purpose: ''
+        };
+
+        let selectedLoanData = {};
+
+        // Enhanced loan data with proper fee structure (fees: 120-400, amounts: 5000-50000)
+        const loanData = {
+            quick: [
+                { amount: 5000, period: 30, fee: 120 },
+                { amount: 8000, period: 30, fee: 150 },
+                { amount: 10000, period: 30, fee: 180 },
+                { amount: 15000, period: 30, fee: 220 }
+            ],
+            extended: [
+                { amount: 20000, period: 60, fee: 280 },
+                { amount: 30000, period: 60, fee: 340 },
+                { amount: 40000, period: 60, fee: 380 },
+                { amount: 50000, period: 60, fee: 400 }
+            ]
+        };
+
+        // Initialize the page with multiple fallback strategies
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 DOM Content Loaded - Initializing page...');
+            console.log('🌍 Current URL:', window.location.href);
+            console.log('🔧 Environment:', window.location.hostname === 'localhost' ? 'Development' : 'Production');
+            
+            // Initialize eligibility check with retry mechanism
+            console.log('📋 Calling initializeEligibilityCheck()...');
+            try {
+                initializeEligibilityCheck();
+            } catch (error) {
+                console.error('❌ First initialization attempt failed:', error);
+                // Retry after a short delay
+                setTimeout(() => {
+                    console.log('🔄 Retrying eligibility check initialization...');
+                    try {
+                        initializeEligibilityCheck();
+                    } catch (retryError) {
+                        console.error('❌ Retry failed, using fallback initialization:', retryError);
+                        initializeEligibilityFallback();
+                    }
+                }, 1000);
+            }
+            
+            console.log('💳 Calling displayLoans()...');
+            displayLoans();
+            console.log('🔄 Calling checkPendingTransaction()...');
+            checkPendingTransaction();
+            
+            // Start flying notifications
+            console.log('🚀 Starting flying notifications...');
+            startFlyingNotifications();
+            console.log('✅ Page initialization complete');
+        });
+
+        // Fallback initialization for production environments
+        window.addEventListener('load', function() {
+            console.log('🔄 Window load event - Double-checking eligibility initialization...');
+            
+            // Check if eligibility check is working
+            const checkBtn = document.getElementById('checkEligibility');
+            if (checkBtn && !checkBtn.hasAttribute('data-initialized')) {
+                console.log('⚠️ Eligibility check not initialized, running fallback...');
+                initializeEligibilityFallback();
+            } else {
+                console.log('✅ Eligibility check already working');
+            }
+        });
+
+        // Robust fallback initialization function
+        function initializeEligibilityFallback() {
+            console.log('🛡️ Running fallback eligibility initialization...');
+            
+            // Wait for DOM to be fully ready
+            setTimeout(() => {
+                const elements = {
+                    checkBtn: document.getElementById('checkEligibility'),
+                    nameInput: document.getElementById('applicantName'),
+                    phoneInput: document.getElementById('applicantPhone'),
+                    idInput: document.getElementById('applicantId'),
+                    loanTypeSelect: document.getElementById('loanType')
+                };
+                
+                console.log('🔍 Fallback - DOM Elements:', elements);
+                
+                // Ensure applicantData exists
+                if (typeof applicantData === 'undefined') {
+                    window.applicantData = {
+                        name: '',
+                        phone: '',
+                        idNumber: '',
+                        loanType: ''
+                    };
+                }
+                
+                // Add event listeners with error handling
+                if (elements.checkBtn) {
+                    elements.checkBtn.addEventListener('click', function() {
+                        console.log('🖱️ Fallback - Check eligibility clicked');
+                        handleEligibilityCheck();
+                    });
+                    elements.checkBtn.setAttribute('data-initialized', 'true');
+                    console.log('✅ Fallback initialization completed');
+                }
+                
+                // Add input listeners
+                ['nameInput', 'phoneInput', 'idInput'].forEach(inputName => {
+                    const input = elements[inputName];
+                    if (input) {
+                        input.addEventListener('input', function() {
+                            updateApplicantData(this.id, this.value);
+                        });
+                    }
+                });
+                
+                if (elements.loanTypeSelect) {
+                    elements.loanTypeSelect.addEventListener('change', function() {
+                        updateApplicantData('loanType', this.value);
+                    });
+                }
+                
+            }, 500);
+        }
+
+        // Helper function to update applicant data
+        function updateApplicantData(fieldId, value) {
+            const fieldName = fieldId.replace('applicant', '').toLowerCase();
+            if (fieldName === 'id') {
+                applicantData.idNumber = value;
+            } else if (fieldName === 'loantype') {
+                applicantData.loanType = value;
+            } else {
+                applicantData[fieldName] = value;
+            }
+            console.log('📝 Data updated:', fieldName, '=', value);
+        }
+
+        // Robust eligibility check handler
+        function handleEligibilityCheck() {
+            console.log('🚀 Handling eligibility check...');
+            
+            // Get current form values directly from DOM
+            const name = document.getElementById('applicantName')?.value || '';
+            const phone = document.getElementById('applicantPhone')?.value || '';
+            const idNumber = document.getElementById('applicantId')?.value || '';
+            const loanType = document.getElementById('loanType')?.value || '';
+            
+            // Update applicant data
+            applicantData = { name, phone, idNumber, loanType };
+            
+            console.log('📊 Current form data:', applicantData);
+            
+            if (validateEligibilityFormRobust()) {
+                checkEligibilityRobust();
+            }
+        }
+
+        // Robust validation function
+        function validateEligibilityFormRobust() {
+            const { name, phone, idNumber, loanType } = applicantData;
+            
+            if (!name || name.trim().length < 3) {
+                showValidationError('Please enter your full name (at least 3 characters)');
+                return false;
+            }
+            
+            if (!phone || phone.length !== 9 || !/^\d{9}$/.test(phone)) {
+                showValidationError('Please enter exactly 9 digits for phone number (e.g., 712345678)');
+                return false;
+            }
+            
+            if (!idNumber || idNumber.length !== 8 || !/^\d{8}$/.test(idNumber)) {
+                showValidationError('Please enter exactly 8 digits for your ID number');
+                return false;
+            }
+            
+            if (!loanType) {
+                showValidationError('Please select a loan type');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function showValidationError(message) {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: 'Validation Error',
+                    text: message,
+                    icon: 'warning',
+                    confirmButtonColor: '#10b981'
+                });
+            } else {
+                alert(message); // Fallback if SweetAlert not loaded
+            }
+        }
+
+        // Robust eligibility check function
+        function checkEligibilityRobust() {
+            const checkBtn = document.getElementById('checkEligibility');
+            
+            if (checkBtn) {
+                checkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+                checkBtn.disabled = true;
+            }
+            
+            setTimeout(() => {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        title: 'Congratulations! 🎉',
+                        html: `
+                            <div style="text-align: left; margin-top: 1rem;">
+                                <p><strong>Name:</strong> ${applicantData.name}</p>
+                                <p><strong>Phone:</strong> 254${applicantData.phone}</p>
+                                <p><strong>ID:</strong> ${applicantData.idNumber}</p>
+                                <p><strong>Loan Type:</strong> ${applicantData.loanType}</p>
+                            </div>
+                            <div style="background: #f0fdf4; border: 1px solid #10b981; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                                <p style="color: #10b981; font-weight: 600; margin: 0;">
+                                    ✅ You are eligible for loans up to KSh 50,000
+                                </p>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonText: 'View Loan Options',
+                        confirmButtonColor: '#10b981'
+                    }).then(() => {
+                        showLoanOptions();
+                    });
+                } else {
+                    alert('Congratulations! You are eligible for loans up to KSh 50,000');
+                    showLoanOptions();
+                }
+                
+                if (checkBtn) {
+                    checkBtn.innerHTML = 'Check Eligibility';
+                    checkBtn.disabled = false;
+                }
+            }, 2000);
+        }
+
+        function showLoanOptions() {
+            const eligibilitySection = document.querySelector('.eligibility-section');
+            const loanOptionsSection = document.querySelector('.loan-options-section');
+            
+            if (eligibilitySection) eligibilitySection.style.display = 'none';
+            if (loanOptionsSection) {
+                loanOptionsSection.classList.add('show');
+                loanOptionsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            // Store data for later use
+            try {
+                localStorage.setItem('applicantData', JSON.stringify(applicantData));
+            } catch (e) {
+                console.warn('Could not save to localStorage:', e);
+            }
+        }
+
+        // Global variables
+        let applicantData = {
+            name: '',
+            phone: '',
+            idNumber: '',
+            loanType: ''
+        };
+        let checkBtn;
+
+        // Eligibility Check Functions (Matching kopesha.epesaloan.com)
+        function initializeEligibilityCheck() {
+            console.log('🚀 Initializing eligibility check...');
+            console.log('🌍 Environment:', window.location.hostname === 'localhost' ? 'Development' : 'Production');
+            
+            checkBtn = document.getElementById('checkEligibility');
+            const nameInput = document.getElementById('applicantName');
+            const phoneInput = document.getElementById('applicantPhone');
+            const idInput = document.getElementById('applicantId');
+            const loanTypeSelect = document.getElementById('loanType');
+            
+            console.log('🔍 DOM Elements found:', {
+                checkBtn: !!checkBtn,
+                nameInput: !!nameInput,
+                phoneInput: !!phoneInput,
+                idInput: !!idInput,
+                loanTypeSelect: !!loanTypeSelect
+            });
+
+            // Handle form inputs
+            [nameInput, phoneInput, idInput].forEach(input => {
+                if (input) {
+                    input.addEventListener('input', function() {
+                        console.log('📝 Input changed:', this.id, '=', this.value);
+                        const fieldName = this.id.replace('applicant', '').toLowerCase();
+                        if (fieldName === 'id') {
+                            applicantData.idNumber = this.value;
+                        } else {
+                            applicantData[fieldName] = this.value;
+                        }
+                        console.log('📊 Updated applicantData:', applicantData);
+                        checkFormValidity();
+                    });
+                } else {
+                    console.error('❌ Input element not found:', input);
+                }
+            });
+
+            if (loanTypeSelect) {
+                loanTypeSelect.addEventListener('change', function() {
+                    console.log('📋 Loan type changed:', this.value);
+                    applicantData.loanType = this.value;
+                    console.log('📊 Updated applicantData:', applicantData);
+                    checkFormValidity();
+                });
+            } else {
+                console.error('❌ Loan type select not found');
+            }
+
+            // Handle check eligibility button
+            if (checkBtn) {
+                console.log('✅ Check eligibility button found, adding click handler');
+                checkBtn.addEventListener('click', function() {
+                    console.log('🖱️ Check eligibility button clicked');
+                    console.log('📊 Current applicantData:', applicantData);
+                    if (validateEligibilityForm()) {
+                        checkEligibility();
+                    }
+                });
+            } else {
+                console.error('❌ Check eligibility button not found');
+            }
+
+            function checkFormValidity() {
+                console.log('🔍 Checking form validity with data:', applicantData);
+                const isValid = applicantData.name && 
+                               applicantData.phone && 
+                               applicantData.idNumber &&
+                               applicantData.loanType &&
+                               applicantData.name.length >= 3 &&
+                               applicantData.phone.length === 9 &&
+                               applicantData.idNumber.length === 8;
+                
+                console.log('📝 Form validity check:', {
+                    hasName: !!applicantData.name,
+                    hasPhone: !!applicantData.phone, 
+                    hasIdNumber: !!applicantData.idNumber,
+                    hasLoanType: !!applicantData.loanType,
+                    nameLength: applicantData.name?.length || 0,
+                    phoneLength: applicantData.phone?.length || 0,
+                    idLength: applicantData.idNumber?.length || 0,
+                    isValid: isValid
+                });
+                
+                if (checkBtn) {
+                    checkBtn.disabled = !isValid;
+                    checkBtn.style.opacity = isValid ? '1' : '0.6';
+                    console.log('🔘 Button state updated:', isValid ? 'enabled' : 'disabled');
+                }
+            }
+        }
+
+        function validateEligibilityForm() {
+            console.log('🔍 Starting eligibility form validation...');
+            console.log('📊 Current applicant data:', applicantData);
+            
+            // Check if any field is empty first
+            const missingFields = [];
+            
+            if (!applicantData.name || applicantData.name.trim() === '') {
+                missingFields.push('Full Name');
+            }
+            
+            if (!applicantData.phone || applicantData.phone.trim() === '') {
+                missingFields.push('Phone Number');
+            }
+            
+            if (!applicantData.idNumber || applicantData.idNumber.trim() === '') {
+                missingFields.push('ID Number');
+            }
+            
+            if (!applicantData.loanType || applicantData.loanType.trim() === '') {
+                missingFields.push('Loan Type');
+            }
+            
+            // If there are missing fields, show a general message
+            if (missingFields.length > 0) {
+                console.log('❌ Missing fields:', missingFields);
+                const fieldsList = missingFields.join(', ');
+                Swal.fire({
+                    title: 'Incomplete Form',
+                    text: `Please fill in the following required fields: ${fieldsList}`,
+                    icon: 'warning',
+                    confirmButtonColor: '#10b981',
+                    confirmButtonText: 'OK, I\'ll complete the form'
+                });
+                return false;
+            }
+            
+            console.log('✅ All required fields present, checking field validations...');
+            
+            // Now check for specific field validations
+            if (applicantData.name.length < 3) {
+                Swal.fire({
+                    title: 'Invalid Name',
+                    text: 'Please enter your full name (at least 3 characters)',
+                    icon: 'warning',
+                    confirmButtonColor: '#10b981'
+                });
+                return false;
+            }
+
+            if (applicantData.phone.length !== 9 || !/^\d{9}$/.test(applicantData.phone)) {
+                Swal.fire({
+                    title: 'Invalid Phone Number',
+                    text: 'Please enter exactly 9 digits after 254 (e.g., 712345678)',
+                    icon: 'warning',
+                    confirmButtonColor: '#10b981'
+                });
+                return false;
+            }
+
+            if (applicantData.idNumber.length !== 8 || !/^\d{8}$/.test(applicantData.idNumber)) {
+                Swal.fire({
+                    title: 'Invalid ID Number',
+                    text: 'Please enter exactly 8 digits for your ID number',
+                    icon: 'warning',
+                    confirmButtonColor: '#10b981'
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        function checkEligibility() {
+            console.log('🚀 Starting eligibility check process...');
+            console.log('📊 Final applicant data:', applicantData);
+            
+            // Show loading
+            if (checkBtn) {
+                checkBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>Checking...';
+                checkBtn.disabled = true;
+                console.log('⏳ Button set to loading state');
+            }
+
+            // Simulate eligibility check
+            setTimeout(() => {
+                console.log('✅ Eligibility check completed, showing success message');
+                
+                // Show success message
+                Swal.fire({
+                    title: 'Congratulations! 🎉',
+                    html: `
+                        <div style="text-align: left; margin-top: 1rem;">
+                            <p><strong>Name:</strong> ${applicantData.name}</p>
+                            <p><strong>Phone:</strong> 254${applicantData.phone}</p>
+                            <p><strong>ID Number:</strong> ${applicantData.idNumber}</p>
+                            <p><strong>Loan Type:</strong> ${applicantData.loanType.charAt(0).toUpperCase() + applicantData.loanType.slice(1)}</p>
+                        </div>
+                        <div style="background: #f0fdf4; border: 1px solid #10b981; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                            <p style="color: #10b981; font-weight: 600; margin: 0;">
+                                ✅ You are eligible for loans up to KSh 50,000
+                            </p>
+                        </div>
+                    `,
+                    icon: 'success',
+                    confirmButtonText: 'View Loan Options',
+                    confirmButtonColor: '#10b981',
+                    timer: 8000,
+                    timerProgressBar: true
+                }).then(() => {
+                    // Hide eligibility form and show loan options
+                    document.querySelector('.eligibility-section').style.display = 'none';
+                    document.querySelector('.loan-options-section').classList.add('show');
+                    
+                    // Scroll to loan options
+                    document.querySelector('.loan-options-section').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                    
+                    // Store applicant data for later use
+                    localStorage.setItem('applicantData', JSON.stringify(applicantData));
+                });
+
+                // Reset button
+                checkBtn.innerHTML = '<i class="fas fa-check-double" style="margin-right: 8px;"></i>Check Eligibility';
+                checkBtn.disabled = false;
+            }, 2000);
+        }
+
+        // Flying notifications system
+        function startFlyingNotifications() {
+            const loanRecipients = [
+                { phone: "254712345456", amount: 15000, time: "2 min ago" },
+                { phone: "254720123789", amount: 25000, time: "5 min ago" },
+                { phone: "254734567123", amount: 8500, time: "8 min ago" },
+                { phone: "254798234567", amount: 12000, time: "12 min ago" },
+                { phone: "254756789234", amount: 20000, time: "15 min ago" },
+                { phone: "254721345890", amount: 18000, time: "18 min ago" },
+                { phone: "254745678345", amount: 9500, time: "22 min ago" },
+                { phone: "254787901678", amount: 16500, time: "25 min ago" },
+                { phone: "254729456012", amount: 11000, time: "28 min ago" },
+                { phone: "254763123456", amount: 22000, time: "30 min ago" },
+                { phone: "254714789789", amount: 13500, time: "35 min ago" },
+                { phone: "254752456234", amount: 19000, time: "38 min ago" },
+                { phone: "254731890567", amount: 14000, time: "42 min ago" },
+                { phone: "254796345123", amount: 17500, time: "45 min ago" },
+                { phone: "254758012890", amount: 10500, time: "48 min ago" },
+                { phone: "254701567234", amount: 13000, time: "52 min ago" },
+                { phone: "254722890567", amount: 16000, time: "55 min ago" },
+                { phone: "254733234890", amount: 9800, time: "58 min ago" },
+                { phone: "254748678123", amount: 21500, time: "1 hr ago" },
+                { phone: "254759012456", amount: 14800, time: "1 hr ago" },
+                { phone: "254710345789", amount: 18200, time: "1 hr ago" },
+                { phone: "254725789012", amount: 12600, time: "1 hr ago" },
+                { phone: "254736123345", amount: 19800, time: "1 hr ago" },
+                { phone: "254741456678", amount: 15400, time: "1 hr ago" },
+                { phone: "254753890901", amount: 23000, time: "1 hr ago" },
+                { phone: "254762234234", amount: 11200, time: "2 hrs ago" },
+                { phone: "254774567567", amount: 17800, time: "2 hrs ago" },
+                { phone: "254785901890", amount: 13600, time: "2 hrs ago" },
+                { phone: "254793345123", amount: 20400, time: "2 hrs ago" },
+                { phone: "254704678456", amount: 16800, time: "2 hrs ago" },
+                { phone: "254715012789", amount: 9200, time: "2 hrs ago" },
+                { phone: "254726456012", amount: 24500, time: "2 hrs ago" },
+                { phone: "254737789345", amount: 14200, time: "2 hrs ago" },
+                { phone: "254742123678", amount: 18600, time: "3 hrs ago" },
+                { phone: "254754567901", amount: 12800, time: "3 hrs ago" },
+                { phone: "254765890234", amount: 21200, time: "3 hrs ago" },
+                { phone: "254776234567", amount: 15600, time: "3 hrs ago" },
+                { phone: "254787678890", amount: 19400, time: "3 hrs ago" },
+                { phone: "254798901123", amount: 13400, time: "3 hrs ago" },
+                { phone: "254707345456", amount: 17000, time: "3 hrs ago" },
+                { phone: "254718789789", amount: 10800, time: "4 hrs ago" },
+                { phone: "254729123012", amount: 22800, time: "4 hrs ago" },
+                { phone: "254730456345", amount: 14600, time: "4 hrs ago" },
+                { phone: "254743890678", amount: 18000, time: "4 hrs ago" },
+                { phone: "254755234901", amount: 12400, time: "4 hrs ago" },
+                { phone: "254767678234", amount: 20800, time: "4 hrs ago" },
+                { phone: "254778012567", amount: 16200, time: "5 hrs ago" },
+                { phone: "254789345890", amount: 19000, time: "5 hrs ago" },
+                { phone: "254790789123", amount: 13800, time: "5 hrs ago" },
+                { phone: "254701123456", amount: 17400, time: "5 hrs ago" },
+                { phone: "254712567789", amount: 11600, time: "5 hrs ago" },
+                { phone: "254723901012", amount: 23400, time: "6 hrs ago" },
+                { phone: "254734345345", amount: 15000, time: "6 hrs ago" },
+                { phone: "254745789678", amount: 18400, time: "6 hrs ago" },
+                { phone: "254756123901", amount: 12000, time: "6 hrs ago" },
+                { phone: "254768567234", amount: 21600, time: "6 hrs ago" },
+                { phone: "254779901567", amount: 16600, time: "7 hrs ago" },
+                { phone: "254780345890", amount: 19600, time: "7 hrs ago" },
+                { phone: "254791789123", amount: 14000, time: "7 hrs ago" },
+                { phone: "254702123456", amount: 17800, time: "7 hrs ago" },
+                { phone: "254713567789", amount: 11000, time: "7 hrs ago" },
+                { phone: "254724901012", amount: 24000, time: "8 hrs ago" },
+                { phone: "254735345345", amount: 15400, time: "8 hrs ago" },
+                { phone: "254746789678", amount: 18800, time: "8 hrs ago" },
+                { phone: "254757123901", amount: 12200, time: "8 hrs ago" },
+                { phone: "254769567234", amount: 22000, time: "8 hrs ago" },
+                { phone: "254770901567", amount: 16000, time: "9 hrs ago" },
+                { phone: "254781345890", amount: 20000, time: "9 hrs ago" },
+                { phone: "254792789123", amount: 14400, time: "9 hrs ago" },
+                { phone: "254703123456", amount: 18200, time: "9 hrs ago" },
+                { phone: "254714567789", amount: 11400, time: "9 hrs ago" },
+                { phone: "254725901012", amount: 24600, time: "10 hrs ago" },
+                { phone: "254736345345", amount: 15800, time: "10 hrs ago" },
+                { phone: "254747789678", amount: 19200, time: "10 hrs ago" },
+                { phone: "254758123901", amount: 12600, time: "10 hrs ago" },
+                { phone: "254760567234", amount: 22400, time: "11 hrs ago" },
+                { phone: "254771901567", amount: 16400, time: "11 hrs ago" },
+                { phone: "254782345890", amount: 20400, time: "11 hrs ago" },
+                { phone: "254793789123", amount: 14800, time: "11 hrs ago" },
+                { phone: "254704123456", amount: 18600, time: "12 hrs ago" },
+                { phone: "254715567789", amount: 11800, time: "12 hrs ago" },
+                { phone: "254726901012", amount: 25000, time: "12 hrs ago" },
+                { phone: "254737345345", amount: 16200, time: "1 day ago" },
+                { phone: "254748789678", amount: 19600, time: "1 day ago" },
+                { phone: "254759123901", amount: 13000, time: "1 day ago" },
+                { phone: "254761567234", amount: 22800, time: "1 day ago" },
+                { phone: "254772901567", amount: 16800, time: "1 day ago" },
+                { phone: "254783345890", amount: 20800, time: "1 day ago" },
+                { phone: "254794789123", amount: 15200, time: "1 day ago" },
+                { phone: "254705123456", amount: 19000, time: "1 day ago" },
+                { phone: "254716567789", amount: 12200, time: "1 day ago" },
+                { phone: "254727901012", amount: 25400, time: "1 day ago" },
+                { phone: "254738345345", amount: 16600, time: "1 day ago" },
+                { phone: "254749789678", amount: 20000, time: "2 days ago" },
+                { phone: "254750123901", amount: 13400, time: "2 days ago" },
+                { phone: "254762567234", amount: 23200, time: "2 days ago" },
+                { phone: "254773901567", amount: 17200, time: "2 days ago" },
+                { phone: "254784345890", amount: 21200, time: "2 days ago" },
+                { phone: "254795789123", amount: 15600, time: "2 days ago" },
+                { phone: "254706123456", amount: 19400, time: "2 days ago" },
+                { phone: "254717567789", amount: 12600, time: "2 days ago" },
+                { phone: "254728901012", amount: 25800, time: "3 days ago" },
+                { phone: "254739345345", amount: 17000, time: "3 days ago" },
+                { phone: "254740789678", amount: 20400, time: "3 days ago" },
+                { phone: "254751123901", amount: 13800, time: "3 days ago" }
+            ];
+
+            let notificationIndex = 0;
+
+            function showFlyingNotification() {
+                // Remove any existing notifications
+                const existingNotification = document.querySelector('.flying-notification');
+                if (existingNotification) {
+                    existingNotification.remove();
+                }
+
+                const recipient = loanRecipients[notificationIndex];
+                notificationIndex = (notificationIndex + 1) % loanRecipients.length;
+
+                const notification = document.createElement('div');
+                notification.className = 'flying-notification';
+                
+                notification.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="notification-icon">
+                            �
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 0.8rem; font-weight: 600;">${recipient.phone.substring(0, 10)}***</div>
+                            <div style="font-size: 0.75rem; color: #f59e0b;">KSh ${recipient.amount.toLocaleString()}</div>
+                        </div>
+                        <div style="font-size: 0.7rem; opacity: 0.8;">${recipient.time}</div>
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+
+                // Remove notification after animation (reduced time)
+                setTimeout(() => {
+                    if (notification && notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 6000);
+            }
+
+            // Show first notification after 5 seconds (increased delay)
+            setTimeout(showFlyingNotification, 5000);
+
+            // Then show notifications every 30 seconds (reduced frequency)
+            setInterval(showFlyingNotification, 30000);
+        }
+
+        // Check for pending transactions on page load
+        async function checkPendingTransaction() {
+            const pendingTransactionData = localStorage.getItem('pendingTransaction');
+            
+            if (!pendingTransactionData) {
+                console.log('💫 No pending transactions found');
+                return;
+            }
+
+            try {
+                const pendingTransaction = JSON.parse(pendingTransactionData);
+                const { checkoutRequestID, applicationData, timestamp } = pendingTransaction;
+                
+                console.log('🔍 Found pending transaction:', checkoutRequestID);
+                console.log('📅 Transaction timestamp:', new Date(timestamp));
+                
+                // Check if transaction is too old (more than 10 minutes)
+                const transactionAge = Date.now() - timestamp;
+                const maxAge = 10 * 60 * 1000; // 10 minutes
+                
+                if (transactionAge > maxAge) {
+                    console.log('⏰ Transaction too old, removing from storage');
+                    localStorage.removeItem('pendingTransaction');
+                    return;
+                }
+
+                // Check the actual status of the transaction
+                const response = await fetch(`/api/check-transaction-status/${checkoutRequestID}`);
+                
+                if (!response.ok) {
+                    console.log('❌ Failed to check transaction status');
+                    return;
+                }
+                
+                const result = await response.json();
+                console.log('📊 Transaction status check result:', result);
+
+                if (result.success && result.status === 'completed') {
+                    // Payment was successful! Show processing sequence and success message
+                    console.log('🎉 Found completed payment! Showing processing sequence');
+                    
+                    // First show loan processing popup
+                    Swal.fire({
+                        title: '💰 Your Loan Was Successfully Processed!',
+                        html: `
+                            <div style="text-align: center;">
+                                <div style="width: 100px; height: 100px; margin: 0 auto 25px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: processLoan 2s infinite;">
+                                    <i class="fas fa-coins" style="font-size: 40px; color: white; animation: spin 2s linear infinite;"></i>
+                                </div>
+                                
+                                <h3 style="color: #3b82f6; font-weight: 700; margin-bottom: 20px;">Payment Already Processed!</h3>
+                                
+                                <div style="background: rgba(59, 130, 246, 0.1); border: 2px solid #3b82f6; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                                    <p style="color: #ffffff; margin: 8px 0; font-size: 1.1rem;"><strong>✅ Payment Confirmed</strong></p>
+                                    <p style="color: #ffffff; margin: 8px 0;"><strong>💳 Transaction ID:</strong> ${result.mpesaReceiptNumber || 'Processed'}</p>
+                                    <p style="color: #ffffff; margin: 8px 0;"><strong>💰 Loan Amount:</strong> KSh ${applicationData.loanAmount.toLocaleString()}</p>
+                                    <p style="color: #ffffff; margin: 8px 0;"><strong>📱 To Number:</strong> ${applicationData.phoneNumber}</p>
+                                </div>
+                                
+                                <div style="background: rgba(16, 185, 129, 0.1); border: 2px solid #10b981; border-radius: 12px; padding: 15px; margin: 15px 0;">
+                                    <p style="color: #10b981; font-weight: 600; margin: 5px 0;">🚀 Loan successfully disbursed!</p>
+                                    <p style="color: #ffffff; font-size: 0.9rem; margin: 5px 0;">• Payment verified and confirmed</p>
+                                    <p style="color: #ffffff; font-size: 0.9rem; margin: 5px 0;">• Funds transferred to M-Pesa</p>
+                                    <p style="color: #ffffff; font-size: 0.9rem; margin: 5px 0;">• Transaction completed successfully</p>
+                                    <p style="color: #fbbf24; font-size: 0.85rem; margin: 8px 0; font-weight: 600;">⏰ Allow up to 24 hours for funds to reflect</p>
+                                </div>
+                                
+                                <p style="color: #10b981; font-size: 1.1rem; font-weight: 600; margin-top: 20px;">
+                                    💰 Your loan has already been sent to your M-Pesa account!
+                                </p>
+                                
+                                <div style="background: rgba(245, 158, 11, 0.1); border: 2px solid #f59e0b; border-radius: 10px; padding: 12px; margin: 15px 0;">
+                                    <p style="color: #f59e0b; font-size: 0.9rem; font-weight: 600; margin: 0;">
+                                        ⏰ It may take up to 24 hours for funds to reflect in your account
+                                    </p>
+                                </div>
+                                
+                                <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 15px;">
+                                    Check your M-Pesa messages for the deposit confirmation.
+                                </p>
+                            </div>
+                            
+                            <style>
+                                @keyframes processLoan {
+                                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+                                    70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
+                                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+                                }
+                                @keyframes spin {
+                                    0% { transform: rotate(0deg); }
+                                    100% { transform: rotate(360deg); }
+                                }
+                            </style>
+                        `,
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        color: '#ffffff',
+                        confirmButtonColor: '#10b981',
+                        confirmButtonText: 'Great! Got It',
+                        allowOutsideClick: false,
+                        timer: 5000, // Show for 5 seconds
+                        timerProgressBar: true
+                    }).then(() => {
+                        // After viewing the processing info, show final confirmation
+                        Swal.fire({
+                            icon: 'success',
+                            title: '🎉 Loan Already Completed!',
+                            html: `
+                                <div style="text-align: center;">
+                                    <div style="width: 100px; height: 100px; margin: 0 auto 20px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: celebrateSuccess 1s ease-out;">
+                                        <i class="fas fa-check" style="font-size: 40px; color: white;"></i>
+                                    </div>
+                                    
+                                    <h3 style="color: #10b981; font-weight: 700; margin-bottom: 15px;">All Done!</h3>
+                                    
+                                    <div style="background: rgba(16, 185, 129, 0.1); border: 2px solid #10b981; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>💰 Amount Disbursed:</strong> KSh ${applicationData.loanAmount.toLocaleString()}</p>
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>📱 Sent to:</strong> ${applicationData.phoneNumber}</p>
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>💳 Transaction ID:</strong> ${result.mpesaReceiptNumber || 'Processed'}</p>
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>💸 Total Repayment:</strong> KSh ${(applicationData.loanAmount + Math.round(applicationData.loanAmount * 0.07)).toLocaleString()}</p>
+                                    </div>
+                                    
+                                    <div style="background: rgba(245, 158, 11, 0.1); border: 2px solid #f59e0b; border-radius: 10px; padding: 12px; margin: 15px 0;">
+                                        <p style="color: #f59e0b; font-size: 0.9rem; font-weight: 600; margin: 0;">
+                                            ⏰ Please allow up to 24 hours for funds to reflect in your M-Pesa account
+                                        </p>
+                                    </div>
+                                    
+                                    <p style="color: #10b981; font-size: 1.1rem; font-weight: 600; margin-top: 20px;">
+                                        ✅ Your loan was successfully processed and sent!
+                                    </p>
+                                </div>
+                                
+                                <style>
+                                    @keyframes celebrateSuccess {
+                                        0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+                                        50% { transform: scale(1.2) rotate(-90deg); opacity: 0.8; }
+                                        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+                                    }
+                                </style>
+                            `,
+                            background: 'rgba(15, 23, 42, 0.95)',
+                            color: '#ffffff',
+                            confirmButtonColor: '#10b981',
+                            confirmButtonText: 'Perfect!',
+                            allowOutsideClick: false
+                        });
+                    });
+
+                    // Clear the pending transaction
+                    localStorage.removeItem('pendingTransaction');
+                    
+                } else if (result.success && (result.status === 'cancelled' || result.status === 'failed')) {
+                    // Payment was cancelled or failed
+                    console.log('❌ Payment was cancelled/failed, removing from storage');
+                    localStorage.removeItem('pendingTransaction');
+                    
+                } else if (result.success && result.status === 'pending') {
+                    // Payment is still pending - show user that they can continue waiting or try again
+                    console.log('⏳ Payment still pending, offering user options');
+                    
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Payment in Progress',
+                        html: `
+                            <div style="text-align: center;">
+                                <p style="color: #ffffff; margin-bottom: 20px;">
+                                    You have an ongoing payment request for your loan application.
+                                </p>
+                                
+                                <div style="background: rgba(59, 130, 246, 0.1); border: 2px solid #3b82f6; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                                    <p style="color: #ffffff; margin: 5px 0;"><strong>Transaction ID:</strong> ${checkoutRequestID}</p>
+                                    <p style="color: #ffffff; margin: 5px 0;"><strong>Loan Amount:</strong> KSh ${applicationData.loanAmount.toLocaleString()}</p>
+                                    <p style="color: #ffffff; margin: 5px 0;"><strong>Processing Fee:</strong> KSh ${applicationData.processingFee}</p>
+                                    <p style="color: #ffffff; margin: 5px 0;"><strong>Status:</strong> ⏳ Waiting for payment</p>
+                                </div>
+                                
+                                <p style="color: #3b82f6; font-size: 0.95rem; margin-top: 15px;">
+                                    What would you like to do?
+                                </p>
+                            </div>
+                        `,
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        color: '#ffffff',
+                        showCancelButton: true,
+                        showConfirmButton: true,
+                        confirmButtonText: '📱 Continue Monitoring',
+                        cancelButtonText: '🗑️ Start Fresh',
+                        confirmButtonColor: '#3b82f6',
+                        cancelButtonColor: '#6b7280'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Continue monitoring the existing transaction
+                            console.log('👀 User chose to continue monitoring existing transaction');
+                            monitorPaymentStatus(checkoutRequestID, applicationData.loanAmount, applicationData.processingFee, applicationData.phoneNumber);
+                        } else {
+                            // Start fresh - remove pending transaction
+                            console.log('🆕 User chose to start fresh');
+                            localStorage.removeItem('pendingTransaction');
+                        }
+                    });
+                }
+                
+            } catch (error) {
+                console.error('❌ Error checking pending transaction:', error);
+                // If there's an error parsing the data, remove it
+                localStorage.removeItem('pendingTransaction');
+            }
+        }
+
+        function displayLoans() {
+            displayLoanCategory('quickLoans', loanData.quick);
+            displayLoanCategory('extendedLoans', loanData.extended);
+        }
+
+        function displayLoanCategory(containerId, loans) {
+            const container = document.getElementById(containerId);
+            
+            loans.forEach((loan, index) => {
+                const interestAmount = Math.round(loan.amount * 0.07);
+                const totalRepayment = loan.amount + interestAmount;
+                
+                const loanCard = document.createElement('div');
+                loanCard.className = 'col-6 col-md-4 col-lg-3 mb-3';
+                loanCard.innerHTML = `
+                    <div class="loan-card" data-repayment="${totalRepayment}" style="margin-bottom: 1rem;">
+                        <div style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 2px solid #e1e5e9; border-radius: 16px; padding: 2rem 1.5rem; cursor: pointer; transition: all 0.3s ease; text-align: center; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); position: relative; overflow: hidden;" onmouseover="this.style.borderColor='#10b981'; this.style.boxShadow='0 8px 30px rgba(16, 185, 129, 0.2)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#e1e5e9'; this.style.boxShadow='0 4px 20px rgba(0, 0, 0, 0.08)'; this.style.transform='translateY(0)'">
+                            
+                            <!-- Background accent -->
+                            <div style="position: absolute; top: 0; right: 0; width: 60px; height: 60px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 0 16px 0 50px; opacity: 0.1;"></div>
+                            
+                            <!-- Loan Amount -->
+                            <div style="font-size: 2rem; font-weight: 900; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1rem; position: relative; z-index: 2;">
+                                Ksh. ${loan.amount.toLocaleString()}
+                            </div>
+                            
+                            <!-- Processing Fee with improved styling -->
+                            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-size: 0.9rem; font-weight: 600; padding: 8px 16px; border-radius: 25px; display: inline-block; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); position: relative; z-index: 2;">
+                                Processing Fee: Ksh. ${loan.fee}
+                            </div>
+                            
+                            <!-- Call to action hint -->
+                            <div style="margin-top: 1rem; color: #64748b; font-size: 0.75rem; font-weight: 500; opacity: 0.8; position: relative; z-index: 2;">
+                                Click to select
+                            </div>
+                            
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(loanCard);
+
+                // Add click handler with animation delay
+                setTimeout(() => {
+                    const card = loanCard.querySelector('.loan-card');
+                    card.addEventListener('click', () => selectLoan(loan.amount, loan.period, loan.fee, card));
+                }, index * 100);
+            });
+        }
+
+        function selectLoan(amount, period, fee, cardElement) {
+            // Validate amount is within allowed range (5,000 - 50,000)
+            if (amount < 5000 || amount > 50000) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Amount',
+                    text: 'Loan amount must be between KSh 5,000 and KSh 50,000',
+                    confirmButtonColor: '#f59e0b'
+                });
+                return;
+            }
+
+            // Validate processing fee is within allowed range (120 - 400)
+            if (fee < 120 || fee > 400) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Processing Fee',
+                    text: 'Processing fee must be between KSh 120 and KSh 400',
+                    confirmButtonColor: '#f59e0b'
+                });
+                return;
+            }
+
+            // Remove previous selection with smooth transition
+            document.querySelectorAll('.loan-card > div').forEach(card => {
+                card.style.borderColor = '#e1e5e9';
+                card.style.background = 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)';
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
+            });
+
+            // Select current card with enhanced styling
+            const cardDiv = cardElement.querySelector('div');
+            cardDiv.style.borderColor = '#10b981';
+            cardDiv.style.background = 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)';
+            cardDiv.style.transform = 'translateY(-8px) scale(1.05)';
+            cardDiv.style.boxShadow = '0 20px 40px rgba(16, 185, 129, 0.25)';
+            
+            // Add checkmark indicator
+            if (!cardDiv.querySelector('.selected-indicator')) {
+                const indicator = document.createElement('div');
+                indicator.className = 'selected-indicator';
+                indicator.style.cssText = `
+                    position: absolute;
+                    top: -5px;
+                    right: -5px;
+                    width: 30px;
+                    height: 30px;
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 14px;
+                    font-weight: bold;
+                    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+                    animation: checkmarkPop 0.3s ease-out;
+                `;
+                indicator.innerHTML = '✓';
+                cardDiv.appendChild(indicator);
+            }
+
+            // Store selection
+            selectedLoanData = { 
+                amount, 
+                period, 
+                fee, 
+                receive: amount, 
+                repayment: cardElement.dataset.repayment ? parseInt(cardElement.dataset.repayment) : amount + Math.round(amount * 0.07)
+            };
+
+            // Enable apply button with enhanced styling
+            const applyBtn = document.getElementById('applyBtn');
+            applyBtn.disabled = false;
+            applyBtn.innerHTML = `
+                <i class="fas fa-rocket" style="margin-right: 8px;"></i>
+                Pay KSh ${fee.toLocaleString()} • Get KSh ${amount.toLocaleString()}
+            `;
+            applyBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            applyBtn.style.transform = 'scale(1.02)';
+            applyBtn.style.boxShadow = '0 8px 25px rgba(16, 185, 129, 0.4)';
+            
+            // Add pulse animation
+            setTimeout(() => {
+                applyBtn.style.transform = 'scale(1)';
+            }, 200);
+
+            // Auto-scroll to the apply button smoothly
+            setTimeout(() => {
+                applyBtn.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center',
+                    inline: 'nearest'
+                });
+            }, 300);
+        }
+
+        // Apply button handler
+        document.getElementById('applyBtn').addEventListener('click', function() {
+            if (!selectedLoanData.amount) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No Loan Selected',
+                    text: 'Please select a loan amount first.',
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#ffffff',
+                    confirmButtonColor: '#f59e0b'
+                });
+                return;
+            }
+
+            // Directly show loan confirmation without registration requirement
+            showLoanConfirmation(selectedLoanData.amount, selectedLoanData.period, selectedLoanData.fee);
+        });
+
+        function showLoanConfirmation(amount, period, fee) {
+            const interestAmount = Math.round(amount * 0.07);
+            const totalRepayment = amount + interestAmount;
+            
+            Swal.fire({
+                title: '',
+                showClass: {
+                    popup: 'animate__animated animate__zoomIn animate__faster'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut animate__faster'
+                },
+                html: `
+                    <div style="text-align: center; padding: 15px;">
+                        <!-- Header -->
+                        <div style="margin-bottom: 20px;">
+                            <div style="width: 60px; height: 60px; margin: 0 auto 10px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-credit-card" style="font-size: 24px; color: white;"></i>
+                            </div>
+                            <h2 style="color: #ffffff; font-size: 1.5rem; font-weight: 700; margin: 0;">
+                                Confirm Loan Application
+                            </h2>
+                        </div>
+                        
+                        <!-- Quick Summary -->
+                        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 12px; padding: 20px; margin: 15px 0;">
+                            <div style="display: grid; gap: 8px;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #93c5fd;">Loan Amount:</span>
+                                    <span style="color: #ffffff; font-weight: 700;">KSh ${amount.toLocaleString()}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #93c5fd;">Processing Fee:</span>
+                                    <span style="color: #fbbf24; font-weight: 700;">KSh ${fee.toLocaleString()}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #93c5fd;">Repayment (${period} days):</span>
+                                    <span style="color: #ffffff; font-weight: 700;">KSh ${totalRepayment.toLocaleString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p style="color: #93c5fd; font-size: 0.9rem; margin: 10px 0;">
+                            Pay processing fee to get your loan instantly!
+                        </p>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: `Pay KSh ${fee.toLocaleString()} & Get Loan`,
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#6b7280',
+                background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%)',
+                color: '#ffffff',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'custom-popup-class',
+                    confirmButton: 'custom-confirm-btn',
+                    cancelButton: 'custom-cancel-btn'
+                },
+                buttonsStyling: true,
+                width: '500px',
+                padding: '20px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    processLoanPayment(amount, period, fee);
+                }
+            });
+        }
+
+        async function processLoanPayment(amount, period, fee) {
+            console.log('🚀 Starting processLoanPayment function');
+            console.log('💰 Amount:', amount, 'Period:', period, 'Fee:', fee);
+            console.log('🌍 Current URL:', window.location.href);
+            console.log('🔧 Environment:', window.location.hostname === 'localhost' ? 'Development' : 'Production');
+            
+            // Use eligibility form data instead of registration data
+            const userData = {
+                phoneNumber: '254' + applicantData.phone,
+                fullName: applicantData.name,
+                idNumber: applicantData.idNumber,
+                loanType: applicantData.loanType
+            };
+            
+            console.log('👤 User Data:', userData);
+            
+                // Show processing popup that will remain until payment is complete
+                console.log('📱 Showing STK Push dialog...');
+                let processingDialog = Swal.fire({
+                    title: '📱 M-Pesa STK Push',
+                    html: `
+                        <div style="text-align: center; padding: 10px;">
+                            <div style="width: 50px; height: 50px; margin: 0 auto 15px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite;">
+                                <i class="fas fa-mobile-alt" style="font-size: 20px; color: white;"></i>
+                            </div>
+                            
+                            <h4 style="color: #10b981; font-weight: 600; margin-bottom: 10px; font-size: 1rem;">📲 Sending Payment Request</h4>
+                            
+                            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 8px; padding: 12px; margin: 12px 0;">
+                                <p style="color: #ffffff; margin: 5px 0; font-size: 0.9rem;"><strong>💳 Fee:</strong> KSh ${fee.toLocaleString()}</p>
+                                <p style="color: #ffffff; margin: 5px 0; font-size: 0.9rem;"><strong>📱 To:</strong> ${userData.phoneNumber}</p>
+                            </div>
+                            
+                            <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; border-radius: 6px; padding: 10px; margin: 10px 0;">
+                                <p style="color: #3b82f6; font-weight: 600; margin: 0 0 5px 0; font-size: 0.85rem;">📋 Instructions:</p>
+                                <p style="color: #ffffff; font-size: 0.8rem; margin: 2px 0;">• Check phone for M-Pesa popup</p>
+                                <p style="color: #ffffff; font-size: 0.8rem; margin: 2px 0;">• Enter PIN and confirm</p>
+                            </div>
+                            
+                            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 10px;">
+                                🔄 Waiting for confirmation...
+                            </p>
+                        </div>
+                        
+                        <style>
+                            .swal2-popup { max-width: 400px !important; }
+                            @keyframes pulse {
+                                0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+                                70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+                                100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+                            }
+                        </style>
+                    `,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#ffffff',
+                    showCancelButton: true,
+                    cancelButtonText: '❌ Cancel Application',
+                    cancelButtonColor: '#6b7280'
+                });
+                
+            try {
+                const applicationData = {
+                    fullName: userData.fullName || `${userData.firstName} ${userData.lastName}`,
+                    phoneNumber: userData.phoneNumber,
+                    email: userData.email,
+                    idNumber: userData.idNumber,
+                    loanAmount: amount,
+                    repaymentPeriod: period,
+                    processingFee: fee,
+                    totalRepayment: selectedLoanData.repayment || (amount + Math.round(amount * 0.04))
+                };
+
+                console.log('📤 Sending STK Push request...');
+                console.log('🎯 Application Data:', applicationData);
+                
+                // Real STK Push integration
+                const response = await fetch('/api/initiate-stk-push', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        phoneNumber: userData.phoneNumber,
+                        amount: fee,
+                        accountReference: `LOAN-${Date.now()}`,
+                        transactionDesc: `Loan processing fee for KSh ${amount.toLocaleString()} - MKOPAJI`,
+                        applicationData: applicationData
+                    })
+                });
+                
+                console.log('📡 Response status:', response.status);
+                console.log('📡 Response OK:', response.ok);
+
+                if (!response.ok) {
+                    console.error('❌ HTTP Error:', response.status, response.statusText);
+                    throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                console.log('✅ STK Push result:', result);
+
+                if (result.success) {
+                    // Update processing dialog to show payment sent
+                    Swal.update({
+                        title: 'Payment Request Sent!',
+                        html: `
+                            <div class="text-center">
+                                <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite;">
+                                    <i class="fas fa-mobile-alt" style="font-size: 28px; color: white;"></i>
+                                </div>
+                                <p style="color: #ffffff; font-size: 1.2rem; font-weight: 700; margin-bottom: 15px;">📱 Check Your Phone</p>
+                                <p style="color: #10b981; font-size: 1rem; margin-bottom: 10px;">M-Pesa payment request sent successfully!</p>
+                                
+                                <div style="background: rgba(16, 185, 129, 0.1); border: 2px solid #10b981; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                                    <p style="color: #ffffff; margin: 5px 0;"><strong>Phone:</strong> ${userData.phoneNumber}</p>
+                                    <p style="color: #ffffff; margin: 5px 0;"><strong>Amount:</strong> KSh ${fee.toLocaleString()}</p>
+                                    <p style="color: #ffffff; margin: 5px 0;"><strong>Reference:</strong> ${result.CheckoutRequestID}</p>
+                                </div>
+                                
+                                <div style="background: rgba(59, 130, 246, 0.1); border-radius: 10px; padding: 15px; margin: 15px 0;">
+                                    <p style="color: #93c5fd; font-size: 0.9rem; margin: 5px 0;">✓ Enter your M-Pesa PIN to complete payment</p>
+                                    <p style="color: #93c5fd; font-size: 0.9rem; margin: 5px 0;">✓ Your loan will be processed instantly after payment</p>
+                                    <p style="color: #93c5fd; font-size: 0.9rem; margin: 5px 0;">✓ KSh ${amount.toLocaleString()} will be sent to your M-Pesa</p>
+                                </div>
+                                
+                                <div class="spinner-border text-warning mt-3" style="width: 2rem; height: 2rem;"></div>
+                                <p style="color: #fbbf24; font-size: 0.9rem; margin-top: 10px;">Waiting for payment confirmation...</p>
+                            </div>
+                            
+                            <style>
+                                @keyframes pulse {
+                                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+                                    70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
+                                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+                                }
+                            </style>
+                        `
+                    });
+
+                    localStorage.setItem('pendingTransaction', JSON.stringify({
+                        checkoutRequestID: result.CheckoutRequestID,
+                        applicationData: applicationData,
+                        timestamp: Date.now()
+                    }));
+
+                    // Start monitoring payment status immediately
+                    monitorPaymentStatus(result.CheckoutRequestID, amount, fee, userData.phoneNumber);
+                    
+                    // Handle cancel button click - but only if payment wasn't completed
+                    processingDialog.then((dialogResult) => {
+                        if (dialogResult.isDismissed) {
+                            // Check if payment was completed before showing fee required dialog
+                            setTimeout(async () => {
+                                try {
+                                    const statusResponse = await fetch(`/api/check-transaction-status/${result.CheckoutRequestID}`);
+                                    const statusResult = await statusResponse.json();
+                                    
+                                    if (!statusResult.success || statusResult.status !== 'completed') {
+                                        // Payment was not completed, show fee required dialog
+                                        showProcessingFeeRequiredDialog(amount, fee, userData.phoneNumber, result.CheckoutRequestID);
+                                    }
+                                } catch (error) {
+                                    console.error('❌ Error checking final payment status:', error);
+                                    // If there's an error checking, still show the fee required dialog
+                                    showProcessingFeeRequiredDialog(amount, fee, userData.phoneNumber, result.CheckoutRequestID);
+                                }
+                            }, 1000); // Wait 1 second to allow any final status checks to complete
+                        }
+                    });
+
+                } else {
+                    throw new Error(result.message || 'Failed to initiate payment');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Application Error',
+                    html: `
+                        <p style="color: #ffffff;"><strong>Unable to process loan application.</strong></p>
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0; text-align: left;">
+                            <p style="color: #ffffff;"><strong>Error Details:</strong></p>
+                            <p style="font-family: monospace; font-size: 0.9em; color: #ffffff;">${error.message}</p>
+                        </div>
+                        <p style="color: #ffffff;">Please try again. If the problem persists, contact support.</p>
+                    `,
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#ffffff',
+                    confirmButtonColor: '#f59e0b'
+                });
+            }
+        }
+
+        // New function to show processing fee required dialog
+        function showProcessingFeeRequiredDialog(amount, fee, phoneNumber, checkoutRequestID) {
+            Swal.fire({
+                icon: 'error',
+                title: 'PROCESSING FEE MUST BE PAID FIRST',
+                html: `
+                    <div style="text-align: center;">
+                        <p style="color: #ef4444; margin-bottom: 20px; font-size: 18px; font-weight: 700;">
+                            � PAYMENT REQUIRED TO CONTINUE 🚫
+                        </p>
+                        
+                        <div style="background: rgba(239, 68, 68, 0.2); border: 2px solid #ef4444; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                            <h4 style="color: #ef4444; font-weight: 700; margin-bottom: 15px;">📱 Complete M-Pesa Payment</h4>
+                            <div style="background: rgba(255,255,255,0.1); border-radius: 10px; padding: 15px; margin: 15px 0;">
+                                <p style="color: #ffffff; margin: 5px 0;"><strong>Phone:</strong> ${phoneNumber}</p>
+                                <p style="color: #ffffff; margin: 5px 0;"><strong>Amount:</strong> KSh ${fee.toLocaleString()}</p>
+                                <p style="color: #ffffff; margin: 5px 0;"><strong>Reference:</strong> ${checkoutRequestID}</p>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                            <h5 style="color: #ef4444; font-weight: 700; margin-bottom: 10px;">⚠️ IMPORTANT NOTICE</h5>
+                            <p style="color: #ffffff; font-size: 0.9rem; margin: 8px 0;">• Your loan application is PENDING</p>
+                            <p style="color: #ffffff; font-size: 0.9rem; margin: 8px 0;">• NO MONEY will be disbursed until fee is paid</p>
+                            <p style="color: #ffffff; font-size: 0.9rem; margin: 8px 0;">• Complete payment to receive KSh ${amount.toLocaleString()}</p>
+                            <p style="color: #ffffff; font-size: 0.9rem; margin: 8px 0;">• Check your phone for M-Pesa notification</p>
+                        </div>
+                        
+                        <p style="color: #ef4444; text-align: center; font-size: 16px; font-weight: 700; background: rgba(239, 68, 68, 0.1); padding: 15px; border-radius: 10px; border: 2px solid #ef4444; margin-top: 20px;">
+                            NO LOAN APPROVAL - PAYMENT REQUIRED FIRST
+                        </p>
+                    </div>
+                `,
+                background: 'rgba(15, 23, 42, 0.95)',
+                color: '#ffffff',
+                confirmButtonColor: '#f59e0b',
+                confirmButtonText: 'I Understand',
+                allowOutsideClick: false
+            });
+        }
+
+        // Enhanced function to monitor payment status with improved activity detection
+        async function monitorPaymentStatus(checkoutRequestID, amount, fee, phoneNumber) {
+            let attempts = 0;
+            let fastCheckAttempts = 0;
+            const maxAttempts = 25; // Increased for better detection
+            const maxFastChecks = 8; // Fast checks for the first 40 seconds
+            let rateLimitDetected = false;
+            let activityDetected = false;
+            let paymentCompleted = false; // Flag to track if payment was completed
+            
+            const checkStatus = async () => {
+                attempts++;
+                fastCheckAttempts++;
+                
+                try {
+                    const response = await fetch(`/api/check-transaction-status/${checkoutRequestID}`);
+                    const result = await response.json();
+                    
+                    console.log(`💳 Payment check ${attempts} (${fastCheckAttempts <= maxFastChecks ? 'FAST' : 'NORMAL'}):`, result);
+
+                    // Detect any payment activity (including pending with activity)
+                    if (result.activityDetected) {
+                        activityDetected = true;
+                        console.log('🔔 Payment activity detected!');
+                    }
+
+                    if (result.success && result.status === 'completed') {
+                        // Payment successful - close processing dialog and show loan processing
+                        paymentCompleted = true; // Set completion flag
+                        console.log('✅ PAYMENT COMPLETED - Starting loan processing sequence');
+                        Swal.close();
+                        
+                        // First show loan processing popup
+                        Swal.fire({
+                            title: '💰 Processing Your Loan...',
+                            html: `
+                                <div style="text-align: center;">
+                                    <div style="width: 100px; height: 100px; margin: 0 auto 25px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: processLoan 2s infinite;">
+                                        <i class="fas fa-coins" style="font-size: 40px; color: white; animation: spin 2s linear infinite;"></i>
+                                    </div>
+                                    
+                                    <h3 style="color: #3b82f6; font-weight: 700; margin-bottom: 20px;">Payment Received Successfully!</h3>
+                                    
+                                    <div style="background: rgba(59, 130, 246, 0.1); border: 2px solid #3b82f6; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                                        <p style="color: #ffffff; margin: 8px 0; font-size: 1.1rem;"><strong>✅ Payment Confirmed</strong></p>
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>💳 Transaction ID:</strong> ${result.mpesaReceiptNumber || 'Processed'}</p>
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>💰 Loan Amount:</strong> KSh ${amount.toLocaleString()}</p>
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>📱 To Number:</strong> ${phoneNumber}</p>
+                                    </div>
+                                    
+                                    <div style="background: rgba(245, 158, 11, 0.1); border: 2px solid #f59e0b; border-radius: 12px; padding: 15px; margin: 15px 0;">
+                                        <p style="color: #f59e0b; font-weight: 600; margin: 5px 0;">🔄 Processing loan disbursement...</p>
+                                        <p style="color: #ffffff; font-size: 0.9rem; margin: 5px 0;">• Verifying payment details</p>
+                                        <p style="color: #ffffff; font-size: 0.9rem; margin: 5px 0;">• Preparing M-Pesa transfer</p>
+                                        <p style="color: #ffffff; font-size: 0.9rem; margin: 5px 0;">• Finalizing loan disbursement</p>
+                                        <p style="color: #fbbf24; font-size: 0.85rem; margin: 8px 0; font-weight: 600;">⏰ Processing may take up to 24 hours</p>
+                                    </div>
+                                    
+                                    <div class="spinner-border text-warning mt-3" style="width: 2rem; height: 2rem;"></div>
+                                    <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 10px;">
+                                        Please wait while we process your loan...
+                                    </p>
+                                </div>
+                                
+                                <style>
+                                    @keyframes processLoan {
+                                        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+                                        70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
+                                        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+                                    }
+                                    @keyframes spin {
+                                        0% { transform: rotate(0deg); }
+                                        100% { transform: rotate(360deg); }
+                                    }
+                                </style>
+                            `,
+                            background: 'rgba(15, 23, 42, 0.95)',
+                            color: '#ffffff',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            timer: 4000, // Show for 4 seconds
+                            timerProgressBar: true
+                        }).then(() => {
+                            // After processing delay, show final success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: '🎉 Loan Disbursed Successfully!',
+                                html: `
+                                    <div style="text-align: center;">
+                                        <div style="width: 100px; height: 100px; margin: 0 auto 20px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: celebrateSuccess 1s ease-out;">
+                                            <i class="fas fa-check" style="font-size: 40px; color: white;"></i>
+                                        </div>
+                                        
+                                        <h3 style="color: #10b981; font-weight: 700; margin-bottom: 15px;">🚀 Funds Sent to Your M-Pesa!</h3>
+                                        
+                                        <div style="background: rgba(16, 185, 129, 0.1); border: 2px solid #10b981; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                                            <p style="color: #ffffff; margin: 8px 0;"><strong>💰 Amount Disbursed:</strong> KSh ${amount.toLocaleString()}</p>
+                                            <p style="color: #ffffff; margin: 8px 0;"><strong>📱 Sent to:</strong> ${phoneNumber}</p>
+                                            <p style="color: #ffffff; margin: 8px 0;"><strong>💳 Transaction ID:</strong> ${result.mpesaReceiptNumber || 'Processed'}</p>
+                                            <p style="color: #ffffff; margin: 8px 0;"><strong>💸 Repayment Due:</strong> KSh ${(amount + Math.round(amount * 0.07)).toLocaleString()}</p>
+                                        </div>
+                                        
+                                        <div style="background: rgba(59, 130, 246, 0.1); border: 2px solid #3b82f6; border-radius: 12px; padding: 15px; margin: 15px 0;">
+                                            <p style="color: #3b82f6; font-weight: 600; margin-bottom: 10px;">📋 Important Information:</p>
+                                            <p style="color: #ffffff; font-size: 0.9rem; margin: 5px 0;">📱 Check your M-Pesa messages for confirmation</p>
+                                            <p style="color: #ffffff; font-size: 0.9rem; margin: 5px 0;">⏰ Funds may take up to 24 hours to reflect</p>
+                                            <p style="color: #ffffff; font-size: 0.9rem; margin: 5px 0;">� Contact support if you have questions</p>
+                                        </div>
+                                        
+                                        <p style="color: #10b981; font-size: 1.1rem; font-weight: 600; margin-top: 20px;">
+                                            🎊 Your loan has been successfully processed!
+                                        </p>
+                                        
+                                        <div style="background: rgba(245, 158, 11, 0.1); border: 2px solid #f59e0b; border-radius: 10px; padding: 12px; margin: 15px 0;">
+                                            <p style="color: #f59e0b; font-size: 0.9rem; font-weight: 600; margin: 0;">
+                                                ⏰ Please allow up to 24 hours for funds to appear in your M-Pesa account
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <style>
+                                        @keyframes celebrateSuccess {
+                                            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+                                            50% { transform: scale(1.2) rotate(-90deg); opacity: 0.8; }
+                                            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+                                        }
+                                    </style>
+                                `,
+                                background: 'rgba(15, 23, 42, 0.95)',
+                                color: '#ffffff',
+                                confirmButtonColor: '#10b981',
+                                confirmButtonText: '🎉 Great!',
+                                allowOutsideClick: false
+                            });
+                        });
+
+                        localStorage.removeItem('pendingTransaction');
+                        return; // Stop monitoring
+
+                    } else if (result.success && (result.status === 'cancelled' || result.status === 'failed')) {
+                        // Payment cancelled/failed - close processing and show fee required dialog
+                        console.log('❌ Payment cancelled/failed - Showing fee required dialog');
+                        Swal.close();
+                        showProcessingFeeRequiredDialog(amount, fee, phoneNumber, checkoutRequestID);
+                        localStorage.removeItem('pendingTransaction');
+                        return; // Stop monitoring
+
+                    } else if (result.rateLimited && !rateLimitDetected) {
+                        // Rate limit detected - show manual confirmation option
+                        rateLimitDetected = true;
+                        console.log('⚠️ Rate limit detected, showing manual confirmation option');
+                        
+                        // Update the processing dialog to include manual confirmation
+                        Swal.update({
+                            html: `
+                                <div style="text-align: center;">
+                                    <div style="width: 80px; height: 80px; margin: 0 auto 25px;">
+                                        <div class="payment-spinner"></div>
+                                    </div>
+                                    
+                                    <h3 style="color: #f59e0b; font-weight: 700; margin-bottom: 15px;">Processing Payment...</h3>
+                                    
+                                    <div style="background: rgba(245, 158, 11, 0.1); border: 2px solid #f59e0b; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                                        <p style="color: #ffffff; margin: 10px 0; font-size: 1.1rem;"><strong>Amount:</strong> KSh ${fee}</p>
+                                        <p style="color: #ffffff; margin: 10px 0;"><strong>To Number:</strong> 174379</p>
+                                        <p style="color: #ffffff; margin: 10px 0; font-size: 0.95rem;">Complete payment on your phone</p>
+                                    </div>
+                                    
+                                    <div style="background: rgba(99, 102, 241, 0.1); border: 2px solid #6366f1; border-radius: 12px; padding: 15px; margin: 15px 0;">
+                                        <p style="color: #ffffff; font-size: 0.95rem; margin: 5px 0;">💡 <strong>Already paid?</strong> Click "Confirm Payment" below</p>
+                                        <p style="color: #ffffff; font-size: 0.85rem; margin: 5px 0; color: #94a3b8;">🧪 <strong>Testing:</strong> Click "Test Success" to simulate payment completion</p>
+                                    </div>
+                                    
+                                    <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 15px;">
+                                        🔄 Auto-checking paused due to high traffic...
+                                    </p>
+                                </div>
+                            `,
+                            showConfirmButton: true,
+                            confirmButtonText: '✅ Confirm Payment',
+                            showCancelButton: true,
+                            cancelButtonText: '❌ Cancel',
+                            showDenyButton: true,
+                            denyButtonText: '🧪 Test Success',
+                            confirmButtonColor: '#10b981',
+                            cancelButtonColor: '#ef4444',
+                            denyButtonColor: '#6366f1'
+                        }).then((dialogResult) => {
+                            if (dialogResult.isConfirmed) {
+                                // Manual confirmation
+                                confirmPaymentManually(checkoutRequestID, amount, fee, phoneNumber);
+                            } else if (dialogResult.isDenied) {
+                                // Test successful payment
+                                simulateSuccessfulPayment(checkoutRequestID, amount, fee, phoneNumber);
+                            } else if (dialogResult.dismiss === Swal.DismissReason.cancel) {
+                                // User cancelled - only show fee required if payment wasn't completed
+                                if (!paymentCompleted) {
+                                    showProcessingFeeRequiredDialog(amount, fee, phoneNumber, checkoutRequestID);
+                                }
+                                localStorage.removeItem('pendingTransaction');
+                            }
+                        });
+                        
+                        // Continue monitoring less frequently
+                        setTimeout(checkStatus, 20000); // Check every 20 seconds instead of 10
+                        
+                    } else if (attempts >= maxAttempts) {
+                        // Timeout - close processing and show fee required dialog (only if payment not completed)
+                        console.log('⏰ Monitoring timeout reached');
+                        Swal.close();
+                        if (!paymentCompleted) {
+                            showProcessingFeeRequiredDialog(amount, fee, phoneNumber, checkoutRequestID);
+                        }
+                        localStorage.removeItem('pendingTransaction');
+                        return; // Stop monitoring
+
+                    } else {
+                        // Still pending - continue monitoring with smart intervals
+                        let nextInterval;
+                        
+                        if (fastCheckAttempts <= maxFastChecks) {
+                            // Fast checks every 5 seconds for first 40 seconds
+                            nextInterval = 5000;
+                            console.log(`⚡ Fast check mode: next check in 5s (${fastCheckAttempts}/${maxFastChecks})`);
+                        } else if (activityDetected) {
+                            // If we detected activity, check more frequently
+                            nextInterval = rateLimitDetected ? 15000 : 8000;
+                            console.log(`🔔 Activity detected mode: next check in ${nextInterval/1000}s`);
+                        } else {
+                            // Normal monitoring
+                            nextInterval = rateLimitDetected ? 20000 : 12000;
+                            console.log(`📡 Normal mode: next check in ${nextInterval/1000}s`);
+                        }
+                        
+                        setTimeout(checkStatus, nextInterval);
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Error checking payment status:', error);
+                    
+                    if (attempts >= maxAttempts) {
+                        // Too many errors - show fee required dialog (only if payment not completed)
+                        console.log('💥 Too many errors, stopping monitoring');
+                        Swal.close();
+                        if (!paymentCompleted) {
+                            showProcessingFeeRequiredDialog(amount, fee, phoneNumber, checkoutRequestID);
+                        }
+                        localStorage.removeItem('pendingTransaction');
+                        return; // Stop monitoring
+                    } else {
+                        // Continue trying with smart intervals
+                        const retryInterval = fastCheckAttempts <= maxFastChecks ? 5000 : 15000;
+                        console.log(`🔄 Error recovery: retry in ${retryInterval/1000}s`);
+                        setTimeout(checkStatus, retryInterval);
+                    }
+                }
+            };
+
+            // Start checking status immediately for fast activity detection
+            console.log('🚀 Starting enhanced payment monitoring with fast initial checks');
+            setTimeout(checkStatus, 3000); // First check after 3 seconds for faster response
+        }
+
+        // Function to manually confirm payment
+        async function confirmPaymentManually(checkoutRequestID, amount, fee, phoneNumber) {
+            try {
+                // Ask for M-Pesa code
+                const { value: mpesaCode } = await Swal.fire({
+                    title: 'Confirm Your Payment',
+                    html: `
+                        <div style="text-align: left; color: #ffffff;">
+                            <p style="margin-bottom: 15px;">Please enter your M-Pesa confirmation code:</p>
+                            <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 10px;">
+                                ✉️ Check your SMS for a message like:<br>
+                                <em>"Confirmed. You have sent KSh${fee}.00 to MKOPAJI..."</em>
+                            </p>
+                        </div>
+                    `,
+                    input: 'text',
+                    inputPlaceholder: 'e.g. QEJ7Y6X2M1',
+                    inputAttributes: {
+                        style: 'background: rgba(30, 41, 59, 0.8); border: 2px solid #374151; color: white; padding: 12px; border-radius: 8px;'
+                    },
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#ffffff',
+                    showCancelButton: true,
+                    confirmButtonText: 'Confirm Payment',
+                    confirmButtonColor: '#10b981',
+                    cancelButtonColor: '#6b7280',
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return 'Please enter the M-Pesa confirmation code'
+                        }
+                        if (value.length < 8) {
+                            return 'M-Pesa codes are usually 10 characters long'
+                        }
+                    }
+                });
+
+                if (mpesaCode) {
+                    // Show confirming dialog
+                    Swal.fire({
+                        title: 'Confirming Payment...',
+                        html: '<div class="payment-spinner"></div>',
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        showConfirmButton: false,
+                        allowOutsideClick: false
+                    });
+
+                    // Send confirmation to server
+                    const response = await fetch('/api/confirm-payment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            checkoutRequestID: checkoutRequestID,
+                            mpesaCode: mpesaCode
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        // Payment confirmed successfully
+                        Swal.fire({
+                            icon: 'success',
+                            title: '🎉 Payment Confirmed!',
+                            html: `
+                                <div style="text-align: center;">
+                                    <div style="width: 100px; height: 100px; margin: 0 auto 20px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: celebrateSuccess 1s ease-out;">
+                                        <i class="fas fa-check" style="font-size: 40px; color: white;"></i>
+                                    </div>
+                                    
+                                    <h3 style="color: #10b981; font-weight: 700; margin-bottom: 15px;">Loan Disbursed Successfully!</h3>
+                                    
+                                    <div style="background: rgba(16, 185, 129, 0.1); border: 2px solid #10b981; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>Transaction ID:</strong> ${mpesaCode}</p>
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>Amount Sent:</strong> KSh ${amount.toLocaleString()}</p>
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>To:</strong> ${phoneNumber}</p>
+                                        <p style="color: #ffffff; margin: 8px 0;"><strong>Repayment Due:</strong> KSh ${(amount + Math.round(amount * 0.07)).toLocaleString()}</p>
+                                    </div>
+                                    
+                                    <p style="color: #10b981; font-size: 1.1rem; font-weight: 600; margin-top: 20px;">
+                                        🚀 Funds sent to your M-Pesa account instantly!
+                                    </p>
+                                </div>
+                            `,
+                            background: 'rgba(15, 23, 42, 0.95)',
+                            color: '#ffffff',
+                            confirmButtonColor: '#f59e0b',
+                            allowOutsideClick: false
+                        });
+
+                        localStorage.removeItem('pendingTransaction');
+                    } else {
+                        throw new Error(result.message || 'Failed to confirm payment');
+                    }
+                }
+            } catch (error) {
+                console.error('Error confirming payment manually:', error);
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Confirmation Failed',
+                    text: 'Failed to confirm payment. Please try again.',
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#ffffff',
+                    confirmButtonColor: '#ef4444'
+                });
+            }
+        }
+
+        // Function to simulate successful payment for testing
+        async function simulateSuccessfulPayment(checkoutRequestID, amount, fee, phoneNumber) {
+            try {
+                // Show confirming dialog
+                Swal.fire({
+                    title: 'Simulating Payment...',
+                    html: '<div class="payment-spinner"></div>',
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                });
+
+                // Send test simulation to server
+                const response = await fetch('/api/simulate-payment-success', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        checkoutRequestID: checkoutRequestID
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Payment simulated successfully
+                    Swal.fire({
+                        icon: 'success',
+                        title: '🎉 Payment Simulation Successful!',
+                        html: `
+                            <div style="text-align: center;">
+                                <div style="width: 100px; height: 100px; margin: 0 auto 20px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: celebrateSuccess 1s ease-out;">
+                                    <i class="fas fa-check" style="font-size: 40px; color: white;"></i>
+                                </div>
+                                
+                                <h3 style="color: #10b981; font-weight: 700; margin-bottom: 15px;">Loan Disbursed Successfully!</h3>
+                                
+                                <div style="background: rgba(16, 185, 129, 0.1); border: 2px solid #10b981; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                                    <p style="color: #ffffff; margin: 8px 0;"><strong>Transaction ID:</strong> ${result.mpesaReceiptNumber} (TEST)</p>
+                                    <p style="color: #ffffff; margin: 8px 0;"><strong>Amount Sent:</strong> KSh ${amount.toLocaleString()}</p>
+                                    <p style="color: #ffffff; margin: 8px 0;"><strong>To:</strong> ${phoneNumber}</p>
+                                    <p style="color: #ffffff; margin: 8px 0;"><strong>Repayment Due:</strong> KSh ${(amount + Math.round(amount * 0.07)).toLocaleString()}</p>
+                                </div>
+                                
+                                <p style="color: #10b981; font-size: 1.1rem; font-weight: 600; margin-top: 20px;">
+                                    🚀 Funds sent to your M-Pesa account instantly! (SIMULATED)
+                                </p>
+                            </div>
+                        `,
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        color: '#ffffff',
+                        confirmButtonColor: '#f59e0b',
+                        allowOutsideClick: false
+                    });
+
+                    localStorage.removeItem('pendingTransaction');
+                } else {
+                    throw new Error(result.message || 'Failed to simulate payment');
+                }
+            } catch (error) {
+                console.error('Error simulating payment:', error);
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Simulation Failed',
+                    text: 'Failed to simulate payment. Please try again.',
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#ffffff',
+                    confirmButtonColor: '#ef4444'
+                });
+            }
+        }
+    </script>
+</body>
+</html>

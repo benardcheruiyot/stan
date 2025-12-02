@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Payment Push</title>
+</head>
+<body>
+    <h1>Test STK Push Connection</h1>
+    <button onclick="testSTK()">Test STK Push</button>
+    <div id="result"></div>
+
+    <script>
+        async function testSTK() {
+            try {
+                const response = await fetch('/api/initiate-stk-push', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        phoneNumber: '254708374149',
+                        amount: 100,
+                        accountReference: 'TEST',
+                        transactionDesc: 'Test payment',
+                        applicationData: {}
+                    })
+                });
+
+                const result = await response.json();
+                document.getElementById('result').innerHTML = `
+                    <h3>Result:</h3>
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                `;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `
+                    <h3>Error:</h3>
+                    <pre>${error.message}</pre>
+                `;
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

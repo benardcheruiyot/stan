@@ -1,0 +1,103 @@
+/* MKOPAJI - Consistent Theme Colors */
+
+:root {
+    /* Modern palette: blue, purple, glass, soft neutrals */
+    --primary-blue: #647dee;
+    --primary-purple: #7f53ac;
+    --accent-pink: #f797a7;
+    --accent-yellow: #fceabb;
+    --glass-bg: rgba(255,255,255,0.85);
+    --glass-bg-dark: rgba(100,125,222,0.12);
+    --text-main: #232946;
+    --text-muted: #6e7a8a;
+    --success-green: #10b981;
+    --error-red: #ef4444;
+    --gradient-primary: linear-gradient(135deg, #7f53ac 0%, #647dee 100%);
+    --gradient-secondary: linear-gradient(135deg, #f797a7 0%, #647dee 100%);
+    --gradient-cosmic: linear-gradient(45deg, #7f53ac, #647dee, #f797a7, #7f53ac);
+    --gradient-background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #d4fc79 100%);
+    --shadow-soft: 0 10px 40px rgba(100, 125, 222, 0.10);
+    --shadow-strong: 0 20px 60px rgba(127, 83, 172, 0.18);
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--gradient-background);
+    min-height: 100vh;
+    color: var(--text-light);
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Cosmic Background Animation */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(217, 119, 6, 0.05) 0%, transparent 50%);
+    animation: cosmicRotation 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes cosmicRotation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Common Button Styles */
+.btn-mkopaji-primary {
+    background: var(--gradient-gold);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: var(--shadow-gold);
+}
+
+.btn-mkopaji-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-strong);
+    color: white;
+}
+
+/* Common Card Styles */
+.card-mkopaji {
+    background: var(--glass-bg);
+    border-radius: 20px;
+    border: 3px solid transparent;
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-mkopaji:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-gold);
+}
+
+/* Text Utilities */
+.text-gold { color: var(--primary-gold); }
+.text-accent-gold { color: var(--accent-gold); }
+.text-success { color: var(--success-green); }
+.text-error { color: var(--error-red); }
+
+/* Background Utilities */
+.bg-glass { background: var(--glass-bg); }
+.bg-glass-dark { background: var(--glass-bg-dark); }
+.bg-gradient-primary { background: var(--gradient-primary); }
+.bg-gradient-secondary { background: var(--gradient-secondary); }

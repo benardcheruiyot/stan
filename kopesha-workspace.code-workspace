@@ -1,0 +1,133 @@
+{
+    "folders": [
+        {
+            "name": "Kopesha Loan App",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "files.associations": {
+            "*.html": "html",
+            "*.js": "javascript",
+            "*.json": "json"
+        },
+        "emmet.includeLanguages": {
+            "javascript": "javascriptreact"
+        },
+        "javascript.suggest.autoImports": true,
+        "html.format.indentInnerHtml": true,
+        "css.validate": true,
+        "html.validate.scripts": true,
+        "html.validate.styles": true
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-vscode.vscode-node-debug2",
+            "dbaeumer.vscode-eslint",
+            "esbenp.prettier-vscode",
+            "ms-vscode.js-debug",
+            "bradlc.vscode-tailwindcss",
+            "formulahendry.auto-rename-tag",
+            "christian-kohler.path-intellisense",
+            "ms-vscode.vscode-json"
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Launch Kopesha Server",
+                "type": "node",
+                "request": "launch",
+                "program": "${workspaceFolder}/backend/server.js",
+                "console": "integratedTerminal",
+                "env": {
+                    "NODE_ENV": "development"
+                },
+                "restart": true,
+                "runtimeExecutable": "node",
+                "skipFiles": [
+                    "<node_internals>/**"
+                ]
+            },
+            {
+                "name": "Debug M-Pesa Service",
+                "type": "node",
+                "request": "launch",
+                "program": "${workspaceFolder}/backend/mpesa-service.js",
+                "console": "integratedTerminal",
+                "env": {
+                    "NODE_ENV": "development"
+                }
+            }
+        ]
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Start Development Server",
+                "type": "npm",
+                "script": "dev",
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                },
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Start Production Server",
+                "type": "npm",
+                "script": "start",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared"
+                }
+            },
+            {
+                "label": "Install Dependencies",
+                "type": "npm",
+                "script": "install",
+                "group": "build"
+            },
+            {
+                "label": "Run Setup Wizard",
+                "type": "shell",
+                "command": "node",
+                "args": ["setup.js"],
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": true,
+                    "panel": "shared"
+                }
+            },
+            {
+                "label": "Lint Code",
+                "type": "npm",
+                "script": "lint",
+                "group": "test"
+            },
+            {
+                "label": "Format Code",
+                "type": "npm",
+                "script": "format",
+                "group": "test"
+            }
+        ]
+    }
+}

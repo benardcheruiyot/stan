@@ -1,0 +1,52 @@
+Subject: Request for Daraja API Production Credentials - Till Number 5892851 (Suan Enterprises)
+
+Dear Safaricom Business Team,
+
+I hope this email finds you well.
+
+I am writing to request production credentials for Daraja API integration for my business Till Number 5892851, registered under the name "Suan Enterprises."
+
+**Business Details:**
+- Business Name: Suan Enterprises
+- Till Number: 5892851
+- Purpose: Loan application platform with M-Pesa STK Push integration
+
+**Request:**
+I need the following production credentials for Till Number 5892851:
+1. Production Consumer Key
+2. Production Consumer Secret  
+3. Production Passkey for STK Push
+4. Confirmation that the business name "Suan Enterprises" is correctly registered
+
+**Technical Requirements:**
+- I am developing a loan application platform
+- Need STK Push functionality for processing loan fees
+- Currently using sandbox environment for testing
+- Ready to deploy to production with proper credentials
+
+**Current Setup:**
+- Platform is fully developed and tested
+- All technical integration is complete
+- Only waiting for production credentials to go live
+
+Could you please provide the production API credentials for Till Number 5892851? I would also appreciate confirmation that when customers receive M-Pesa STK Push notifications, they will see "Suan Enterprises" as the business name.
+
+If you need any additional documentation or information about my business or technical setup, please let me know.
+
+Thank you for your time and assistance. I look forward to your prompt response.
+
+Best regards,
+
+[Your Name]
+[Your Position]
+Suan Enterprises
+Till Number: 5892851
+[Your Phone Number]
+[Your Email Address]
+
+---
+
+**Attachments (if needed):**
+- Business registration documents
+- Till Number registration confirmation
+- Technical documentation of the platform

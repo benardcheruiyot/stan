@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#fbbf24"/>
+    </linearGradient>
+    <filter id="s" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <rect width="256" height="256" rx="40" fill="#0f172a" />
+
+  <!-- Stylized M -->
+  <g transform="translate(32,32)" filter="url(#s)">
+    <path d="M12 180 L44 44 L88 180 L124 44 L156 180" fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Small badge accent -->
+  <circle cx="200" cy="56" r="18" fill="#f59e0b" opacity="0.95"/>
+</svg>

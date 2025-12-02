@@ -1,0 +1,60 @@
+{
+  "name": "modern-finance-app",
+  "version": "1.0.0",
+  "description": "Modern finance application platform.",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-deps": "npm install",
+    "setup": "npm install && echo \"Setup complete! Configure M-Pesa credentials in config/mpesa-config.js\"",
+    "setup-production": "node setup-production.js",
+    "prod": "NODE_ENV=production node backend/server.js",
+    "validate-prod": "node validate-production.js",
+    "deploy": "bash deploy-production.sh",
+    "pm2-start": "pm2 start ecosystem.config.js --env production",
+    "pm2-stop": "pm2 stop mkopaji-production",
+    "pm2-restart": "pm2 restart mkopaji-production",
+    "pm2-logs": "pm2 logs mkopaji-production",
+    "pm2-status": "pm2 status",
+    "health-check": "curl -f http://localhost:3000/api/health",
+    "lint": "eslint backend/ --ext .js",
+    "format": "prettier --write backend/ config/"
+  },
+  "keywords": [
+    "loan",
+    "mpesa",
+    "fintech",
+    "stk-push",
+    "kenya",
+    "mobile-money",
+    "instant-loans",
+    "credit"
+  ],
+  "author": "App Development Team",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.52.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/kopesha-loan-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/kopesha-loan-app/issues"
+  },
+  "homepage": "https://github.com/your-username/kopesha-loan-app#readme"
+}

@@ -1,0 +1,38 @@
+name: Run WWW/TLS Fix on EC2
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  run-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy fix script to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          source: "tools/fix_mkopaji_www_tls_noninteractive.sh"
+          target: "/tmp/fix_mkopaji_www_tls_noninteractive.sh"
+
+      - name: Set execute and run script via SSH
+        uses: appleboy/ssh-action@v1.2.1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            sudo mv /tmp/fix_mkopaji_www_tls_noninteractive.sh /usr/local/bin/fix_mkopaji_www_tls_noninteractive.sh
+            sudo chmod +x /usr/local/bin/fix_mkopaji_www_tls_noninteractive.sh
+            sudo /usr/local/bin/fix_mkopaji_www_tls_noninteractive.sh
+
+      - name: Fetch verification from public site
+        run: |
+          echo "Fetching https://mkopaji.com/ to confirm headers"
+          curl -I https://mkopaji.com/ || true
+
+# IMPORTANT: Add repository secrets: EC2_HOST, EC2_USERNAME, EC2_SSH_PRIVATE_KEY (private key contents)

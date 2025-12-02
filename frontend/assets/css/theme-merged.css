@@ -1,0 +1,54 @@
+/* Consolidated theme and canonical overrides migrated from dev-only overrides */
+/* Modernized theme: glassmorphism, blue/purple gradients, soft neutrals */
+:root {
+  --gradient-background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #d4fc79 100%);
+  --cta-gradient-start: #7f53ac;
+  --cta-gradient-end: #647dee;
+  --primary-blue: #647dee;
+  --primary-purple: #7f53ac;
+  --accent-pink: #f797a7;
+  --accent-yellow: #fceabb;
+  --glass-bg: rgba(255,255,255,0.85);
+  --glass-bg-dark: rgba(100,125,222,0.12);
+  --text-main: #232946;
+  --text-muted: #6e7a8a;
+  --success-green: #10b981;
+  --error-red: #ef4444;
+}
+
+/* Hide legacy inline check glyphs; markup now contains empty span.check-icon for accessibility */
+.check-icon { display: none; }
+
+/* Definitive check square + white tick for list items (canonical, no !important)
+   Uses CSS variables so color theme is easy to change. */
+.check-list li { position: relative; padding-left: 2.6rem; }
+.check-list li::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  /* checklist squares use the green theme */
+  background: linear-gradient(180deg, var(--green-1, #10b981), var(--green-2, #059669));
+  border-radius: 4px;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+}
+.check-list li::after {
+  content: '\2713';
+  position: absolute;
+  left: 3px;
+  top: -0.05rem;
+  color: #fff;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 800;
+}
+
+/* CTA styling uses CTA gradient variables; change variables to switch to green theme if desired */
+.btn-apply, .feature-apply, .cta-pill, .cta-circle {
+  background: linear-gradient(135deg, var(--cta-gradient-start), var(--cta-gradient-end));
+  color: #fff;
+  box-shadow: 0 18px 50px rgba(6,95,70,0.12);
+}
+.btn-apply:hover, .feature-apply:hover, .cta-pill:hover { transform: translateY(-2px); }

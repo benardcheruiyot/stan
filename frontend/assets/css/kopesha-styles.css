@@ -1,0 +1,64 @@
+
+:root {
+  --bg: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  --card-bg: rgba(255,255,255,0.85);
+  --purple-1: #7f53ac;
+  --purple-2: #647dee;
+  --text: #232946;
+  --muted: #6e7a8a;
+  --glass-blur: blur(12px);
+}
+
+html,body{height:100%;margin:0}
+body {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text);
+}
+
+/* Center wrapper */
+.page-wrap{height:100vh;display:flex;align-items:center;justify-content:center}
+
+/* Single centered card (match screenshot) */
+.hero-card {
+  background: var(--card-bg);
+  width: 420px;
+  max-width: 92%;
+  padding: 36px 36px 28px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(100, 125, 222, 0.10);
+  text-align: center;
+  backdrop-filter: var(--glass-blur);
+  border: 1.5px solid #e0e7ef;
+}
+.hero-title{font-size:36px;font-weight:800;margin:0 0 12px}
+.hero-sub{margin:0 0 22px;color:var(--muted);font-size:1rem}
+
+.hero-body{display:grid;grid-template-columns:44px 1fr;gap:8px 22px;align-items:start;justify-items:start;margin-top:6px}
+.checks-icons{display:flex;flex-direction:column;gap:18px;padding-top:6px}
+.check-icon{display:inline-flex;width:28px;height:28px;background:linear-gradient(180deg,var(--purple-1),var(--purple-2));color:#fff;align-items:center;justify-content:center;border-radius:6px;font-weight:800;transform:translateY(1px)}
+.check-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.check-list li{font-weight:600;color:var(--text);font-size:1rem}
+
+.hero-footer{margin-top:22px}
+.cta-pill {
+  display: block;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--purple-1), var(--purple-2));
+  color: #fff;
+  padding: 16px 28px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  box-shadow: 0 10px 40px rgba(100, 125, 222, 0.10);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.cta-pill:hover, .cta-pill:focus {
+  background: linear-gradient(135deg, var(--purple-2), var(--purple-1));
+  box-shadow: 0 20px 60px rgba(127, 83, 172, 0.18);
+  transform: translateY(-2px) scale(1.03);
+}
+
+@media (max-width:420px){.hero-card{padding:22px}.hero-title{font-size:28px}.hero-body{grid-template-columns:36px 1fr;gap:8px 12px}.cta-pill{padding:12px 20px}}

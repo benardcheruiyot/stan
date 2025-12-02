@@ -1,0 +1,2630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Online - Modern Finance App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --primary-gold: #f59e0b;
+            --secondary-gold: #d97706;
+            --accent-gold: #fbbf24;
+            --light-gold: #fef3c7;
+            --dark-gold: #92400e;
+            --gradient-primary: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-secondary: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            --gradient-cosmic: linear-gradient(45deg, #f59e0b, #d97706, #fbbf24, #f59e0b);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Glass morphism container */
+        .glass-container {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(40px);
+            border-radius: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(245, 158, 11, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-status {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .user-status .text-success {
+            color: #10b981 !important;
+        }
+
+        .user-status .text-warning {
+            color: #f59e0b !important;
+        }
+
+        .back-btn {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-gold);
+            transform: translateX(-5px);
+        }
+
+        /* Main title */
+        .page-title {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .page-title h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-cosmic);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: epicGlow 3s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes epicGlow {
+            0%, 100% { 
+                background-position: 0% 50%; 
+                filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.4));
+            }
+            50% { 
+                background-position: 100% 50%; 
+                filter: drop-shadow(0 0 40px rgba(251, 191, 36, 0.6));
+            }
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(245, 158, 11, 0.8);
+            margin-bottom: 0;
+        }
+
+        /* Loan cards grid */
+        .loan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .loan-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(245, 158, 11, 0.15);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .loan-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .loan-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(245, 158, 11, 0.4);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(245, 158, 11, 0.2),
+                inset 0 1px 0 rgba(245, 158, 11, 0.1);
+        }
+
+        .loan-card.selected {
+            border-color: var(--primary-gold);
+            background: rgba(245, 158, 11, 0.1);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .loan-card.selected::before {
+            transform: scaleX(1);
+        }
+
+        .loan-amount {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .loan-period {
+            color: rgba(245, 158, 11, 0.8);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .loan-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .loan-features li {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .loan-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .processing-fee {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .processing-fee-label {
+            font-size: 0.9rem;
+            color: rgba(245, 158, 11, 0.8);
+            margin-bottom: 0.3rem;
+        }
+
+        .processing-fee-amount {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .repayment-info {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .repayment-label {
+            font-size: 0.9rem;
+            color: rgba(239, 68, 68, 0.8);
+            margin-bottom: 0.3rem;
+        }
+
+        .repayment-total {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ef4444;
+        }
+
+        .apply-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .apply-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .apply-btn:hover::before {
+            left: 100%;
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Form modal styles */
+        .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 20px;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .modal-title {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            color: white;
+            padding: 12px 16px;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 0.2rem rgba(245, 158, 11, 0.25);
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-select {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(245, 158, 11, 0.3) !important;
+            border-radius: 8px !important;
+            color: white !important;
+            padding: 12px 16px !important;
+        }
+
+        .form-select:focus {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border-color: var(--primary-gold) !important;
+            box-shadow: 0 0 0 0.2rem rgba(245, 158, 11, 0.25) !important;
+            color: white !important;
+        }
+
+        .form-select option {
+            background: #1e293b !important;
+            color: white !important;
+        }
+
+        .form-label {
+            color: rgba(245, 158, 11, 0.9);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Beautiful Congratulations Banner */
+        .congratulations-banner {
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.15) 0%, 
+                rgba(245, 158, 11, 0.15) 50%, 
+                rgba(236, 72, 153, 0.15) 100%);
+            backdrop-filter: blur(30px);
+            border-radius: 24px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .congratulations-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.3) 0%, 
+                rgba(245, 158, 11, 0.3) 50%, 
+                rgba(236, 72, 153, 0.3) 100%);
+            border-radius: 24px;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: xor;
+            -webkit-mask-composite: xor;
+            padding: 2px;
+        }
+
+        .congratulations-content {
+            position: relative;
+            z-index: 2;
+            padding: 3rem 2.5rem;
+            text-align: center;
+        }
+
+        .congratulations-icon {
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .icon-wrapper {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #f59e0b, #ec4899);
+            padding: 1.5rem;
+            border-radius: 50%;
+            box-shadow: 
+                0 15px 35px rgba(245, 158, 11, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+
+        .icon-wrapper i {
+            font-size: 3rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 15px 35px rgba(245, 158, 11, 0.4); }
+            50% { transform: scale(1.1); box-shadow: 0 20px 50px rgba(245, 158, 11, 0.6); }
+        }
+
+        .sparkle {
+            position: absolute;
+            font-size: 1.2rem;
+            animation: sparkleFloat 4s ease-in-out infinite;
+        }
+
+        .sparkle-1 { top: -10px; right: -10px; animation-delay: 0s; }
+        .sparkle-2 { bottom: -10px; left: -10px; animation-delay: 1.5s; }
+        .sparkle-3 { top: 50%; right: -20px; animation-delay: 3s; }
+
+        @keyframes sparkleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            25% { transform: translateY(-10px) rotate(90deg); opacity: 1; }
+            50% { transform: translateY(-5px) rotate(180deg); opacity: 0.8; }
+            75% { transform: translateY(-15px) rotate(270deg); opacity: 1; }
+        }
+
+        .congratulations-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #10b981, #f59e0b, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .congratulations-message {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .highlight-text {
+            background: linear-gradient(135deg, #10b981, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .premium-text {
+            color: #f59e0b;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+        }
+
+        .verification-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-item:hover {
+            transform: translateY(-3px);
+            background: rgba(245, 158, 11, 0.2);
+            box-shadow: 0 12px 35px rgba(245, 158, 11, 0.2);
+        }
+
+        .badge-item i {
+            font-size: 1.1rem;
+            color: #10b981;
+        }
+
+        .badge-item span {
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .celebration-effects {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            border-radius: 24px;
+        }
+
+        .glow-effect {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, 
+                rgba(245, 158, 11, 0.1) 0%, 
+                transparent 70%);
+            animation: rotateGlow 10s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* New Hero Status Banner */
+        .hero-status-banner {
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.2) 0%, 
+                rgba(245, 158, 11, 0.2) 100%);
+            backdrop-filter: blur(40px);
+            border-radius: 20px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .status-content {
+            padding: 3rem 2.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .status-icon .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        .status-icon i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            border: 3px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        .status-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #10b981, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .status-message {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .trust-indicators {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .trust-item i {
+            color: #10b981;
+            font-size: 1.1rem;
+        }
+
+        .urgency-timer {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            padding: 1.5rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .timer-icon {
+            font-size: 2rem;
+        }
+
+        .timer-text strong {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .timer-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        #countdown {
+            color: #fbbf24;
+            font-weight: bold;
+        }
+
+        /* Selection Header */
+        .selection-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .selection-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .selection-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .approved-text {
+            background: linear-gradient(135deg, #10b981, #059669);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        /* Live Notification Popup */
+        .live-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.3);
+            z-index: 9999;
+            transform: translateX(400px);
+            transition: all 0.5s ease;
+            max-width: 350px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .live-notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notification-icon i {
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .notification-text {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: white;
+        }
+
+        .notification-message {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.3;
+        }
+
+        .notification-amount {
+            color: #fbbf24;
+            font-weight: 800;
+        }
+
+        .notification-phone {
+            color: rgba(255, 255, 255, 0.8);
+            font-family: monospace;
+        }
+
+        /* Section Header Styling */
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .loan-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .loan-amount {
+                font-size: 1.8rem;
+            }
+
+            /* Hero Status Banner Mobile */
+            .status-content {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem 1.5rem 1.5rem;
+                gap: 1.5rem;
+            }
+
+            .status-title {
+                font-size: 2rem;
+            }
+
+            .status-message {
+                font-size: 1rem;
+            }
+
+            .trust-indicators {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .urgency-timer {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .selection-title {
+                font-size: 1.8rem;
+            }
+
+            .congratulations-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .congratulations-title {
+                font-size: 1.8rem;
+            }
+
+            .congratulations-message {
+                font-size: 1rem;
+            }
+
+            .verification-badges {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .badge-item {
+                min-width: 200px;
+                justify-content: center;
+            }
+
+            .icon-wrapper {
+                padding: 1.2rem;
+            }
+
+            .icon-wrapper i {
+                font-size: 2.5rem;
+            }
+
+            /* Live Notification Mobile */
+            .live-notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+                padding: 0.8rem 1rem;
+            }
+
+            .notification-content {
+                gap: 0.8rem;
+            }
+
+            .notification-icon {
+                width: 35px;
+                height: 35px;
+            }
+
+            .notification-icon i {
+                font-size: 1rem;
+            }
+
+            .notification-title {
+                font-size: 0.8rem;
+            }
+
+            .notification-message {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Beautiful Loan Confirmation Popup Styles */
+        .beautiful-loan-popup {
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.95) 0%, 
+                rgba(30, 41, 59, 0.95) 50%, 
+                rgba(15, 23, 42, 0.95) 100%) !important;
+            backdrop-filter: blur(40px) !important;
+            border-radius: 24px !important;
+            border: 2px solid rgba(245, 158, 11, 0.3) !important;
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+        }
+
+        .loan-confirmation-popup {
+            padding: 2.5rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .confirmation-icon {
+            position: relative;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .icon-circle {
+            background: linear-gradient(135deg, #f59e0b, #d97706, #f59e0b);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 
+                0 15px 40px rgba(245, 158, 11, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: iconPulseConfirm 3s ease-in-out infinite;
+        }
+
+        .icon-circle i {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes iconPulseConfirm {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .icon-sparkles {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+            pointer-events: none;
+        }
+
+        .icon-sparkles .sparkle {
+            position: absolute;
+            font-size: 1.2rem;
+            animation: floatSparkle 4s ease-in-out infinite;
+        }
+
+        .icon-sparkles .sparkle:nth-child(1) {
+            top: 10px;
+            left: 10px;
+            animation-delay: 0s;
+        }
+
+        .icon-sparkles .sparkle:nth-child(2) {
+            top: 40px;
+            right: 5px;
+            animation-delay: 1.5s;
+        }
+
+        .icon-sparkles .sparkle:nth-child(3) {
+            bottom: 15px;
+            left: 15px;
+            animation-delay: 3s;
+        }
+
+        @keyframes floatSparkle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-15px) rotate(180deg); opacity: 1; }
+        }
+
+        .confirmation-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .confirmation-message {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .amount-highlight {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        .fee-highlight {
+            color: #f59e0b;
+            font-weight: 700;
+        }
+
+        .loan-details-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .details-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .details-grid {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .highlight-row {
+            background: rgba(245, 158, 11, 0.1);
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            margin-top: 0.5rem;
+        }
+
+        .detail-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: white;
+            font-weight: 600;
+        }
+
+        .fee-amount {
+            color: #f59e0b !important;
+        }
+
+        .receive-amount {
+            color: #10b981 !important;
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        .repayment-row {
+            background: rgba(239, 68, 68, 0.1) !important;
+            border: 1px solid rgba(239, 68, 68, 0.3) !important;
+            border-radius: 8px !important;
+        }
+
+        .repayment-amount {
+            color: #ef4444 !important;
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        .till-info {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .till-info i {
+            color: #f59e0b;
+        }
+
+        /* Beautiful Button Styles */
+        .beautiful-confirm-btn {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            border: none !important;
+            border-radius: 12px !important;
+            padding: 0.8rem 2rem !important;
+            font-weight: 600 !important;
+            font-size: 1rem !important;
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3) !important;
+            transition: all 0.3s ease !important;
+            margin: 0 0.5rem !important;
+        }
+
+        .beautiful-confirm-btn:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4) !important;
+            background: linear-gradient(135deg, #059669, #047857) !important;
+        }
+
+        .beautiful-cancel-btn {
+            background: rgba(239, 68, 68, 0.8) !important;
+            border: 1px solid rgba(239, 68, 68, 0.5) !important;
+            border-radius: 12px !important;
+            padding: 0.8rem 2rem !important;
+            font-weight: 600 !important;
+            font-size: 1rem !important;
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2) !important;
+            transition: all 0.3s ease !important;
+            margin: 0 0.5rem !important;
+        }
+
+        .beautiful-cancel-btn:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 12px 35px rgba(239, 68, 68, 0.3) !important;
+            background: rgba(220, 38, 38, 0.9) !important;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .beautiful-loan-popup {
+                margin: 1rem !important;
+                width: calc(100% - 2rem) !important;
+            }
+
+            .loan-confirmation-popup {
+                padding: 2rem 1.5rem;
+            }
+
+            .confirmation-title {
+                font-size: 1.6rem;
+            }
+
+            .icon-circle {
+                width: 70px;
+                height: 70px;
+            }
+
+            .icon-circle i {
+                font-size: 2rem;
+            }
+
+            .beautiful-confirm-btn,
+            .beautiful-cancel-btn {
+                padding: 0.7rem 1.5rem !important;
+                font-size: 0.9rem !important;
+                margin: 0.25rem !important;
+            }
+        }
+
+        /* Confirmation Popup Styles */
+        .confirmation-popup {
+            border-radius: 20px !important;
+            border: 2px solid var(--primary-gold) !important;
+            background: rgba(15, 23, 42, 0.98) !important;
+        }
+
+        .confirmation-popup .swal2-title {
+            color: var(--primary-gold) !important;
+            font-weight: 700 !important;
+            font-size: 1.5rem !important;
+            margin-bottom: 10px !important;
+        }
+
+        .confirmation-popup .swal2-html-container {
+            font-size: 1rem !important;
+            line-height: 1.6 !important;
+            color: #ffffff !important;
+        }
+
+        .confirmation-popup .swal2-icon.swal2-question {
+            border-color: var(--primary-gold) !important;
+            color: var(--primary-gold) !important;
+        }
+
+        .confirmation-popup .swal2-icon.swal2-question::before {
+            color: var(--primary-gold) !important;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+            border: none !important;
+            border-radius: 12px !important;
+            padding: 12px 24px !important;
+            font-weight: 600 !important;
+            font-size: 16px !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3) !important;
+        }
+
+        .confirm-btn:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4) !important;
+        }
+
+        .cancel-btn {
+            background: transparent !important;
+            border: 2px solid #6b7280 !important;
+            color: #6b7280 !important;
+            border-radius: 12px !important;
+            padding: 12px 24px !important;
+            font-weight: 600 !important;
+            font-size: 16px !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .cancel-btn:hover {
+            background: #6b7280 !important;
+            color: white !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Loan confirmation highlight box */
+        .loan-details-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .loan-detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+        }
+
+        .loan-detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .loan-detail-label {
+            font-weight: 600;
+            color: var(--primary-gold);
+        }
+
+        .loan-detail-value {
+            font-weight: 700;
+            color: #111827;
+        }
+    </style>
+</head>
+<body>
+    <!-- Live Notification Popup -->
+    <div class="live-notification" id="liveNotification">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-text">
+                <div class="notification-title">Loan Approved!</div>
+                <div class="notification-message">
+                    <span class="notification-phone" id="notificationPhone">+254 7XX XXX XXX</span> received 
+                    <span class="notification-amount" id="notificationAmount">KSh 0</span> from Suan Enterprises
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="logo">FUNDFAST</div>
+                <div class="d-flex align-items-center gap-3">
+                    <div id="userStatus" class="user-status"></div>
+                    <a href="index.html" class="back-btn">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Status Banner -->
+    <div class="container mb-5">
+        <div class="hero-status-banner">
+            <div class="status-content">
+                <div class="status-icon">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="pulse-ring"></div>
+                    </div>
+                </div>
+                <div class="status-text">
+                    <h1 class="status-title">
+                        🎉 You Qualify for a Loan!
+                    </h1>
+                    <p class="status-message">
+                        Based on your <span class="highlight-text">M-Pesa transaction history</span>, 
+                        you qualify for <span class="premium-text">instant cash loans</span> up to KSh 25,000.
+                    </p>
+                    <div class="trust-indicators">
+                        <div class="trust-item">
+                            <i class="fas fa-users"></i>
+                            <span>50,000+ satisfied customers</span>
+                        </div>
+                        <div class="trust-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Money in 5 minutes</span>
+                        </div>
+                        <div class="trust-item">
+                            <i class="fas fa-shield-check"></i>
+                            <span>100% secure & licensed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="urgency-timer">
+                <div class="timer-icon">⚡</div>
+                <div class="timer-text">
+                    <strong>Fast Approval Active</strong><br>
+                    <span class="timer-subtitle">Get money in your M-Pesa within: <span id="countdown">05:00</span> minutes</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loan Selection Header -->
+    <div class="container mb-4">
+        <div class="selection-header">
+            <h2 class="selection-title">
+                💰 Choose Your Emergency Cash
+            </h2>
+            <p class="selection-subtitle">
+                All amounts are <span class="approved-text">PRE-APPROVED</span> for you. 
+                Select any amount and get money in your M-Pesa within 5 minutes.
+            </p>
+        </div>
+    </div>
+
+    <!-- Loan Options -->
+    <div class="container mb-5">
+        <div class="glass-container p-4">
+            <div class="loan-grid">
+                <!-- Loan Option 1: KSh 5,000 -->
+                <div class="loan-card" onclick="selectLoan(5000, 21, 100)">
+                    <div class="loan-amount">KSh 5,000</div>
+                    <div class="loan-period">21 Days Repayment</div>
+                    <ul class="loan-features">
+                        <li>Instant approval</li>
+                        <li>No collateral required</li>
+                        <li>Quick processing</li>
+                        <li>24/7 customer support</li>
+                    </ul>
+                    <div class="processing-fee">
+                        <div class="processing-fee-label">Processing Fee</div>
+                        <div class="processing-fee-amount">KSh 100</div>
+                    </div>
+                    <div class="repayment-info">
+                        <div class="repayment-label">Total Repayment</div>
+                        <div class="repayment-total">KSh 5,400</div>
+                    </div>
+                    <button class="apply-btn">
+                        <i class="fas fa-rocket me-2"></i>Apply Now
+                    </button>
+                </div>
+
+                <!-- Loan Option 2: KSh 10,000 -->
+                <div class="loan-card" onclick="selectLoan(10000, 30, 150)">
+                    <div class="loan-amount">KSh 10,000</div>
+                    <div class="loan-period">30 Days Repayment</div>
+                    <ul class="loan-features">
+                        <li>Popular choice</li>
+                        <li>Flexible repayment</li>
+                        <li>Premium support</li>
+                        <li>Credit building</li>
+                    </ul>
+                    <div class="processing-fee">
+                        <div class="processing-fee-label">Processing Fee</div>
+                        <div class="processing-fee-amount">KSh 150</div>
+                    </div>
+                    <div class="repayment-info">
+                        <div class="repayment-label">Total Repayment</div>
+                        <div class="repayment-total">KSh 10,800</div>
+                    </div>
+                    <button class="apply-btn">
+                        <i class="fas fa-rocket me-2"></i>Apply Now
+                    </button>
+                </div>
+
+                <!-- Loan Option 3: KSh 15,000 -->
+                <div class="loan-card" onclick="selectLoan(15000, 45, 200)">
+                    <div class="loan-amount">KSh 15,000</div>
+                    <div class="loan-period">45 Days Repayment</div>
+                    <ul class="loan-features">
+                        <li>Balanced option</li>
+                        <li>Extended repayment</li>
+                        <li>Priority processing</li>
+                        <li>Dedicated support</li>
+                    </ul>
+                    <div class="processing-fee">
+                        <div class="processing-fee-label">Processing Fee</div>
+                        <div class="processing-fee-amount">KSh 200</div>
+                    </div>
+                    <div class="repayment-info">
+                        <div class="repayment-label">Total Repayment</div>
+                        <div class="repayment-total">KSh 16,200</div>
+                    </div>
+                    <button class="apply-btn">
+                        <i class="fas fa-rocket me-2"></i>Apply Now
+                    </button>
+                </div>
+
+                <!-- Loan Option 4: KSh 20,000 -->
+                <div class="loan-card" onclick="selectLoan(20000, 60, 250)">
+                    <div class="loan-amount">KSh 20,000</div>
+                    <div class="loan-period">60 Days Repayment</div>
+                    <ul class="loan-features">
+                        <li>Business friendly</li>
+                        <li>Extended timeline</li>
+                        <li>VIP treatment</li>
+                        <li>Special rates</li>
+                    </ul>
+                    <div class="processing-fee">
+                        <div class="processing-fee-label">Processing Fee</div>
+                        <div class="processing-fee-amount">KSh 250</div>
+                    </div>
+                    <div class="repayment-info">
+                        <div class="repayment-label">Total Repayment</div>
+                        <div class="repayment-total">KSh 21,600</div>
+                    </div>
+                    <button class="apply-btn">
+                        <i class="fas fa-rocket me-2"></i>Apply Now
+                    </button>
+                </div>
+
+                <!-- Loan Option 5: KSh 25,000 -->
+                <div class="loan-card" onclick="selectLoan(25000, 90, 300)">
+                    <div class="loan-amount">KSh 25,000</div>
+                    <div class="loan-period">90 Days Repayment</div>
+                    <ul class="loan-features">
+                        <li>Maximum amount</li>
+                        <li>Business expansion</li>
+                        <li>Elite support</li>
+                        <li>Best rates</li>
+                    </ul>
+                    <div class="processing-fee">
+                        <div class="processing-fee-label">Processing Fee</div>
+                        <div class="processing-fee-amount">KSh 300</div>
+                    </div>
+                    <div class="repayment-info">
+                        <div class="repayment-label">Total Repayment</div>
+                        <div class="repayment-total">KSh 27,000</div>
+                    </div>
+                    <button class="apply-btn">
+                        <i class="fas fa-rocket me-2"></i>Apply Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Modal -->
+    <div class="modal fade" id="applicationModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Complete Your Application</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loanApplicationForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="phoneNumber" placeholder="254XXXXXXXXX" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">ID Number *</label>
+                                <input type="text" class="form-control" id="idNumber" required maxlength="8" pattern="[0-9]{1,8}" placeholder="8-digit ID number" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Monthly Income *</label>
+                                <input type="number" class="form-control" id="monthlyIncome" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Employment Status *</label>
+                                <select class="form-select" id="employment" required style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; color: white; padding: 12px 16px;">
+                                    <option value="" style="background: #1e293b; color: white;">Select...</option>
+                                    <option value="employed" style="background: #1e293b; color: white;">Employed</option>
+                                    <option value="self-employed" style="background: #1e293b; color: white;">Self Employed</option>
+                                    <option value="business" style="background: #1e293b; color: white;">Business Owner</option>
+                                    <option value="other" style="background: #1e293b; color: white;">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Purpose of Loan</label>
+                            <select class="form-select" id="loanPurpose" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; color: white; padding: 12px 16px;">
+                                <option value="" style="background: #1e293b; color: white;">Select purpose...</option>
+                                <option value="business" style="background: #1e293b; color: white;">Business Expansion</option>
+                                <option value="emergency" style="background: #1e293b; color: white;">Emergency</option>
+                                <option value="education" style="background: #1e293b; color: white;">Education</option>
+                                <option value="medical" style="background: #1e293b; color: white;">Medical</option>
+                                <option value="personal" style="background: #1e293b; color: white;">Personal Use</option>
+                                <option value="other" style="background: #1e293b; color: white;">Other</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Loan Summary -->
+                        <div class="alert alert-info" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: var(--accent-gold);">
+                            <h6><i class="fas fa-info-circle me-2"></i>Loan Summary</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <strong>Amount:</strong> <span id="summaryAmount">-</span><br>
+                                    <strong>Period:</strong> <span id="summaryPeriod">-</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <strong>Processing Fee:</strong> <span id="summaryFee">-</span><br>
+                                    <strong>You'll Receive:</strong> <span id="summaryReceive">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms" style="color: rgba(255, 255, 255, 0.8);">
+                                I agree to the <a href="#" style="color: var(--accent-gold);">Terms and Conditions</a> and <a href="#" style="color: var(--accent-gold);">Privacy Policy</a>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitApplication()">
+                        <span id="submitText">Submit Application</span>
+                        <span id="submitLoading" class="loading d-none"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let selectedLoanData = {};
+
+        function selectLoan(amount, period, fee) {
+            // Remove previous selection
+            document.querySelectorAll('.loan-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked card
+            event.currentTarget.classList.add('selected');
+            
+            // Store loan data
+            selectedLoanData = {
+                amount: amount,
+                period: period,
+                fee: fee,
+                receive: amount
+            };
+
+            // Check if user is already registered
+            const userData = sessionStorage.getItem('userData') || localStorage.getItem('userData');
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn') || localStorage.getItem('isLoggedIn');
+            
+            console.log('🔍 Checking user registration status:', {
+                hasUserData: !!userData,
+                isLoggedIn: isLoggedIn,
+                userDataPreview: userData ? JSON.parse(userData).phoneNumber || JSON.parse(userData).fullName : 'No data',
+                sessionStorage: !!sessionStorage.getItem('userData'),
+                localStorage: !!localStorage.getItem('userData')
+            });
+
+            // Show current storage contents for debugging
+            console.log('📦 Storage Contents:', {
+                session_userData: sessionStorage.getItem('userData'),
+                session_isLoggedIn: sessionStorage.getItem('isLoggedIn'),
+                local_userData: localStorage.getItem('userData'),
+                local_isLoggedIn: localStorage.getItem('isLoggedIn')
+            });
+            
+            if (userData && isLoggedIn === 'true') {
+                // User is registered, show confirmation popup before processing
+                console.log('✅ User is registered, showing confirmation popup');
+                showLoanConfirmation(amount, period, fee);
+            } else {
+                // User not registered, show quick registration form instead of redirect
+                console.log('❌ User not registered, showing quick form');
+                showQuickRegistrationForm(amount, period, fee);
+            }
+        }
+
+        function showQuickRegistrationForm(amount, period, fee) {
+            Swal.fire({
+                title: 'Quick Registration',
+                html: `
+                    <div style="text-align: left;">
+                        <p style="text-align: center; margin-bottom: 12px;">Complete your registration to get your loan of <strong>KSh ${amount.toLocaleString()}</strong></p>
+                        <div style="text-align: center; margin-bottom: 12px;">
+                            <button type="button" id="alreadyRegisteredBtn" style="background: #10b981; color: white; border: none; padding: 8px 12px; border-radius: 5px; font-size: 13px;">
+                                I'm Already Registered - Skip This
+                            </button>
+                        </div>
+
+                        <div style="margin-bottom: 10px;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600;">Full Name</label>
+                            <input type="text" id="quickFullName" class="swal2-input" style="margin: 0; width: 100%;" placeholder="Enter your full name">
+                            <div id="errFullName" style="color:#ffb4a2; font-size:0.85rem; display:none; margin-top:6px;">Please enter your full name</div>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600;">Phone Number</label>
+                            <input type="tel" id="quickPhoneNumber" class="swal2-input" style="margin: 0; width: 100%;" placeholder="254712345678 or 0712345678">
+                            <div id="errPhone" style="color:#ffb4a2; font-size:0.85rem; display:none; margin-top:6px;">Enter a valid Kenyan phone (254712345678)</div>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600;">ID Number</label>
+                            <input type="text" id="quickIdNumber" class="swal2-input" style="margin: 0; width: 100%;" placeholder="Enter your ID number">
+                            <div id="errId" style="color:#ffb4a2; font-size:0.85rem; display:none; margin-top:6px;">Enter a valid numeric ID (1-8 digits)</div>
+                        </div>
+                        <div style="margin-bottom: 6px;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600;">Email (Optional)</label>
+                            <input type="email" id="quickEmail" class="swal2-input" style="margin: 0; width: 100%;" placeholder="your.email@example.com">
+                            <div id="errEmail" style="color:#ffb4a2; font-size:0.85rem; display:none; margin-top:6px;">Enter a valid email address</div>
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Register & Continue',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#f59e0b',
+                background: 'rgba(15, 23, 42, 0.95)',
+                color: '#fff',
+                width: '520px',
+                didOpen: () => {
+                    const alreadyBtn = document.getElementById('alreadyRegisteredBtn');
+                    const fullName = document.getElementById('quickFullName');
+                    const phone = document.getElementById('quickPhoneNumber');
+                    const idNum = document.getElementById('quickIdNumber');
+                    const email = document.getElementById('quickEmail');
+
+                    function validateFullName() {
+                        const ok = (fullName.value || '').trim().length > 1;
+                        document.getElementById('errFullName').style.display = ok ? 'none' : 'block';
+                        fullName.style.borderColor = ok ? '' : '#ef4444';
+                        return ok;
+                    }
+
+                    function validatePhone() {
+                        const v = (phone.value || '').replace(/\s|\+|-/g, '');
+                        const ok = /^254[0-9]{9}$/.test(v) || /^07[0-9]{8}$/.test(v) || /^[0-9]{9}$/.test(v);
+                        document.getElementById('errPhone').style.display = ok ? 'none' : 'block';
+                        phone.style.borderColor = ok ? '' : '#ef4444';
+                        return ok;
+                    }
+
+                    function validateId() {
+                        const ok = /^[0-9]{1,8}$/.test((idNum.value||'').trim());
+                        document.getElementById('errId').style.display = ok ? 'none' : 'block';
+                        idNum.style.borderColor = ok ? '' : '#ef4444';
+                        return ok;
+                    }
+
+                    function validateEmail() {
+                        if (!email.value) { document.getElementById('errEmail').style.display = 'none'; email.style.borderColor = ''; return true; }
+                        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
+                        document.getElementById('errEmail').style.display = ok ? 'none' : 'block';
+                        email.style.borderColor = ok ? '' : '#ef4444';
+                        return ok;
+                    }
+
+                    fullName.addEventListener('input', validateFullName);
+                    phone.addEventListener('input', validatePhone);
+                    idNum.addEventListener('input', validateId);
+                    email.addEventListener('input', validateEmail);
+
+                    alreadyBtn.addEventListener('click', function() {
+                        Swal.close();
+                        const dummyUserData = {
+                            fullName: "Registered User",
+                            phoneNumber: "254700000000",
+                            idNumber: "12345678",
+                            email: "user@example.com"
+                        };
+                        sessionStorage.setItem('userData', JSON.stringify(dummyUserData));
+                        sessionStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('userData', JSON.stringify(dummyUserData));
+                        localStorage.setItem('isLoggedIn', 'true');
+                        showLoanConfirmation(amount, period, fee);
+                    });
+                },
+                preConfirm: () => {
+                    const fullName = document.getElementById('quickFullName').value.trim();
+                    const phoneVal = document.getElementById('quickPhoneNumber').value.trim();
+                    const idVal = document.getElementById('quickIdNumber').value.trim();
+                    const emailVal = document.getElementById('quickEmail').value.trim();
+
+                    const errors = [];
+                    if (!fullName) errors.push('Full name is required');
+                    const phoneClean = phoneVal.replace(/\s|\+|-/g, '');
+                    if (!(/^254[0-9]{9}$/.test(phoneClean) || /^07[0-9]{8}$/.test(phoneClean) || /^[0-9]{9}$/.test(phoneClean))) {
+                        errors.push('Phone number must be a valid Kenyan number (e.g., 254712345678)');
+                    }
+                    if (!/^[0-9]{1,8}$/.test(idVal)) errors.push('ID number must be numeric (1-8 digits)');
+                    if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) errors.push('Email address is invalid');
+
+                    if (errors.length) {
+                        Swal.showValidationMessage(errors.join('\n'));
+                        return false;
+                    }
+
+                    // Normalize phone to 254... format for storage
+                    let normalizedPhone = phoneClean;
+                    if (/^07[0-9]{8}$/.test(phoneClean)) normalizedPhone = '254' + phoneClean.substring(1);
+                    if (/^[0-9]{9}$/.test(phoneClean) && phoneClean.startsWith('7')) normalizedPhone = '254' + phoneClean;
+
+                    return { fullName, phoneNumber: normalizedPhone, idNumber: idVal, email: emailVal };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const userData = result.value;
+                    sessionStorage.setItem('userData', JSON.stringify(userData));
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    localStorage.setItem('isLoggedIn', 'true');
+                    showLoanConfirmation(amount, period, fee);
+                }
+            });
+        }
+
+        function showLoanConfirmation(amount, period, fee) {
+            Swal.fire({
+                icon: 'question',
+                title: 'Confirm Loan Application',
+                iconColor: '#f59e0b',
+                html: `
+                    <div style="text-align: left; padding: 20px;">
+                        <p style="margin-bottom: 20px; font-size: 16px; color: #ffffff; font-weight: 500;">
+                            You are about to apply for:
+                        </p>
+                        
+                        <div style="background: rgba(245, 158, 11, 0.15); border: 2px solid #f59e0b; padding: 20px; margin: 15px 0; border-radius: 12px;">
+                            <div style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: #fbbf24; font-weight: 600; font-size: 15px;">💰 Loan Amount:</span> 
+                                <span style="font-weight: 700; color: #ffffff; font-size: 16px;">KSh ${amount.toLocaleString()}</span>
+                            </div>
+                            <div style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: #fbbf24; font-weight: 600; font-size: 15px;">⏱️ Repayment Period:</span> 
+                                <span style="font-weight: 700; color: #ffffff; font-size: 16px;">${period} days</span>
+                            </div>
+                            <div style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: #fbbf24; font-weight: 600; font-size: 15px;">💳 Processing Fee:</span> 
+                                <span style="font-weight: 700; color: #ffffff; font-size: 16px;">KSh ${fee.toLocaleString()}</span>
+                            </div>
+                        </div>
+                        
+                        <p style="margin-top: 15px; font-size: 14px; color: #e5e7eb; text-align: center; background: rgba(59, 130, 246, 0.1); padding: 12px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                            📱 An M-Pesa STK push will be sent to your phone to pay the processing fee.
+                        </p>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: '✅ Yes, Proceed',
+                cancelButtonText: '❌ Cancel',
+                confirmButtonColor: '#f59e0b',
+                cancelButtonColor: '#6b7280',
+                background: 'rgba(15, 23, 42, 0.95)',
+                color: '#fff',
+                customClass: {
+                    popup: 'confirmation-popup',
+                    confirmButton: 'confirm-btn',
+                    cancelButton: 'cancel-btn'
+                },
+                backdrop: `
+                    rgba(0,0,0,0.7)
+                    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>")
+                    left top
+                    no-repeat
+                `,
+                allowOutsideClick: true,
+                allowEscapeKey: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User confirmed, proceed with loan processing
+                    processLoanPayment(amount, period, fee);
+                } else {
+                    // User cancelled, remove selection
+                    document.querySelectorAll('.loan-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    selectedLoanData = {};
+                }
+            });
+        }
+
+        async function processLoanPayment(amount, period, fee) {
+            const userData = JSON.parse(sessionStorage.getItem('userData'));
+            
+            // Show processing popup immediately
+            Swal.fire({
+                title: 'Processing Your Loan...',
+                html: `
+                    <div class="text-center">
+                        <div class="spinner-border text-warning mb-3" style="width: 3rem; height: 3rem;"></div>
+                        <p>Setting up STK Push for KSh ${fee.toLocaleString()} processing fee...</p>
+                        <p class="text-muted">Check your phone for the M-Pesa payment request</p>
+                    </div>
+                `,
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                background: 'rgba(15, 23, 42, 0.95)',
+                color: '#fff'
+            });
+
+            // Immediately initiate STK Push
+            try {
+                const applicationData = {
+                    fullName: userData.fullName,
+                    phoneNumber: userData.phoneNumber,
+                    email: userData.email,
+                    idNumber: userData.idNumber,
+                    loanAmount: amount,
+                    repaymentPeriod: period,
+                    processingFee: fee
+                };
+
+                const response = await fetch('/api/initiate-stk-push', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        phoneNumber: userData.phoneNumber,
+                        amount: fee,
+                        accountReference: userData.phoneNumber,
+                        transactionDesc: `Loan processing fee for KSh ${amount.toLocaleString()} - Suan Enterprises`,
+                        applicationData: applicationData
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Close processing dialog
+                    Swal.close();
+
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'STK Push Sent Successfully!',
+                        html: `
+                            <div style="text-align: left;">
+                                <p>Check your phone <strong>${userData.phoneNumber}</strong> for the M-Pesa payment request to Till <strong>5892851 (Suan Enterprises)</strong>.</p>
+                                <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                                    <p><strong>Amount to pay:</strong> KSh ${fee.toLocaleString()}</p>
+                                    <p><strong>Transaction ID:</strong> ${result.CheckoutRequestID}</p>
+                                    <p><strong>Loan Amount:</strong> KSh ${amount.toLocaleString()}</p>
+                                </div>
+                                <p style="color: #f59e0b;">After payment confirmation, your loan of <strong>KSh ${(amount - fee).toLocaleString()}</strong> will be sent to your M-Pesa instantly!</p>
+                            </div>
+                        `,
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        color: '#fff',
+                        confirmButtonColor: '#f59e0b'
+                    });
+
+                    // Store transaction for monitoring
+                    localStorage.setItem('pendingTransaction', JSON.stringify({
+                        checkoutRequestID: result.CheckoutRequestID,
+                        amount: amount,
+                        fee: fee,
+                        timestamp: new Date().toISOString()
+                    }));
+
+                    // Start monitoring transaction status (give user 45 seconds to enter PIN)
+                    setTimeout(() => checkTransactionStatus(result.CheckoutRequestID), 45000);
+
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'STK Push Failed',
+                        text: result.message || 'Failed to initiate payment. Please try again.',
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        color: '#fff'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Network Error',
+                    text: 'Please check your connection and try again.',
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#fff'
+                });
+            }
+        }
+
+        function processLoanDirectly(amount, period, fee) {
+            const userData = JSON.parse(sessionStorage.getItem('userData'));
+            
+            // Show beautiful confirmation popup
+            Swal.fire({
+                title: '',
+                html: `
+                    <div class="loan-confirmation-popup">
+                        <!-- Beautiful Icon at Top -->
+                        <div class="confirmation-icon">
+                            <div class="icon-circle">
+                                <i class="fas fa-hand-holding-usd"></i>
+                            </div>
+                            <div class="icon-sparkles">
+                                <span class="sparkle">✨</span>
+                                <span class="sparkle">💰</span>
+                                <span class="sparkle">✨</span>
+                            </div>
+                        </div>
+
+                        <!-- Title -->
+                        <h2 class="confirmation-title">
+                            Confirm Loan Application
+                        </h2>
+
+                        <!-- Main Message -->
+                        <div class="confirmation-message">
+                            <p>You are about to apply for <strong class="amount-highlight">KSh ${amount.toLocaleString()}</strong> with a processing fee of <strong class="fee-highlight">KSh ${fee.toLocaleString()}</strong>.</p>
+                        </div>
+
+                        <!-- Loan Details Card -->
+                        <div class="loan-details-card">
+                            <h3 class="details-title">
+                                <i class="fas fa-receipt me-2"></i>Loan Summary
+                            </h3>
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <span class="detail-label">Loan Amount</span>
+                                    <span class="detail-value">KSh ${amount.toLocaleString()}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Repayment Period</span>
+                                    <span class="detail-value">${period} Days</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Processing Fee</span>
+                                    <span class="detail-value fee-amount">KSh ${fee.toLocaleString()}</span>
+                                </div>
+                                <div class="detail-item highlight-row">
+                                    <span class="detail-label">You'll Receive</span>
+                                    <span class="detail-value receive-amount">KSh ${amount.toLocaleString()}</span>
+                                </div>
+                                <div class="detail-item repayment-row">
+                                    <span class="detail-label">Total Repayment</span>
+                                    <span class="detail-value repayment-amount">KSh ${(amount + Math.round(amount * 0.08)).toLocaleString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                background: 'transparent',
+                backdrop: 'rgba(0, 0, 0, 0.8)',
+                showConfirmButton: true,
+                showCancelButton: true,
+                confirmButtonText: '<i class="fas fa-check-circle me-2"></i>Yes, Proceed',
+                cancelButtonText: '<i class="fas fa-times-circle me-2"></i>Cancel',
+                customClass: {
+                    popup: 'beautiful-loan-popup',
+                    confirmButton: 'beautiful-confirm-btn',
+                    cancelButton: 'beautiful-cancel-btn'
+                },
+                buttonsStyling: false,
+                allowOutsideClick: false,
+                width: '650px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Process the STK Push directly
+                    submitLoanApplication(userData, amount, period, fee);
+                }
+            });
+        }
+
+        async function submitLoanApplication(userData, amount, period, fee) {
+            try {
+                // Show processing message
+                Swal.fire({
+                    title: 'Processing Your Application...',
+                    html: 'Please wait while we prepare your STK Push request.',
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#fff',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                const applicationData = {
+                    fullName: `${userData.firstName} ${userData.lastName}`,
+                    phoneNumber: userData.phoneNumber,
+                    idNumber: userData.idNumber,
+                    email: userData.email,
+                    monthlyIncome: userData.monthlyIncome || 'Not specified',
+                    employment: userData.employment || 'Not specified',
+                    loanPurpose: 'General',
+                    loanAmount: amount,
+                    loanPeriod: period,
+                    processingFee: fee,
+                    amountToReceive: amount
+                };
+
+                // Call the real M-Pesa STK Push API
+                const response = await fetch('/api/initiate-stk-push', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phoneNumber: userData.phoneNumber,
+                        amount: fee, // Charge processing fee first
+                        accountReference: `LOAN-${Date.now()}`,
+                        transactionDesc: `Loan processing fee for KSh ${amount.toLocaleString()} - Suan Enterprises`,
+                        applicationData: applicationData
+                    })
+                });
+
+                // Check if response is ok before parsing JSON
+                if (!response.ok) {
+                    throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Close processing dialog
+                    Swal.close();
+
+                    // Show success message with clear instructions
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'STK Push Sent Successfully!',
+                        html: `
+                            <div style="text-align: left;">
+                                <p>📱 Check your phone <strong>${userData.phoneNumber}</strong> for the M-Pesa payment request.</p>
+                                
+                                <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                                    <p style="font-weight: 600; color: #3b82f6; margin-bottom: 8px;">📝 Enter your M-Pesa PIN to complete payment:</p>
+                                    <p><strong>Amount:</strong> KSh ${fee.toLocaleString()}</p>
+                                    <p><strong>Reference:</strong> ${result.CheckoutRequestID}</p>
+                                </div>
+                                
+                                <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                                    <p><strong>💰 You will receive:</strong> KSh ${(amount - fee).toLocaleString()}</p>
+                                    <p><strong>🕒 You have up to 2 minutes</strong> to complete the payment</p>
+                                </div>
+                                
+                                <p style="color: #10b981; text-align: center; font-weight: 600;">
+                                    ✅ After payment, your loan will be sent to M-Pesa instantly!
+                                </p>
+                            </div>
+                        `,
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        color: '#fff',
+                        confirmButtonColor: '#f59e0b',
+                        allowOutsideClick: false
+                    });
+
+                    // Store transaction for tracking
+                    localStorage.setItem('pendingTransaction', JSON.stringify({
+                        checkoutRequestID: result.CheckoutRequestID,
+                        applicationData: applicationData,
+                        timestamp: Date.now()
+                    }));
+
+                    // Start checking transaction status with adequate delay for PIN entry
+                    setTimeout(() => checkTransactionStatus(result.CheckoutRequestID), 45000);
+
+                } else {
+                    throw new Error(result.message || 'Failed to initiate payment');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Application Failed',
+                    text: error.message || 'Please try again later or contact support.',
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#fff'
+                });
+            }
+        }
+
+        function validatePhoneNumber(phone) {
+            // Remove any spaces, dashes, or plus signs
+            phone = phone.replace(/[\s\-\+]/g, '');
+            
+            // Check if it's a valid Kenyan number
+            if (phone.startsWith('254') && phone.length === 12) {
+                return phone;
+            } else if (phone.startsWith('07') && phone.length === 10) {
+                return '254' + phone.substring(1);
+            } else if (phone.startsWith('7') && phone.length === 9) {
+                return '254' + phone;
+            }
+            
+            return null;
+        }
+
+        async function submitApplication() {
+            const form = document.getElementById('loanApplicationForm');
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const phoneInput = document.getElementById('phoneNumber').value;
+            const validatedPhone = validatePhoneNumber(phoneInput);
+            
+            if (!validatedPhone) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Phone Number',
+                    text: 'Please enter a valid Kenyan phone number (e.g., 254712345678 or 0712345678)',
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#fff'
+                });
+                return;
+            }
+
+            // Validate ID number
+            const idNumber = document.getElementById('idNumber').value;
+            if (!/^[0-9]{1,8}$/.test(idNumber)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid ID Number',
+                    text: 'ID Number must be between 1-8 digits and contain only numbers.',
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#fff'
+                });
+                return;
+            }
+
+            // Show loading state
+            document.getElementById('submitText').classList.add('d-none');
+            document.getElementById('submitLoading').classList.remove('d-none');
+
+            const applicationData = {
+                fullName: document.getElementById('fullName').value,
+                phoneNumber: validatedPhone,
+                idNumber: document.getElementById('idNumber').value,
+                email: document.getElementById('email').value,
+                monthlyIncome: document.getElementById('monthlyIncome').value,
+                employment: document.getElementById('employment').value,
+                loanPurpose: document.getElementById('loanPurpose').value,
+                loanAmount: selectedLoanData.amount,
+                loanPeriod: selectedLoanData.period,
+                processingFee: selectedLoanData.fee,
+                amountToReceive: selectedLoanData.receive
+            };
+
+            try {
+                // Call the real M-Pesa STK Push API
+                const response = await fetch('/api/initiate-stk-push', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phoneNumber: validatedPhone,
+                        amount: selectedLoanData.fee, // Charge processing fee first
+                        accountReference: `LOAN-${Date.now()}`,
+                        transactionDesc: `Loan processing fee for KSh ${selectedLoanData.amount.toLocaleString()} - Suan Enterprises`,
+                        applicationData: applicationData
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Hide modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('applicationModal'));
+                    modal.hide();
+
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Payment Request Sent!',
+                        html: `
+                            <p>Please check your phone for the M-Pesa payment request to Till <strong>5892851 (Suan Enterprises)</strong>.</p>
+                            <p><strong>Amount to pay:</strong> KSh ${selectedLoanData.fee.toLocaleString()}</p>
+                            <p><strong>Transaction ID:</strong> ${result.CheckoutRequestID}</p>
+                            <p>After payment confirmation, your loan will be processed instantly.</p>
+                        `,
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        color: '#fff',
+                        confirmButtonColor: '#f59e0b'
+                    });
+
+                    // Store transaction for tracking
+                    localStorage.setItem('pendingTransaction', JSON.stringify({
+                        checkoutRequestID: result.CheckoutRequestID,
+                        applicationData: applicationData,
+                        timestamp: Date.now()
+                    }));
+
+                    // Start checking transaction status
+                    setTimeout(() => checkTransactionStatus(result.CheckoutRequestID), 10000);
+
+                } else {
+                    throw new Error(result.message || 'Failed to initiate payment');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Connection Error',
+                    html: `
+                        <p><strong>Unable to process payment request.</strong></p>
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0; text-align: left;">
+                            <p><strong>Error Details:</strong></p>
+                            <p style="font-family: monospace; font-size: 0.9em;">${error.message}</p>
+                        </div>
+                        <p>Please try again. If the problem persists, contact support.</p>
+                    `,
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#fff',
+                    confirmButtonColor: '#f59e0b'
+                });
+            } finally {
+                // Reset loading state
+                document.getElementById('submitText').classList.remove('d-none');
+                document.getElementById('submitLoading').classList.add('d-none');
+            }
+        }
+
+        async function checkTransactionStatus(checkoutRequestID, retryCount = 0, startTime = Date.now()) {
+            const maxRetries = 8; // Maximum 8 retries (about 4 minutes total)
+            const maxWaitTime = 4 * 60 * 1000; // 4 minutes maximum wait time
+            
+            try {
+                const response = await fetch(`/api/check-transaction-status/${checkoutRequestID}`);
+                const result = await response.json();
+                
+                console.log(`Status check ${retryCount + 1}:`, result);
+
+                if (result.success && result.status === 'completed') {
+                    // Payment successful - process loan
+                    Swal.fire({
+                        icon: 'success',
+                        title: '🎉 Payment Successful!',
+                        html: `
+                            <p>Your payment has been received successfully.</p>
+                            <p><strong>Transaction ID:</strong> ${result.mpesaReceiptNumber}</p>
+                            <p>Based on your M-Pesa transaction history, <strong>you qualify for instant cash loans up to KSh 25,000</strong>. Your current loan of <strong>KSh ${selectedLoanData.receive.toLocaleString()}</strong> will be sent to your M-Pesa within 5 minutes.</p>
+                        `,
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        color: '#fff',
+                        confirmButtonColor: '#f59e0b'
+                    });
+
+                    // Clear pending transaction
+                    localStorage.removeItem('pendingTransaction');
+                    return;
+
+                } else if (result.success && (result.status === 'cancelled' || result.status === 'failed')) {
+                    // User actively cancelled or transaction expired on M-Pesa side
+                    Swal.fire({
+                        icon: 'warning',
+                        title: result.status === 'cancelled' ? 'Payment Cancelled' : 'Payment Failed',
+                        text: result.status === 'cancelled' 
+                            ? 'You cancelled the payment. You can try again anytime.' 
+                            : 'The payment failed or expired. Please try again.',
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        color: '#fff',
+                        confirmButtonColor: '#f59e0b'
+                    });
+                    
+                    // Clear pending transaction
+                    localStorage.removeItem('pendingTransaction');
+                    return;
+
+                } else if (result.success && result.status === 'pending') {
+                    // Still pending - check if we should continue waiting
+                    const elapsedTime = Date.now() - startTime;
+                    
+                    if (retryCount >= maxRetries || elapsedTime >= maxWaitTime) {
+                        // Timeout - but don't call it "failed", call it expired
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Payment Timeout',
+                            text: 'The payment request has timed out. Please try again if you wish to proceed.',
+                            background: 'rgba(15, 23, 42, 0.95)',
+                            color: '#fff',
+                            confirmButtonColor: '#f59e0b'
+                        });
+                        localStorage.removeItem('pendingTransaction');
+                        return;
+                    }
+
+                    // Continue waiting - use progressive delays
+                    const nextDelay = Math.min(30000, 20000 + (retryCount * 5000)); // 20s, 25s, 30s, then 30s
+                    console.log(`Transaction still pending. Next check in ${nextDelay/1000} seconds...`);
+                    setTimeout(() => checkTransactionStatus(checkoutRequestID, retryCount + 1, startTime), nextDelay);
+                    
+                } else {
+                    // Unknown status or network error - keep trying if within limits
+                    const elapsedTime = Date.now() - startTime;
+                    
+                    if (retryCount >= maxRetries || elapsedTime >= maxWaitTime) {
+                        // Stop checking but don't call it failed
+                        console.log('Stopped checking transaction status after maximum attempts');
+                        return;
+                    }
+
+                    // Retry with longer delay for unknown status
+                    const nextDelay = Math.min(35000, 25000 + (retryCount * 5000));
+                    console.log(`Unknown status or error. Retrying in ${nextDelay/1000} seconds...`);
+                    setTimeout(() => checkTransactionStatus(checkoutRequestID, retryCount + 1, startTime), nextDelay);
+                }
+                
+            } catch (error) {
+                console.error('Error checking transaction status:', error);
+                
+                const elapsedTime = Date.now() - startTime;
+                
+                if (retryCount >= maxRetries || elapsedTime >= maxWaitTime) {
+                    console.log('Stopped checking due to persistent errors');
+                    return;
+                }
+
+                // Retry on network error with longer delay
+                const nextDelay = 40000; // 40 second delay for network errors
+                console.log(`Network error. Retrying in ${nextDelay/1000} seconds...`);
+                setTimeout(() => checkTransactionStatus(checkoutRequestID, retryCount + 1, startTime), nextDelay);
+            }
+        }
+
+        function checkUserStatus() {
+            const userData = sessionStorage.getItem('userData') || localStorage.getItem('userData');
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn') || localStorage.getItem('isLoggedIn');
+            const userStatusElement = document.getElementById('userStatus');
+            
+            if (userData && isLoggedIn === 'true') {
+                const user = JSON.parse(userData);
+                userStatusElement.innerHTML = `
+                    <div class="d-flex align-items-center gap-2 text-success">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Welcome, ${user.fullName || user.firstName || 'User'}!</span>
+                    </div>
+                `;
+            } else {
+                userStatusElement.innerHTML = `
+                    <div class="d-flex align-items-center gap-2 text-warning">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Not Registered</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Check for pending transactions on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check user status and update header
+            checkUserStatus();
+            
+            // Check if user is logged in
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Account Required',
+                    text: 'Please fill your details to continue or sign in to apply for a loan.',
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    color: '#fff',
+                    confirmButtonColor: '#f59e0b',
+                    confirmButtonText: 'Fill Details'
+                }).then(() => {
+                    // Registration pages removed — send user to home to continue
+                    window.location.href = '/';
+                });
+                return;
+            }
+
+            // Pre-fill form with user data if available
+            const userData = sessionStorage.getItem('userData');
+            if (userData) {
+                const user = JSON.parse(userData);
+                document.getElementById('fullName').value = `${user.firstName} ${user.lastName}`;
+                document.getElementById('phoneNumber').value = user.phoneNumber;
+                document.getElementById('email').value = user.email;
+                document.getElementById('idNumber').value = user.idNumber;
+            }
+
+            const pending = localStorage.getItem('pendingTransaction');
+            if (pending) {
+                const transaction = JSON.parse(pending);
+                const timeDiff = Date.now() - transaction.timestamp;
+                
+                // If transaction is less than 5 minutes old, continue checking
+                if (timeDiff < 300000) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Checking Payment Status',
+                        text: 'Checking the status of your previous payment...',
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        color: '#fff',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                    
+                    setTimeout(() => checkTransactionStatus(transaction.checkoutRequestID), 3000);
+                } else {
+                    // Transaction too old, clear it
+                    localStorage.removeItem('pendingTransaction');
+                }
+            }
+        });
+
+        // Format phone number input
+        document.getElementById('phoneNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.startsWith('254')) {
+                e.target.value = value;
+            } else if (value.startsWith('0')) {
+                e.target.value = '254' + value.substring(1);
+            } else if (value.startsWith('7')) {
+                e.target.value = '254' + value;
+            }
+        });
+
+        // Countdown Timer for Urgency
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            if (!countdownElement) return;
+            
+            // Start from 5:00 minutes
+            let totalSeconds = 5 * 60;
+            
+            const timer = setInterval(() => {
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                
+                countdownElement.textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                totalSeconds--;
+                
+                if (totalSeconds < 0) {
+                    clearInterval(timer);
+                    countdownElement.textContent = "00:00";
+                    countdownElement.style.color = "#ef4444";
+                }
+            }, 1000);
+        }
+
+        // Start countdown when page loads
+        document.addEventListener('DOMContentLoaded', startCountdown);
+
+        // Live Notification System
+        const liveNotificationData = [
+            { phone: '+254 712 345 678', amount: 'KSh 5,000' },
+            { phone: '+254 798 765 432', amount: 'KSh 10,000' },
+            { phone: '+254 723 456 789', amount: 'KSh 15,000' },
+            { phone: '+254 756 789 012', amount: 'KSh 8,000' },
+            { phone: '+254 734 567 890', amount: 'KSh 12,000' },
+            { phone: '+254 789 012 345', amount: 'KSh 20,000' },
+            { phone: '+254 765 432 109', amount: 'KSh 7,500' },
+            { phone: '+254 743 210 987', amount: 'KSh 25,000' },
+            { phone: '+254 721 098 765', amount: 'KSh 6,000' },
+            { phone: '+254 778 654 321', amount: 'KSh 18,000' },
+            { phone: '+254 701 234 567', amount: 'KSh 9,000' },
+            { phone: '+254 733 987 654', amount: 'KSh 14,000' },
+            { phone: '+254 790 123 456', amount: 'KSh 11,500' },
+            { phone: '+254 722 876 543', amount: 'KSh 16,000' },
+            { phone: '+254 759 345 678', amount: 'KSh 13,000' },
+            { phone: '+254 745 678 901', amount: 'KSh 22,000' },
+            { phone: '+254 718 543 210', amount: 'KSh 7,000' },
+            { phone: '+254 796 432 108', amount: 'KSh 19,500' },
+            { phone: '+254 731 765 432', amount: 'KSh 8,500' },
+            { phone: '+254 787 098 765', amount: 'KSh 24,000' },
+            { phone: '+254 704 321 987', amount: 'KSh 17,000' },
+            { phone: '+254 725 654 321', amount: 'KSh 9,500' },
+            { phone: '+254 758 987 654', amount: 'KSh 21,000' },
+            { phone: '+254 749 210 876', amount: 'KSh 6,500' },
+            { phone: '+254 792 543 109', amount: 'KSh 13,500' },
+            { phone: '+254 716 876 543', amount: 'KSh 10,500' },
+            { phone: '+254 773 209 876', amount: 'KSh 23,000' },
+            { phone: '+254 736 542 108', amount: 'KSh 7,200' },
+            { phone: '+254 781 875 432', amount: 'KSh 16,500' },
+            { phone: '+254 707 108 765', amount: 'KSh 12,500' },
+            { phone: '+254 729 431 098', amount: 'KSh 8,800' },
+            { phone: '+254 762 764 321', amount: 'KSh 18,500' },
+            { phone: '+254 751 097 654', amount: 'KSh 14,500' },
+            { phone: '+254 794 320 987', amount: 'KSh 11,000' },
+            { phone: '+254 719 653 210', amount: 'KSh 20,500' },
+            { phone: '+254 776 986 543', amount: 'KSh 9,200' },
+            { phone: '+254 738 219 876', amount: 'KSh 15,500' },
+            { phone: '+254 783 542 109', amount: 'KSh 17,500' },
+            { phone: '+254 702 875 432', amount: 'KSh 6,800' },
+            { phone: '+254 727 108 765', amount: 'KSh 19,000' },
+            { phone: '+254 760 431 098', amount: 'KSh 22,500' },
+            { phone: '+254 747 764 321', amount: 'KSh 13,200' },
+            { phone: '+254 795 097 654', amount: 'KSh 10,800' },
+            { phone: '+254 714 320 987', amount: 'KSh 25,000' },
+            { phone: '+254 771 653 210', amount: 'KSh 8,200' },
+            { phone: '+254 732 986 543', amount: 'KSh 16,800' },
+            { phone: '+254 785 219 876', amount: 'KSh 12,200' },
+            { phone: '+254 706 542 109', amount: 'KSh 21,500' },
+            { phone: '+254 724 875 432', amount: 'KSh 7,800' },
+            { phone: '+254 757 108 765', amount: 'KSh 24,500' }
+        ];
+
+        function showLiveNotification() {
+            const notification = document.getElementById('liveNotification');
+            const phoneElement = document.getElementById('notificationPhone');
+            const amountElement = document.getElementById('notificationAmount');
+            
+            // Get random notification data
+            const randomData = liveNotificationData[Math.floor(Math.random() * liveNotificationData.length)];
+            
+            // Partially hide phone number for privacy
+            const maskedPhone = randomData.phone.replace(/(\+254 \d{3}) \d{3} (\d{3})/, '$1 XXX $2');
+            
+            // Update notification content
+            phoneElement.textContent = maskedPhone;
+            amountElement.textContent = randomData.amount;
+            
+            // Show notification
+            notification.classList.add('show');
+            
+            // Hide after 4 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Start showing notifications
+        function startLiveNotifications() {
+            // Show first notification after 3 seconds
+            setTimeout(showLiveNotification, 3000);
+            
+            // Then show notifications every 8-15 seconds randomly
+            setInterval(() => {
+                const randomDelay = Math.random() * 7000 + 8000; // 8-15 seconds
+                setTimeout(showLiveNotification, 0);
+            }, 12000); // Base interval of 12 seconds
+        }
+
+        // Start live notifications when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            startCountdown();
+            startLiveNotifications();
+        });
+    </script>
+</body>
+</html>
