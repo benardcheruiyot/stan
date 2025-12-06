@@ -5,4 +5,4 @@ Disallow: /backend/
 # Allow all other content to be crawled
 Allow: /
 
-Sitemap: https://mkopaji.com/sitemap.xml
+Sitemap: https://hella.mkopaji.com/sitemap.xml

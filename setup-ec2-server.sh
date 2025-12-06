@@ -98,7 +98,7 @@ server {
     server_name _;
 
     location / {
-        proxy_pass http://kopesha.mkopaji.com:3004;
+        proxy_pass http://hella.mkopaji.com:3004;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -225,7 +225,7 @@ server {
     server_name _;
 
     location / {
-        proxy_pass http://localhost:3000;
+        proxy_pass http://localhost:3007;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';

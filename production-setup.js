@@ -92,7 +92,7 @@ MPESA_RESULT_URL=https://${config.DOMAIN}/api/mpesa-result
 MPESA_ENVIRONMENT=production
 
 # Server Configuration
-PORT=3000
+PORT=3007
 
 # Security
 SESSION_SECRET=${generateSecureSecret()}

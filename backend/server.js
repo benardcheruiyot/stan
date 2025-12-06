@@ -8,7 +8,7 @@ const path = require('path');
 const PaymentService = require('./services/payment-service');
 
 const app = express();
-const PORT = process.env.PORT || 3004;
+const PORT = process.env.PORT || 3007;
 const ENVIRONMENT = process.env.MPESA_ENVIRONMENT || 'sandbox';
 
 console.log(`🚀 Starting MKOPAJI Server in ${ENVIRONMENT.toUpperCase()} mode`);
