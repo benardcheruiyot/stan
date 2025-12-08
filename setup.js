@@ -72,7 +72,7 @@ NODE_ENV=development
         console.log('Created .env file with your configuration.');
         console.log('\nNEXT STEPS:');
         console.log('1. Start the server: npm run dev');
-        console.log('2. Open browser: https://hella.mkopaji.com:3004');
+        console.log('2. Open browser: https://kopesha.mkopaji.com:3004');
         console.log('3. Test with a small amount (1-100 KSh)');
         console.log('4. Use test phone numbers from Daraja Portal');
         console.log('\nTROUBLESHOOTING:');

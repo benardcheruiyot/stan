@@ -1,2 +1,2 @@
 @echo off
-start chrome "https://hella.mkopaji.com:3007/apply"
+start chrome "https://kopesha.mkopaji.com:3007/apply"

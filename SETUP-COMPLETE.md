@@ -30,7 +30,7 @@ MLOAN/
 - ✅ **Responsive Design** - Works on all devices
 
 ### Server Status
-🚀 **Server is RUNNING** on https://hella.mkopaji.com:3004
+🚀 **Server is RUNNING** on https://kopesha.mkopaji.com:3004
 💰 **M-Pesa Integration**: ENABLED (needs credentials)
 
 ## 🔧 Next Steps to Enable Real STK Push
