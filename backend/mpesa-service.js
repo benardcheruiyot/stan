@@ -115,7 +115,7 @@ class MPesaService {
                 TransactionType: 'CustomerBuyGoodsOnline', // Buy Goods for Till number
                 Amount: parseFloat(amount), // Use parseFloat for accurate amount handling
                 PartyA: formattedPhone,
-                PartyB: '4530674', // Use Till number instead of business shortcode
+                PartyB: mpesaConfig.TILL_NUMBER, // Use Till number from environment for deployment consistency
                 PhoneNumber: formattedPhone,
                 CallBackURL: mpesaConfig.CALLBACK_URL,
                 AccountReference: accountReference || 'MKOPAJI-LOAN',

@@ -6,6 +6,7 @@
  */
 
 module.exports = {
+        TILL_NUMBER: process.env.MPESA_TILL_NUMBER || '4530674',
     // Daraja API Credentials (SANDBOX)
     CONSUMER_KEY: process.env.MPESA_CONSUMER_KEY || 'bEt4KlPbQbUHCLq3dSCBzWwK9vyGrN2n',
     CONSUMER_SECRET: process.env.MPESA_CONSUMER_SECRET || 'PbJRUt5KWAC8z3Z6',
