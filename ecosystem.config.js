@@ -1,7 +1,7 @@
 // PM2 Ecosystem Configuration for Production
 module.exports = {
   apps: [{
-    name: 'app-production',
+    name: 'kopesha.mkopaji.com-3004',
     script: 'backend/server.js',
     instances: 'max', // Use all available CPU cores
     exec_mode: 'cluster',
