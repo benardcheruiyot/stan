@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swift Hela - Check Your Loan Eligibility</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #fafcf6;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .eligibility-classic-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .eligibility-classic-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #0001;
+      max-width: 420px;
+      width: 100%;
+      padding: 0 0 32px 0;
+      margin: 32px 0;
+      position: relative;
+    }
+    .eligibility-classic-bar {
+      height: 8px;
+      width: 100%;
+      border-radius: 18px 18px 0 0;
+      background: linear-gradient(90deg, #101820 0%, #e53935 50%, #43a047 100%);
+      margin-bottom: 0;
+    }
+    .eligibility-classic-header {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 0;
+      padding: 0 32px;
+    }
+    .eligibility-classic-logo {
+      font-size: 2.1rem;
+      color: #228b22;
+      font-weight: 900;
+      margin-top: 18px;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .eligibility-classic-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #232946;
+      margin-bottom: 0.2rem;
+      margin-top: 0.5rem;
+    }
+    .eligibility-classic-subtitle {
+      font-size: 1.08rem;
+      color: #4b5563;
+      margin-bottom: 0.2rem;
+    }
+    .eligibility-classic-amount {
+      font-size: 1.25rem;
+      color: #228b22;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .eligibility-classic-form {
+      padding: 0 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .eligibility-classic-form label {
+      color: #228b22;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+      margin-top: 10px;
+      display: block;
+    }
+    .eligibility-classic-form input,
+    .eligibility-classic-form select {
+      background: #f8f9f3;
+      border-radius: 12px;
+      border: 1.5px solid #e5e7ef;
+      font-size: 1.15rem;
+      padding: 14px;
+      width: 100%;
+      margin-bottom: 0;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .eligibility-classic-features-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 18px 0 0 0;
+      padding: 0 32px;
+    }
+    .eligibility-classic-feature {
+      background: #f3f6f9;
+      border-radius: 12px;
+      padding: 10px 18px;
+      text-align: center;
+      font-size: 1.08rem;
+      color: #228b22;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .eligibility-classic-btn {
+      background: linear-gradient(90deg,#e53935 0%,#43a047 50%,#1e88e5 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.15rem;
+      padding: 16px 0;
+      border-radius: 999px;
+      text-align: center;
+      text-decoration: none;
+      margin: 24px 32px 0 32px;
+      box-shadow: 0 2px 8px #0001;
+      border: none;
+      cursor: pointer;
+      width: calc(100% - 64px);
+      display: block;
+      transition: background 0.2s;
+    }
+    .eligibility-classic-btn:hover {
+      background: linear-gradient(90deg,#43a047 0%,#e53935 50%,#1e88e5 100%);
+    }
+    .eligibility-classic-footer {
+      text-align: center;
+      color: #6b7280;
+      font-size: 1rem;
+      margin-top: 18px;
+      padding: 0 32px;
+    }
+    @media (max-width: 500px) {
+      .eligibility-classic-card {
+        padding: 0 0 24px 0;
+        max-width: 98vw;
+      }
+      .eligibility-classic-form, .eligibility-classic-features-row, .eligibility-classic-footer, .eligibility-classic-header {
+        padding: 0 10px;
+      }
+      .eligibility-classic-btn {
+        margin: 24px 10px 0 10px;
+        width: calc(100% - 20px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="eligibility-classic-wrap">
+    <div class="eligibility-classic-card">
+      <div class="eligibility-classic-bar"></div>
+      <div class="eligibility-classic-header">
+        <div class="eligibility-classic-logo">
+          <span style="font-size:2rem;">&#8378;</span> Swift Hela
+        </div>
+        <div class="eligibility-classic-title">Check Your Loan Eligibility</div>
+        <div class="eligibility-classic-subtitle">Find out how much you qualify for</div>
+        <div class="eligibility-classic-amount">Ksh. 1,000 – 50,000</div>
+      </div>
+      <form class="eligibility-classic-form">
+        <label>Full Name</label>
+        <input type="text" placeholder="Full Name" required>
+        <label>Phone Number</label>
+        <input type="tel" placeholder="07XXXXXXXX" required>
+        <label>ID Number</label>
+        <input type="text" placeholder="ID Number" required>
+        <select required>
+          <option value="" disabled selected>Select Loan Type</option>
+          <option value="personal">Personal Loan</option>
+          <option value="business">Business Loan</option>
+          <option value="education">Education Loan</option>
+        </select>
+      </form>
+      <div class="eligibility-classic-features-row">
+        <div class="eligibility-classic-feature">
+          <span style="font-size:1.15rem;">&#128274;</span> Secure Application
+        </div>
+        <div class="eligibility-classic-feature">
+          <span style="font-size:1.15rem;">&#128101;</span> No CRB Check
+        </div>
+      </div>
+      <button class="eligibility-classic-btn" onclick="event.preventDefault();">Check Eligibility &rarr;</button>
+      <div class="eligibility-classic-footer">No paperwork required. No guarantors needed.</div>
+    </div>
+  </div>
+</body>
+</html>

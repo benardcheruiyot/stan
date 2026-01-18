@@ -149,24 +149,33 @@
     </style>
 </head>
 <body>
-    <div class="page-wrap">
-        <div class="hero-card text-center">
-            <div class="hero-icon">
-                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="6" y="10" width="20" height="12" rx="4" fill="currentColor"/>
-                  <rect x="10" y="6" width="12" height="4" rx="2" fill="#c2e9fb"/>
-                  <rect x="10" y="22" width="12" height="4" rx="2" fill="#c2e9fb"/>
-                </svg>
+    <div class="landing-wrap">
+        <div class="logo-section">
+            <img src="assets/images/extramkopo-logo.png" alt="EXTRA MKOPO" class="logo-img" />
+        </div>
+        <div class="slogan">Kuza, Imarisha, Endeleza Vijana!</div>
+        <div class="main-card">
+            <div class="card-header"></div>
+            <div class="amount-title">Ksh. 1,000 - 50,000</div>
+            <div class="subtitle">Youth empowerment financing available nationwide</div>
+            <div class="features-row">
+                <div class="feature"><span class="icon">⚡</span> Fast approval</div>
+                <div class="feature"><span class="icon">📱</span> Paperless</div>
+                <div class="feature"><span class="icon">🛡️</span> Secure</div>
+                <div class="feature"><span class="icon">👥</span> Youth-focused</div>
             </div>
-            <h2 style="font-size:2.1rem; font-weight:900; margin-bottom:0.7rem; letter-spacing:-1px; color:#232946;">Fast Mobile Loans</h2>
-            <p style="font-size:1.15rem; color:#6e7a8a; margin-bottom:1.5rem;">Get a fast mobile loan of up to <strong>Ksh.&nbsp;100,000</strong> within&nbsp;<strong>5 minutes</strong>.</p>
-            <ul class="check-list" style="margin-bottom:2.2rem;">
-                <li>No CRB check</li>
-                <li>No paperwork</li>
-                <li>No collateral</li>
-                <li>No guarantors</li>
-            </ul>
-            <a href="/apply.html" class="btn-apply" style="font-size:1.15rem; padding:16px 0;">Apply Now</a>
+            <a href="eligibility-classic.html" class="apply-btn">Apply Now &rarr;</a>
+        </div>
+        <div class="security-card">
+            <div class="card-header"></div>
+            <div class="security-title">Your security is our priority</div>
+            <div class="security-features-row">
+                <div class="security-feature"><span class="icon">🔒</span> SSL Secured</div>
+                <div class="security-feature"><span class="icon">🌟</span> Licensed Program</div>
+                <div class="security-feature"><span class="icon">🗄️</span> Data Protected</div>
+                <div class="security-feature"><span class="icon">🤝</span> Trusted</div>
+            </div>
+            <div class="security-footer">Empowering thousands of Kenyan youth</div>
         </div>
     </div>
 </body>
@@ -177,137 +186,164 @@
         @keyframes fadeInCard {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-        .hero-card::before {
-            content: "";
-            position: absolute;
-            top: -40px; left: -40px;
-            width: 120px; height: 120px;
-            background: radial-gradient(circle, #a1c4fd 0%, #c2e9fb 80%, #fff0 100%);
-            z-index: 0;
-            filter: blur(12px);
-        }
-        .hero-card::after {
-            content: "";
-            position: absolute;
-            bottom: -40px; right: -40px;
-            width: 120px; height: 120px;
-            background: radial-gradient(circle, #647dee 0%, #fff0 80%);
-            z-index: 0;
-            filter: blur(12px);
-        }
-        .hero-card * { position: relative; z-index: 1; }
-        .hero-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #a1c4fd 0%, #647dee 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.2rem;
-            box-shadow: 0 4px 24px 0 rgba(100, 125, 222, 0.10);
-        }
-        .hero-icon svg {
-            width: 36px;
-            height: 36px;
-            color: #fff;
-        }
-        h2 {
-            font-weight: 800;
-            margin-bottom: 1.2rem;
-            font-size: 2rem;
-            letter-spacing: -1px;
-            color: #374151;
-            text-shadow: none;
-        }
-        p {
-            margin: 0 0 1.2rem;
-            font-size: 1.08rem;
-            color: #374151;
-        }
-        .check-list {
-            list-style: none;
-            padding: 0;
-            margin: 1.2rem 0 2rem;
-        }
-        .check-list li {
-            position: relative;
-            padding-left: 2rem;
-            margin-bottom: 0.85rem;
-            font-weight: 500;
-            color: #4b5563;
-            font-size: 1.05rem;
-            transition: color 0.2s;
-        }
-        .check-list li::before {
-            content: "✔";
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: #10b981;
-            font-size: 1.1rem;
-            line-height: 1;
-            font-weight: bold;
-            text-shadow: none;
-        }
-        .btn-apply {
-            background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
-            border: none;
-            color: #fff;
-            font-weight: 700;
-            font-size: 1.08rem;
-            padding: 13px 0;
-            border-radius: 999px;
-            width: 100%;
-            box-shadow: 0 2px 8px #3b82f622;
-            text-decoration: none;
-            transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
-            margin-top: 1.2rem;
-            cursor: pointer;
-            outline: none;
-            display: inline-block;
-        }
-        .btn-apply:hover, .btn-apply:focus {
-            background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
-            box-shadow: 0 4px 16px #10b98133;
-            transform: translateY(-2px) scale(1.03);
-        }
-        @media (max-width: 600px) {
-            .hero-card {
-                padding: 1.5rem 0.8rem 1.3rem 0.8rem;
-                max-width: 99vw;
-                min-width: 0;
-                width: 100%;
-                font-size: 1rem;
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: #f8f9f3;
             }
-            h2 { font-size: 1.25rem; }
-            .btn-apply { font-size: 1rem; padding: 12px 0; }
-            .check-list li { font-size: 0.98rem; }
-            .hero-card .check-list { margin: 1rem 0 1.5rem; }
-        }
-    </style>
-</head>
-<body>
-    <div class="page-wrap">
-        <div class="hero-card text-center">
-            <div class="hero-icon">
-                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="6" y="10" width="20" height="12" rx="4" fill="currentColor"/>
-                  <rect x="10" y="6" width="12" height="4" rx="2" fill="#c2e9fb"/>
-                  <rect x="10" y="22" width="12" height="4" rx="2" fill="#c2e9fb"/>
-                </svg>
-            </div>
-            <h2 style="font-size:2.1rem; font-weight:900; margin-bottom:0.7rem; letter-spacing:-1px; color:#232946;">Fast Mobile Loans</h2>
-            <p style="font-size:1.15rem; color:#6e7a8a; margin-bottom:1.5rem;">Get a fast mobile loan of up to <strong>Ksh.&nbsp;100,000</strong> within&nbsp;<strong>5 minutes</strong>.</p>
-            <ul class="check-list" style="margin-bottom:2.2rem;">
-                <li>No CRB check</li>
-                <li>No paperwork</li>
-                <li>No collateral</li>
-                <li>No guarantors</li>
-            </ul>
-            <a href="/apply.html" class="btn-apply" style="font-size:1.15rem; padding:16px 0;">Apply Now</a>
-        </div>
-    </div>
-</body>
-</html>
+            .landing-wrap {
+                max-width: 480px;
+                margin: 0 auto;
+                padding: 32px 0 24px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .logo-section {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+            .logo-img {
+                width: 64px;
+                height: 64px;
+                border-radius: 16px;
+                box-shadow: 0 2px 12px #0001;
+            }
+            .slogan {
+                text-align: center;
+                font-size: 1.08rem;
+                color: #4b5563;
+                margin-bottom: 18px;
+                font-weight: 500;
+            }
+            .main-card, .security-card {
+                width: 100%;
+                background: #fff;
+                border-radius: 1.5rem;
+                box-shadow: 0 4px 24px #0001;
+                border: none;
+                padding: 24px 18px 18px 18px;
+                margin-bottom: 22px;
+                position: relative;
+            }
+            .main-card .card-header, .security-card .card-header {
+                height: 6px;
+                width: 100%;
+                border-radius: 6px 6px 0 0;
+                background: linear-gradient(90deg, #e53935 0%, #43a047 50%, #1e88e5 100%);
+                margin-bottom: 18px;
+            }
+            .amount-title {
+                text-align: center;
+                font-size: 2.1rem;
+                font-weight: 800;
+                color: #228b22;
+                margin-bottom: 6px;
+            }
+            .subtitle {
+                text-align: center;
+                font-size: 1.08rem;
+                color: #4b5563;
+                margin-bottom: 18px;
+            }
+            .features-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 14px 18px;
+                margin-bottom: 18px;
+            }
+            .feature {
+                background: #f3f6f9;
+                border-radius: 12px;
+                padding: 12px 0;
+                text-align: center;
+                font-size: 1.08rem;
+                color: #228b22;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+            .icon {
+                font-size: 1.25rem;
+            }
+            .apply-btn {
+                display: block;
+                width: 100%;
+                background: linear-gradient(90deg, #e53935 0%, #43a047 50%, #1e88e5 100%);
+                color: #fff;
+                font-weight: 700;
+                font-size: 1.15rem;
+                padding: 16px 0;
+                border-radius: 999px;
+                text-align: center;
+                text-decoration: none;
+                margin-top: 10px;
+                box-shadow: 0 2px 8px #0001;
+                transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+            }
+            .apply-btn:hover, .apply-btn:focus {
+                background: linear-gradient(90deg, #1e88e5 0%, #43a047 50%, #e53935 100%);
+                box-shadow: 0 4px 16px #43a04733;
+                transform: translateY(-2px) scale(1.03);
+            }
+            .security-card {
+                margin-bottom: 0;
+            }
+            .security-title {
+                text-align: center;
+                font-size: 1.08rem;
+                color: #4b5563;
+                font-weight: 600;
+                margin-bottom: 14px;
+            }
+            .security-features-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px 16px;
+                margin-bottom: 12px;
+            }
+            .security-feature {
+                background: #f3f6f9;
+                border-radius: 12px;
+                padding: 10px 0;
+                text-align: center;
+                font-size: 1.08rem;
+                color: #228b22;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+            .security-footer {
+                text-align: center;
+                font-size: 0.98rem;
+                color: #4b5563;
+                margin-top: 8px;
+                margin-bottom: 0;
+            }
+            @media (max-width: 600px) {
+                .landing-wrap {
+                    padding: 12px 0 8px 0;
+                }
+                .main-card, .security-card {
+                    padding: 14px 6px 10px 6px;
+                }
+                .amount-title {
+                    font-size: 1.25rem;
+                }
+                .apply-btn {
+                    font-size: 1rem;
+                    padding: 12px 0;
+                }
+                .feature, .security-feature {
+                    font-size: 0.98rem;
+                }
+            }
+        </style>

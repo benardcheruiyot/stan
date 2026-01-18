@@ -694,41 +694,47 @@
                         </div>
                     </div>
 
-                    <!-- Loan Options Section (Initially Hidden) -->
+                    <!-- Loan Options Section (Updated UI) -->
                     <div class="loan-options-section">
-                    <!-- Enhanced Header -->
-                    <div style="text-align: center; margin-bottom: 3rem; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);">
-                        <h2 style="background: linear-gradient(135deg, #1e293b 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                            💰 Select Your Loan Amount
-                        </h2>
-                        <p style="color: #475569; font-size: 1.1rem; margin: 0; font-weight: 500;">
-                            Choose the amount that perfectly fits your needs
-                        </p>
-                        <div style="margin-top: 1rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 8px 20px; border-radius: 25px; display: inline-block; font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
-                            🚀 Instant Approval • No Collateral Required
+                        <!-- Qualification Header -->
+                        <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px #0001; border: none; padding: 18px 18px 10px 18px; margin-bottom: 18px; position: relative;">
+                            <div style="height: 6px; width: 100%; border-radius: 6px 6px 0 0; background: linear-gradient(90deg, #e53935 0%, #43a047 50%, #1e88e5 100%); margin-bottom: 12px;"></div>
+                            <div style="font-size: 1.08rem; color: #222; margin-bottom: 2px;">
+                                Hi <span style="color:#228b22;font-weight:600;">ufijdwo</span>, you qualify for these loan options based on your <b>M-Pesa records</b> <span style="color:#4b5563;">(2-month term at 10% interest).</span>
+                            </div>
+                        </div>
+                        <!-- Recent Loans -->
+                        <div style="background: #eafbe3; border-radius: 12px; border: 2px solid #43a047; padding: 12px 18px; margin-bottom: 18px; color: #228b22; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size:1.15rem;">&#128640;</span> Recent Loans
+                            <span style="margin-left:12px; color:#222; font-weight:400;">0728****01 loaned Ksh 21,300 - just now</span>
+                        </div>
+                        <!-- Loan Amount Selection -->
+                        <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px #0001; border: none; padding: 18px 18px 10px 18px; margin-bottom: 18px; position: relative;">
+                            <div style="height: 6px; width: 100%; border-radius: 6px 6px 0 0; background: linear-gradient(90deg, #e53935 0%, #43a047 50%, #1e88e5 100%); margin-bottom: 12px;"></div>
+                            <div style="text-align:center; font-size:1.45rem; font-weight:800; color:#228b22; margin-bottom:18px;">Select Your Loan Amount</div>
+                            <div class="loan-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px 18px;justify-items:center;">
+                                <div class="loan-option">Ksh 5,500<br><span class="fee">Fee: Ksh 100</span></div>
+                                <div class="loan-option">Ksh 6,800<br><span class="fee">Fee: Ksh 130</span></div>
+                                <div class="loan-option">Ksh 7,800<br><span class="fee">Fee: Ksh 170</span></div>
+                                <div class="loan-option">Ksh 9,800<br><span class="fee">Fee: Ksh 190</span></div>
+                                <div class="loan-option">Ksh 11,200<br><span class="fee">Fee: Ksh 230</span></div>
+                                <div class="loan-option">Ksh 16,800<br><span class="fee">Fee: Ksh 250</span></div>
+                                <div class="loan-option">Ksh 21,200<br><span class="fee">Fee: Ksh 270</span></div>
+                                <div class="loan-option">Ksh 25,600<br><span class="fee">Fee: Ksh 400</span></div>
+                                <div class="loan-option">Ksh 30,000<br><span class="fee">Fee: Ksh 470</span></div>
+                                <div class="loan-option">Ksh 35,400<br><span class="fee">Fee: Ksh 590</span></div>
+                                <div class="loan-option">Ksh 39,800<br><span class="fee">Fee: Ksh 730</span></div>
+                                <div class="loan-option">Ksh 44,200<br><span class="fee">Fee: Ksh 1010</span></div>
+                                <div class="loan-option">Ksh 48,600<br><span class="fee">Fee: Ksh 1600</span></div>
+                                <div class="loan-option">Ksh 60,600<br><span class="fee">Fee: Ksh 2050</span></div>
+                            </div>
+                        </div>
+                        <!-- Get Loan Button -->
+                        <button class="apply-btn" id="getLoanBtn" style="background: linear-gradient(90deg, #e53935 0%, #43a047 50%, #1e88e5 100%); color: #fff; font-weight: 700; font-size: 1.15rem; padding: 16px 0; border-radius: 999px; text-align: center; text-decoration: none; margin-top: 10px; box-shadow: 0 2px 8px #0001; width:100%;">Get Loan Now &rarr;</button>
+                        <div style="text-align:center; margin-top:18px;">
+                            <a href="index.html" style="color:#228b22; text-decoration:none; font-size:1.08rem; font-weight:500;">&larr; Back to Home</a>
                         </div>
                     </div>
-
-                    <!-- Loan Selection Grid -->
-                    <div style="margin-bottom: 2rem;">
-                        <!-- Quick Loans -->
-                        <div style="margin-bottom: 2rem;">
-                            <div class="row" id="quickLoans"></div>
-                        </div>
-                        
-                        <!-- Extended Loans -->
-                        <div style="margin-bottom: 2rem;">
-                            <div class="row" id="extendedLoans"></div>
-                        </div>
-                    </div>
-
-                    <!-- Apply Button -->
-                    <button class="apply-btn" id="applyBtn" disabled>
-                        <i class="fas fa-rocket"></i>
-                        Choose a loan amount to get started
-                    </button>
-                    </div>
-                    <!-- End Loan Options Section -->
                 </div>
             </div>
         </div>
@@ -2512,5 +2518,57 @@
             }
         }
     </script>
-</body>
-</html>
+    <body style="background:#fff;">
+        <div style="max-width:600px;margin:40px auto 0 auto;padding:0 10px;">
+            <div style="text-align:center;margin-bottom:32px;">
+                <div style="font-size:2.2rem;font-weight:800;color:#232946;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px;">
+                    <span style="color:#10b981;font-size:2.2rem;">&#10004;</span>
+                    <span>Check Your Loan Eligibility</span>
+                </div>
+                <div style="color:#6b7280;font-size:1.15rem;">Qualify for Ksh. 1,500 – 100,000</div>
+            </div>
+            <form style="background:none;padding:0;box-shadow:none;">
+                <div style="margin-bottom:18px;">
+                    <label style="display:flex;align-items:center;font-weight:600;color:#232946;font-size:1.08rem;margin-bottom:6px;gap:7px;">
+                        <span style="color:#f59e0b;font-size:1.2rem;">&#128100;</span> Enter Your Name
+                    </label>
+                    <input type="text" placeholder="Full Name" style="width:100%;padding:14px 16px;font-size:1.13rem;border-radius:12px;border:1.5px solid #e5e7ef;background:#fff;outline:none;">
+                </div>
+                <div style="margin-bottom:18px;">
+                    <label style="display:flex;align-items:center;font-weight:600;color:#232946;font-size:1.08rem;margin-bottom:6px;gap:7px;">
+                        <span style="color:#f59e0b;font-size:1.2rem;">&#128222;</span> Phone Number
+                    </label>
+                    <div style="display:flex;align-items:center;gap:0;">
+                        <span style="background:#f3f4f6;border:1.5px solid #e5e7ef;border-radius:12px 0 0 12px;padding:14px 12px;font-weight:600;color:#374151;font-size:1.13rem;border-right:none;">254</span>
+                        <input type="tel" placeholder="712345678" maxlength="9" style="flex:1;padding:14px 16px;font-size:1.13rem;border-radius:0 12px 12px 0;border:1.5px solid #e5e7ef;border-left:none;background:#fff;outline:none;">
+                    </div>
+                </div>
+                <div style="margin-bottom:18px;">
+                    <label style="display:flex;align-items:center;font-weight:600;color:#232946;font-size:1.08rem;margin-bottom:6px;gap:7px;">
+                        <span style="color:#f59e0b;font-size:1.2rem;">&#128179;</span> ID Number
+                    </label>
+                    <input type="text" placeholder="12345678" maxlength="8" style="width:100%;padding:14px 16px;font-size:1.13rem;border-radius:12px;border:1.5px solid #e5e7ef;background:#fff;outline:none;">
+                </div>
+                <div style="margin-bottom:18px;">
+                    <label style="display:flex;align-items:center;font-weight:600;color:#232946;font-size:1.08rem;margin-bottom:6px;gap:7px;">
+                        <span style="color:#f59e0b;font-size:1.2rem;">&#128178;</span> Loan Type
+                    </label>
+                    <select style="width:100%;padding:14px 16px;font-size:1.13rem;border-radius:12px;border:1.5px solid #e5e7ef;background:#fff;outline:none;">
+                        <option value="" disabled selected>Select Loan Type</option>
+                        <option value="personal">Personal Loan</option>
+                        <option value="business">Business Loan</option>
+                        <option value="education">Education Loan</option>
+                    </select>
+                </div>
+                <div style="background:linear-gradient(90deg,#d1fae5 0%,#fef9c3 100%);border-radius:12px;padding:16px 0 16px 0;display:flex;justify-content:space-around;align-items:center;margin-bottom:32px;margin-top:8px;gap:8px;">
+                    <span style="color:#10b981;font-weight:600;display:flex;align-items:center;gap:4px;font-size:1.02rem;"><span style="font-size:1.2rem;">&#10003;</span> No CRB Check</span>
+                    <span style="color:#10b981;font-weight:600;display:flex;align-items:center;gap:4px;font-size:1.02rem;"><span style="font-size:1.2rem;">&#10003;</span> No Guarantors</span>
+                    <span style="color:#10b981;font-weight:600;display:flex;align-items:center;gap:4px;font-size:1.02rem;"><span style="font-size:1.2rem;">&#10003;</span> No Paperwork</span>
+                    <span style="color:#10b981;font-weight:600;display:flex;align-items:center;gap:4px;font-size:1.02rem;"><span style="font-size:1.2rem;">&#10003;</span> No Collateral</span>
+                </div>
+                <div style="text-align:center;margin-top:24px;">
+                    <button type="button" style="background:linear-gradient(90deg,#16a34a 0%,#22d3ee 100%);color:#fff;font-weight:700;font-size:1.18rem;padding:16px 0;width:100%;border-radius:999px;border:none;box-shadow:0 2px 8px #0001;cursor:pointer;">Check Eligibility &rarr;</button>
+                </div>
+            </form>
+        </div>
+    </body>

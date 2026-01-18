@@ -1,19 +1,223 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Check Eligibility</title>
-  <style>body{font-family:Inter,system-ui,Arial;margin:40px;color:#0f172a}</style>
-  <script>
-    // Redirect to the application page which contains the eligibility flow/modal
-    window.onload = function(){
-      try{ location.replace('apply.html'); }catch(e){}
+
+  <body style="background:#fff;">
+    <div style="max-width:600px;margin:40px auto 0 auto;padding:0 10px;">
+      <div style="text-align:center;margin-bottom:32px;">
+        <div style="font-size:2.2rem;font-weight:800;color:#232946;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px;">
+          <span style="color:#10b981;font-size:2.2rem;">&#10004;</span>
+          <span>Check Your Loan Eligibility</span>
+        </div>
+        <div style="color:#6b7280;font-size:1.15rem;">Qualify for Ksh. 1,500 – 100,000</div>
+      </div>
+      <form style="background:none;padding:0;box-shadow:none;">
+        <div style="margin-bottom:18px;">
+          <label style="display:flex;align-items:center;font-weight:600;color:#232946;font-size:1.08rem;margin-bottom:6px;gap:7px;">
+            <span style="color:#f59e0b;font-size:1.2rem;">&#128100;</span> Enter Your Name
+          </label>
+          <input type="text" placeholder="Full Name" style="width:100%;padding:14px 16px;font-size:1.13rem;border-radius:12px;border:1.5px solid #e5e7ef;background:#fff;outline:none;">
+        </div>
+        <div style="margin-bottom:18px;">
+          <label style="display:flex;align-items:center;font-weight:600;color:#232946;font-size:1.08rem;margin-bottom:6px;gap:7px;">
+            <span style="color:#f59e0b;font-size:1.2rem;">&#128222;</span> Phone Number
+          </label>
+          <div style="display:flex;align-items:center;gap:0;">
+            <span style="background:#f3f4f6;border:1.5px solid #e5e7ef;border-radius:12px 0 0 12px;padding:14px 12px;font-weight:600;color:#374151;font-size:1.13rem;border-right:none;">254</span>
+            <input type="tel" placeholder="712345678" maxlength="9" style="flex:1;padding:14px 16px;font-size:1.13rem;border-radius:0 12px 12px 0;border:1.5px solid #e5e7ef;border-left:none;background:#fff;outline:none;">
+          </div>
+        </div>
+        <div style="margin-bottom:18px;">
+          <label style="display:flex;align-items:center;font-weight:600;color:#232946;font-size:1.08rem;margin-bottom:6px;gap:7px;">
+            <span style="color:#f59e0b;font-size:1.2rem;">&#128179;</span> ID Number
+          </label>
+          <input type="text" placeholder="12345678" maxlength="8" style="width:100%;padding:14px 16px;font-size:1.13rem;border-radius:12px;border:1.5px solid #e5e7ef;background:#fff;outline:none;">
+        </div>
+        <div style="margin-bottom:18px;">
+          <label style="display:flex;align-items:center;font-weight:600;color:#232946;font-size:1.08rem;margin-bottom:6px;gap:7px;">
+            <span style="color:#f59e0b;font-size:1.2rem;">&#128178;</span> Loan Type
+          </label>
+          <select style="width:100%;padding:14px 16px;font-size:1.13rem;border-radius:12px;border:1.5px solid #e5e7ef;background:#fff;outline:none;">
+            <option value="" disabled selected>Select Loan Type</option>
+            <option value="personal">Personal Loan</option>
+            <option value="business">Business Loan</option>
+            <option value="education">Education Loan</option>
+          </select>
+        </div>
+        <div style="background:linear-gradient(90deg,#d1fae5 0%,#fef9c3 100%);border-radius:12px;padding:16px 0 16px 0;display:flex;justify-content:space-around;align-items:center;margin-bottom:32px;margin-top:8px;gap:8px;">
+          <span style="color:#10b981;font-weight:600;display:flex;align-items:center;gap:4px;font-size:1.02rem;"><span style="font-size:1.2rem;">&#10003;</span> No CRB Check</span>
+          <span style="color:#10b981;font-weight:600;display:flex;align-items:center;gap:4px;font-size:1.02rem;"><span style="font-size:1.2rem;">&#10003;</span> No Guarantors</span>
+          <span style="color:#10b981;font-weight:600;display:flex;align-items:center;gap:4px;font-size:1.02rem;"><span style="font-size:1.2rem;">&#10003;</span> No Paperwork</span>
+          <span style="color:#10b981;font-weight:600;display:flex;align-items:center;gap:4px;font-size:1.02rem;"><span style="font-size:1.2rem;">&#10003;</span> No Collateral</span>
+        </div>
+        <div style="text-align:center;margin-top:24px;">
+          <button type="button" onclick="window.location.href='apply.html'" style="background:linear-gradient(90deg,#16a34a 0%,#22d3ee 100%);color:#fff;font-weight:700;font-size:1.18rem;padding:16px 0;width:100%;border-radius:999px;border:none;box-shadow:0 2px 8px #0001;cursor:pointer;">Check Eligibility &rarr;</button>
+        </div>
+      </form>
+    </div>
+  </body>
+              <input type="text" placeholder="ID Number" required style="background:#f8f9f3; border-radius:12px; border:1.5px solid #e5e7ef; font-size:1.15rem; margin-bottom:10px; padding:14px;">
+              <select required style="background:#f8f9f3; border-radius:12px; border:1.5px solid #e5e7ef; font-size:1.15rem; margin-bottom:10px; padding:14px;">
+                <option value="" disabled selected>Select Loan Type</option>
+                <option value="personal">Personal Loan</option>
+                <option value="business">Business Loan</option>
+                <option value="education">Education Loan</option>
+              </select>
+            </form>
+            <div class="eligibility-features-row" style="display:flex; gap:12px; justify-content:center; margin-bottom:14px;">
+              <div class="eligibility-feature" style="background:#f3f6f9; border-radius:12px; padding:10px 18px; text-align:center; font-size:1.08rem; color:#228b22; font-weight:600; display:flex; align-items:center; gap:8px;">
+                <span class="icon" style="font-size:1.15rem;">🔒</span> Secure Application
+              </div>
+              <div class="eligibility-feature" style="background:#f3f6f9; border-radius:12px; padding:10px 18px; text-align:center; font-size:1.08rem; color:#228b22; font-weight:600; display:flex; align-items:center; gap:8px;">
+                <span class="icon" style="font-size:1.15rem;">🧑‍💼</span> No CRB Check
+              </div>
+            </div>
+              <button class="check-btn" style="background:linear-gradient(90deg,#e53935 0%,#43a047 50%,#1e88e5 100%); color:#fff; font-weight:700; font-size:1.15rem; padding:16px 0; border-radius:999px; text-align:center; text-decoration:none; margin-top:10px; box-shadow:0 2px 8px #0001; border:none; cursor:pointer; width:100%" onclick="event.preventDefault(); window.location.href='apply.html';">Check Eligibility &rarr;</button>
+            <div class="eligibility-footer">No paperwork required. No guarantors needed.</div>
+          </div>
+        </div>
+      </body>
+      font-size: 1.02rem;
+      color: #4b5563;
+      margin-bottom: 6px;
     }
-  </script>
+    .amount-title {
+      text-align: center;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #228b22;
+      margin-bottom: 18px;
+    }
+    .eligibility-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .eligibility-form input, .eligibility-form select {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 10px;
+      border: 1.5px solid #e5e7ef;
+      font-size: 1.08rem;
+      background: #f8f9f3;
+      color: #232946;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .eligibility-form input:focus, .eligibility-form select:focus {
+      border-color: #43a047;
+    }
+    .eligibility-features-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .eligibility-feature {
+      background: #f3f6f9;
+      border-radius: 12px;
+      padding: 8px 18px;
+      text-align: center;
+      font-size: 1.02rem;
+      color: #228b22;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .eligibility-feature .icon {
+      font-size: 1.15rem;
+    }
+    .check-btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(90deg, #e53935 0%, #43a047 50%, #1e88e5 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.15rem;
+      padding: 16px 0;
+      border-radius: 999px;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 10px;
+      box-shadow: 0 2px 8px #0001;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+    .check-btn:hover, .check-btn:focus {
+      background: linear-gradient(90deg, #1e88e5 0%, #43a047 50%, #e53935 100%);
+      box-shadow: 0 4px 16px #43a04733;
+      transform: translateY(-2px) scale(1.03);
+    }
+    .eligibility-footer {
+      text-align: center;
+      font-size: 0.98rem;
+      color: #4b5563;
+      margin-top: 12px;
+      margin-bottom: 0;
+    }
+    @media (max-width: 600px) {
+      .eligibility-wrap {
+        padding: 12px 0 8px 0;
+      }
+      .eligibility-card {
+        padding: 14px 6px 10px 6px;
+      }
+      .main-title {
+        font-size: 1.15rem;
+      }
+      .check-btn {
+        font-size: 1rem;
+        padding: 12px 0;
+      }
+      .eligibility-feature {
+        font-size: 0.98rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Checking eligibility…</h1>
-  <p>If you are not redirected automatically, <a href="apply.html">click here to continue to the application</a>.</p>
+  <div class="eligibility-wrap">
+    <div class="eligibility-card">
+      <div style="height: 8px; width: 100%; border-radius: 12px 12px 0 0; background: linear-gradient(90deg, #e53935 0%, #43a047 50%, #1e88e5 100%); margin-bottom: 18px;"></div>
+      <div class="brand-title" style="font-size:2rem; font-weight:900; color:#228b22; margin-bottom:0; display:flex; align-items:center; justify-content:center; gap:8px;">
+        <span class="icon" style="font-size:1.5rem;">💰</span> Swift Hela
+      </div>
+      <div class="main-title" style="font-size:1.7rem; font-weight:800; color:#232946; margin-bottom:0.5rem;">Check Your Loan Eligibility</div>
+      <div class="subtitle" style="font-size:1.08rem; color:#4b5563; margin-bottom:0.5rem;">Find out how much you qualify for</div>
+      <div class="amount-title" style="font-size:1.25rem; color:#228b22; font-weight:700; margin-bottom:18px;">Ksh. 1,000 – 50,000</div>
+      <form class="eligibility-form" style="margin-bottom:0;">
+        <div style="display:flex; flex-direction:column; gap:0;">
+          <label style="color:#228b22; font-size:1rem; font-weight:500; margin-bottom:2px; margin-top:10px;">Full Name</label>
+          <input type="text" placeholder="Full Name" required style="background:#f8f9f3; border-radius:12px; border:1.5px solid #e5e7ef; font-size:1.15rem; margin-bottom:14px; padding:14px;">
+          <label style="color:#228b22; font-size:1rem; font-weight:500; margin-bottom:2px;">Phone Number</label>
+          <input type="tel" placeholder="Phone Number" required style="background:#f8f9f3; border-radius:12px; border:1.5px solid #e5e7ef; font-size:1.15rem; margin-bottom:14px; padding:14px;">
+          <label style="color:#228b22; font-size:1rem; font-weight:500; margin-bottom:2px;">ID Number</label>
+          <input type="text" placeholder="ID Number" required style="background:#f8f9f3; border-radius:12px; border:1.5px solid #e5e7ef; font-size:1.15rem; margin-bottom:14px; padding:14px;">
+          <label style="color:#228b22; font-size:1rem; font-weight:500; margin-bottom:2px;">Loan Type</label>
+          <select required style="background:#f8f9f3; border-radius:12px; border:1.5px solid #e5e7ef; font-size:1.15rem; margin-bottom:14px; padding:14px;">
+            <option value="" disabled selected>Select Loan Type</option>
+            <option value="personal">Personal Loan</option>
+            <option value="business">Business Loan</option>
+            <option value="education">Education Loan</option>
+          </select>
+        </div>
+      </form>
+      <div class="eligibility-features-row" style="display:flex; gap:12px; justify-content:center; margin-bottom:14px;">
+        <div class="eligibility-feature" style="background:#f3f6f9; border-radius:12px; padding:10px 18px; text-align:center; font-size:1.08rem; color:#228b22; font-weight:600; display:flex; align-items:center; gap:8px;">
+          <span class="icon" style="font-size:1.15rem;">🔒</span> Secure Application
+        </div>
+        <div class="eligibility-feature" style="background:#f3f6f9; border-radius:12px; padding:10px 18px; text-align:center; font-size:1.08rem; color:#228b22; font-weight:600; display:flex; align-items:center; gap:8px;">
+          <span class="icon" style="font-size:1.15rem;">🧑‍💼</span> No CRB Check
+        </div>
+      </div>
+      <button class="check-btn" style="background:linear-gradient(90deg,#e53935 0%,#43a047 50%,#1e88e5 100%); color:#fff; font-weight:700; font-size:1.15rem; padding:16px 0; border-radius:999px; text-align:center; text-decoration:none; margin-top:10px; box-shadow:0 2px 8px #0001; border:none; cursor:pointer; width:100%;">Check Eligibility &rarr;</button>
+      <script>
+        window.onload = function() {
+          window.location.replace('apply.html');
+        }
+      </script>
+      <div class="eligibility-footer">No paperwork required. No guarantors needed.</div>
+    </div>
+  </div>
 </body>
 </html>
