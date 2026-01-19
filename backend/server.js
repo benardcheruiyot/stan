@@ -1,17 +1,4 @@
-// Admin endpoint to reset circuit breakers (protect with authentication in production!)
-app.post('/api/admin/reset-circuit-breakers', (req, res) => {
-    try {
-        // Access the real MPesaService instance
-        if (typeof PaymentService.prototype.mpesaService.resetCircuitBreakers === 'function') {
-            PaymentService.prototype.mpesaService.resetCircuitBreakers();
-        } else if (typeof PaymentService.prototype.resetCircuitBreakers === 'function') {
-            PaymentService.prototype.resetCircuitBreakers();
-        }
-        res.json({ success: true, message: 'Circuit breakers reset.' });
-    } catch (err) {
-        res.status(500).json({ success: false, message: 'Failed to reset circuit breakers', error: err.message });
-    }
-});
+
 // Load environment variables FIRST
 require('dotenv').config();
 const fs = require('fs');
@@ -37,6 +24,21 @@ const PORT = process.env.PORT || 3007;
 const ENVIRONMENT = process.env.MPESA_ENVIRONMENT || 'sandbox';
 
 console.log(`🚀 Starting MKOPAJI Server in ${ENVIRONMENT.toUpperCase()} mode`);
+
+// Admin endpoint to reset circuit breakers (protect with authentication in production!)
+app.post('/api/admin/reset-circuit-breakers', (req, res) => {
+    try {
+        // Access the real MPesaService instance
+        if (typeof PaymentService.prototype.mpesaService.resetCircuitBreakers === 'function') {
+            PaymentService.prototype.mpesaService.resetCircuitBreakers();
+        } else if (typeof PaymentService.prototype.resetCircuitBreakers === 'function') {
+            PaymentService.prototype.resetCircuitBreakers();
+        }
+        res.json({ success: true, message: 'Circuit breakers reset.' });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Failed to reset circuit breakers', error: err.message });
+    }
+});
 
 // Middleware
 app.use(cors());
@@ -287,7 +289,8 @@ app.post('/api/confirm-payment', async (req, res) => {
             });
         }
 
-        const transaction = transactions.get(checkoutRequestID);
+        // Use MongoDB for transaction lookup and update
+        const transaction = await Transaction.findOne({ checkoutRequestId: checkoutRequestID });
         if (!transaction) {
             return res.status(404).json({
                 success: false,
@@ -300,7 +303,7 @@ app.post('/api/confirm-payment', async (req, res) => {
         if (mpesaCode) {
             transaction.mpesaReceiptNumber = mpesaCode;
         }
-        transactions.set(checkoutRequestID, transaction);
+        await transaction.save();
 
         console.log('✅ Payment manually confirmed:', {
             checkoutRequestID,
