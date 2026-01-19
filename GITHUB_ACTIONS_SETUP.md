@@ -208,7 +208,7 @@ pm2 set pm2-logrotate:compress true
 ### Automatic Deployment
 - Push to `main` branch triggers automatic deployment
 - Tests run first, then deployment only if tests pass
-- Health checks verify successful deployment
+pm2 logs --lines 50
 - Rollback available if deployment fails
 
 ### Manual Deployment
@@ -220,7 +220,7 @@ pm2 set pm2-logrotate:compress true
 ```bash
 # On your EC2 server, monitor the deployment
 pm2 logs fundfast-production --lines 50
-pm2 status
+pm2 logs
 curl http://localhost:3000/api/health
 ```
 
@@ -232,7 +232,7 @@ curl http://localhost:3000/api/health
 ```bash
 # Check SSH key permissions
 chmod 600 ~/.ssh/id_rsa
-# Verify key is added to EC2 authorized_keys
+pm2 logs
 ```
 
 #### Application Won't Start

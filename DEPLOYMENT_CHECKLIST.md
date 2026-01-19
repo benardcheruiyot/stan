@@ -65,7 +65,7 @@ curl http://localhost:3000/api/health
 - [ ] Application starts without errors
 - [ ] Health endpoint responds: `curl http://localhost:3000/api/health`
 - [ ] PM2 shows app running: `pm2 status`
-- [ ] Logs are clean: `pm2 logs fundfast-production`
+- [ ] Logs are clean: `pm2 logs`
 
 ### 2. Functionality Tests
 - [ ] Frontend loads correctly
@@ -119,8 +119,9 @@ curl http://localhost:3000/api/health
 ssh ubuntu@your-server-ip
 cd /home/ubuntu/kopesha-loan-app
 
+
 # Stop current version
-pm2 stop fundfast-production
+pm2 stop kopesha.mkopaji.com-3004
 
 # Restore from backup
 cp -r backup/* ./
@@ -157,13 +158,13 @@ pm2 start ecosystem.config.js --env production
 pm2 status
 
 # View logs
-pm2 logs fundfast-production
+pm2 logs
 
 # Restart application
-pm2 restart fundfast-production
+pm2 restart kopesha.mkopaji.com-3004
 
 # Stop application
-pm2 stop fundfast-production
+pm2 stop kopesha.mkopaji.com-3004
 
 # Monitor resources
 pm2 monit

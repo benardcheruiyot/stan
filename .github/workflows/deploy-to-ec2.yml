@@ -7,7 +7,7 @@ on:
 
 env:
   NODE_VERSION: '18'
-  APP_NAME: 'fundfast-production'
+  # APP_NAME: 'fundfast-production'  # Removed to prevent deployment errors
 
 jobs:
   test:
