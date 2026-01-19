@@ -96,42 +96,39 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// In-memory storage for transactions (use database in production)
-const transactions = new Map();
-const applications = new Map();
 
-// === Background job to resolve stuck pending transactions ===
+
+// === Background job to resolve stuck pending transactions using MongoDB ===
 const PENDING_TIMEOUT_MINUTES = 10; // Mark as failed after 10 minutes
 const PENDING_CHECK_INTERVAL_MS = 2 * 60 * 1000; // Check every 2 minutes
 
 async function checkAndResolvePendingTransactions() {
     const now = Date.now();
-    for (const [id, tx] of transactions.entries()) {
-        if (tx.status === 'pending') {
-            const created = new Date(tx.timestamp).getTime();
-            const ageMinutes = (now - created) / 60000;
-            if (ageMinutes > PENDING_TIMEOUT_MINUTES) {
-                // Mark as failed due to timeout
-                tx.status = 'timeout';
-                tx.failedAt = new Date().toISOString();
-                tx.failureReason = 'Timed out after pending too long';
-                transactions.set(id, tx);
-                console.warn(`⏰ Transaction ${id} marked as timeout after ${PENDING_TIMEOUT_MINUTES} min.`);
-            } else {
-                // Try to re-check status with paymentService
-                try {
-                    const statusResult = await paymentService.checkTransactionStatus(id, tx.provider || 'mpesa');
-                    if (statusResult.success && statusResult.status !== 'pending') {
-                        tx.status = statusResult.status;
-                        if (statusResult.mpesaReceiptNumber) {
-                            tx.mpesaReceiptNumber = statusResult.mpesaReceiptNumber;
-                        }
-                        transactions.set(id, tx);
-                        console.log(`🔄 Transaction ${id} status auto-updated to: ${statusResult.status}`);
+    const pendingTxs = await Transaction.find({ status: 'pending' });
+    for (const tx of pendingTxs) {
+        const created = new Date(tx.createdAt).getTime();
+        const ageMinutes = (now - created) / 60000;
+        if (ageMinutes > PENDING_TIMEOUT_MINUTES) {
+            // Mark as failed due to timeout
+            tx.status = 'timeout';
+            tx.failedAt = new Date().toISOString();
+            tx.failureReason = 'Timed out after pending too long';
+            await tx.save();
+            console.warn(`⏰ Transaction ${tx.checkoutRequestId} marked as timeout after ${PENDING_TIMEOUT_MINUTES} min.`);
+        } else {
+            // Try to re-check status with paymentService
+            try {
+                const statusResult = await paymentService.checkTransactionStatus(tx.checkoutRequestId, tx.provider || 'mpesa');
+                if (statusResult.success && statusResult.status !== 'pending') {
+                    tx.status = statusResult.status;
+                    if (statusResult.mpesaReceiptNumber) {
+                        tx.mpesaReceiptNumber = statusResult.mpesaReceiptNumber;
                     }
-                } catch (err) {
-                    console.error(`Error auto-checking status for ${id}:`, err.message);
+                    await tx.save();
+                    console.log(`🔄 Transaction ${tx.checkoutRequestId} status auto-updated to: ${statusResult.status}`);
                 }
+            } catch (err) {
+                console.error(`Error auto-checking status for ${tx.checkoutRequestId}:`, err.message);
             }
         }
     }
