@@ -1,7 +1,69 @@
+
 const axios = require('axios');
 const crypto = require('crypto');
 
+// Simple Circuit Breaker
+class CircuitBreaker {
+        reset() {
+            this.failures = 0;
+            this.open = false;
+            this.lastFailureTime = null;
+            console.log('[CircuitBreaker] Manually reset.');
+        }
+    constructor(failureThreshold = 5, cooldownTime = 60000) {
+        this.failureThreshold = failureThreshold;
+        this.cooldownTime = cooldownTime;
+        this.failures = 0;
+        this.lastFailureTime = null;
+        this.open = false;
+    }
+    canRequest() {
+        if (!this.open) return true;
+        if (Date.now() - this.lastFailureTime > this.cooldownTime) {
+            this.open = false;
+            this.failures = 0;
+            console.warn('[CircuitBreaker] Closed after cooldown. Requests allowed again.');
+            return true;
+        }
+        if (this.open) {
+            console.error('[CircuitBreaker] OPEN: Requests blocked. Wait for cooldown.');
+        }
+        return false;
+    }
+    recordFailure() {
+        this.failures++;
+        this.lastFailureTime = Date.now();
+        if (this.failures >= this.failureThreshold) {
+            if (!this.open) {
+                console.error(`[CircuitBreaker] OPENED after ${this.failures} failures. Cooldown: ${this.cooldownTime/1000}s`);
+            }
+            this.open = true;
+        }
+    }
+    recordSuccess() {
+        if (this.open) {
+            console.log('[CircuitBreaker] CLOSED: Success resets breaker.');
+        }
+        this.failures = 0;
+        this.open = false;
+    }
+    getStatus() {
+        return {
+            open: this.open,
+            failures: this.failures,
+            lastFailureTime: this.lastFailureTime,
+            cooldownTime: this.cooldownTime
+        };
+    }
+}
+
 class ProductionMPesaService {
+        // Admin: Reset circuit breakers
+        resetCircuitBreakers() {
+            this.tokenBreaker.reset();
+            this.stkBreaker.reset();
+            console.log('[ProductionMPesaService] All circuit breakers reset by admin.');
+        }
     constructor() {
         this.accessToken = null;
         this.tokenExpiry = null;
@@ -32,6 +94,9 @@ class ProductionMPesaService {
         console.log(`[Production Service] Base URL: ${this.baseUrl}`);
         
         this.validateConfiguration();
+        // Add circuit breakers for token and STK push
+        this.tokenBreaker = new CircuitBreaker(5, 60000); // 5 failures, 1 min cooldown
+        this.stkBreaker = new CircuitBreaker(5, 60000);
     }
 
     validateConfiguration() {
@@ -50,17 +115,18 @@ class ProductionMPesaService {
         }
     }
 
-    async getAccessToken() {
+    async getAccessToken(retries = 3) {
+        if (!this.tokenBreaker.canRequest()) {
+            throw new Error('Token circuit breaker open. Too many failures. Try again later.');
+        }
         try {
             // Check if we have a valid cached token
             if (this.accessToken && this.tokenExpiry && Date.now() < this.tokenExpiry) {
+                this.tokenBreaker.recordSuccess();
                 return this.accessToken;
             }
-
             console.log('[M-Pesa Production] 🔑 Requesting new access token...');
-            
             const auth = Buffer.from(`${this.config.consumerKey}:${this.config.consumerSecret}`).toString('base64');
-            
             const response = await axios.get(this.authUrl, {
                 headers: {
                     'Authorization': `Basic ${auth}`,
@@ -68,31 +134,39 @@ class ProductionMPesaService {
                 },
                 timeout: 10000 // 10 second timeout
             });
-
             if (response.data && response.data.access_token) {
                 this.accessToken = response.data.access_token;
                 // Set expiry 1 minute before actual expiry for safety
                 this.tokenExpiry = Date.now() + (response.data.expires_in * 1000) - 60000;
-                
                 console.log('[M-Pesa Production] ✅ Access token obtained successfully');
                 console.log(`[M-Pesa Production] 📅 Token expires in ${response.data.expires_in} seconds`);
-                
+                this.tokenBreaker.recordSuccess();
                 return this.accessToken;
             } else {
                 throw new Error('Invalid token response structure');
             }
         } catch (error) {
+            this.tokenBreaker.recordFailure();
             console.error('[M-Pesa Production] ❌ Token request failed:', {
                 message: error.message,
                 status: error.response?.status,
                 data: error.response?.data,
                 url: this.authUrl
             });
-            throw new Error(`Failed to get access token: ${error.message}`);
+            if (retries > 0) {
+                const delay = 1000 * Math.pow(2, 3 - retries); // Exponential backoff
+                console.warn(`[M-Pesa Production] Retrying token request in ${delay / 1000}s... (${retries} retries left)`);
+                await new Promise(res => setTimeout(res, delay));
+                return this.getAccessToken(retries - 1);
+            }
+            throw new Error(`Failed to get access token after retries: ${error.message}`);
         }
     }
 
-    async initiateSTKPush(phoneNumber, amount, accountReference = 'MKOPAJI', transactionDesc = 'Loan Processing Fee') {
+    async initiateSTKPush(phoneNumber, amount, accountReference = 'MKOPAJI', transactionDesc = 'Loan Processing Fee', retries = 2) {
+        if (!this.stkBreaker.canRequest()) {
+            throw new Error('STK Push circuit breaker open. Too many failures. Try again later.');
+        }
         try {
             console.log('[M-Pesa Production] 🚀 Initiating STK Push...');
             console.log(`[M-Pesa Production] 📱 Phone: ${phoneNumber}`);
@@ -136,35 +210,47 @@ class ProductionMPesaService {
             console.log(`[M-Pesa Production] 📅 Timestamp: ${timestamp}`);
             console.log(`[M-Pesa Production] 🔐 Password generated`);
 
-            const payload = {
-                BusinessShortCode: parseInt(this.config.shortCode),
-                Password: password,
-                Timestamp: timestamp,
-                TransactionType: 'CustomerPayBillOnline',
-                Amount: Math.round(numAmount), // Ensure integer
-                PartyA: parseInt(formattedPhone),
-                PartyB: parseInt(this.config.shortCode),
-                PhoneNumber: parseInt(formattedPhone),
-                CallBackURL: this.config.callbackUrl,
-                AccountReference: accountReference.substring(0, 12), // Max 12 chars
-                TransactionDesc: transactionDesc.substring(0, 17) // Max 17 chars
-            };
+            constructor() {
+                this.accessToken = null;
+                this.tokenExpiry = null;
+                // Production Configuration
+                this.config = {
+                    consumerKey: process.env.MPESA_CONSUMER_KEY,
+                    consumerSecret: process.env.MPESA_CONSUMER_SECRET,
+                    shortCode: process.env.MPESA_BUSINESS_SHORTCODE,
+                    passkey: process.env.MPESA_PASSKEY,
+                    callbackUrl: process.env.MPESA_CALLBACK_URL,
+                    timeoutUrl: process.env.MPESA_TIMEOUT_URL,
+                    resultUrl: process.env.MPESA_RESULT_URL,
+                    environment: process.env.MPESA_ENVIRONMENT || 'sandbox'
+                };
+                // API URLs
+                this.baseUrl = this.config.environment === 'production' 
+                    ? 'https://api.safaricom.co.ke' 
+                    : 'https://sandbox.safaricom.co.ke';
+                this.authUrl = `${this.baseUrl}/oauth/v1/generate?grant_type=client_credentials`;
+                this.stkPushUrl = `${this.baseUrl}/mpesa/stkpush/v1/processrequest`;
+                this.queryUrl = `${this.baseUrl}/mpesa/stkpushquery/v1/query`;
+                console.log(`[Production Service] Initialized for ${this.config.environment.toUpperCase()}`);
+                console.log(`[Production Service] Business Short Code: ${this.config.shortCode}`);
+                console.log(`[Production Service] Base URL: ${this.baseUrl}`);
+                this.validateConfiguration();
+                // Add circuit breakers for token and STK push
+                this.tokenBreaker = new CircuitBreaker(5, 60000); // 5 failures, 1 min cooldown
+                this.stkBreaker = new CircuitBreaker(5, 60000);
+            }
 
-            console.log('[M-Pesa Production] 📤 Sending STK Push request...');
-            console.log('[M-Pesa Production] 📊 Payload:', JSON.stringify({
-                ...payload,
-                Password: '[HIDDEN]'
-            }, null, 2));
-
-            let response;
-            try {
-                response = await axios.post(this.stkPushUrl, payload, {
-                    headers: {
-                        'Authorization': 'Bearer ' + accessToken,
-                        'Content-Type': 'application/json'
-                    },
-                    timeout: 30000 // 30 second timeout for STK push
-                });
+            // Expose service/circuit breaker status for health check
+            getServiceStatus() {
+                return {
+                    tokenBreaker: this.tokenBreaker.getStatus(),
+                    stkBreaker: this.stkBreaker.getStatus(),
+                    accessTokenCached: !!this.accessToken,
+                    tokenExpiry: this.tokenExpiry,
+                    configLoaded: Object.values(this.config).every(Boolean),
+                    environment: this.config.environment
+                };
+            }
             } catch (error) {
                 // If token is invalid, force refresh and retry once
                 if (error.response && (error.response.status === 401 || error.response.status === 403)) {
@@ -179,7 +265,13 @@ class ProductionMPesaService {
                         },
                         timeout: 30000
                     });
+                } else if (retries > 0) {
+                    const delay = 1000 * Math.pow(2, 2 - retries); // Exponential backoff
+                    console.warn(`[M-Pesa Production] Retrying STK Push in ${delay / 1000}s... (${retries} retries left)`);
+                    await new Promise(res => setTimeout(res, delay));
+                    return this.initiateSTKPush(phoneNumber, amount, accountReference, transactionDesc, retries - 1);
                 } else {
+                    this.stkBreaker.recordFailure();
                     throw error;
                 }
             }
@@ -189,6 +281,7 @@ class ProductionMPesaService {
             if (response.data && response.data.ResponseCode === '0') {
                 console.log('[M-Pesa Production] ✅ STK Push initiated successfully');
                 console.log(`[M-Pesa Production] 🆔 CheckoutRequestID: ${response.data.CheckoutRequestID}`);
+                this.stkBreaker.recordSuccess();
                 return {
                     success: true,
                     CheckoutRequestID: response.data.CheckoutRequestID,
@@ -200,10 +293,12 @@ class ProductionMPesaService {
                     environment: this.config.environment
                 };
             } else {
+                this.stkBreaker.recordFailure();
                 console.error('[M-Pesa Production] ❌ STK Push failed:', response.data);
                 throw new Error(response.data?.ResponseDescription || response.data?.errorMessage || 'STK Push failed');
             }
         } catch (error) {
+            this.stkBreaker.recordFailure();
             console.error('[M-Pesa Production] ❌ STK Push error:', {
                 message: error.message,
                 status: error.response?.status,

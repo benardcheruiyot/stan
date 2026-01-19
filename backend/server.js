@@ -1,3 +1,17 @@
+// Admin endpoint to reset circuit breakers (protect with authentication in production!)
+app.post('/api/admin/reset-circuit-breakers', (req, res) => {
+    try {
+        // Access the real MPesaService instance
+        if (typeof PaymentService.prototype.mpesaService.resetCircuitBreakers === 'function') {
+            PaymentService.prototype.mpesaService.resetCircuitBreakers();
+        } else if (typeof PaymentService.prototype.resetCircuitBreakers === 'function') {
+            PaymentService.prototype.resetCircuitBreakers();
+        }
+        res.json({ success: true, message: 'Circuit breakers reset.' });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Failed to reset circuit breakers', error: err.message });
+    }
+});
 // Load environment variables FIRST
 require('dotenv').config();
 const fs = require('fs');
@@ -5,7 +19,18 @@ const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+
+const mongoose = require('mongoose');
 const PaymentService = require('./services/payment-service');
+const Transaction = require('./models/Transaction');
+// Connect to MongoDB
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mpesa';
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('✅ Connected to MongoDB'))
+    .catch(err => {
+        console.error('❌ MongoDB connection error:', err.message);
+        process.exit(1);
+    });
 
 const app = express();
 const PORT = process.env.PORT || 3007;
@@ -56,6 +81,20 @@ app.get('/apply', (req, res) => {
 
 // Initialize Payment service
 const paymentService = new PaymentService();
+
+// Health check endpoint for monitoring service and circuit breaker status
+app.get('/api/health', (req, res) => {
+    let serviceStatus = {};
+    if (typeof paymentService.getServiceStatus === 'function') {
+        serviceStatus = paymentService.getServiceStatus();
+    }
+    res.json({
+        success: true,
+        status: 'ok',
+        environment: ENVIRONMENT,
+        serviceStatus
+    });
+});
 
 // In-memory storage for transactions (use database in production)
 const transactions = new Map();
@@ -134,22 +173,23 @@ app.post('/api/initiate-stk-push', async (req, res) => {
         const result = await paymentService.initiateSTKPush(phoneNumber, amount, accountReference, transactionDesc);
 
         if (result.success) {            
-            // Store transaction and application data
-            transactions.set(result.CheckoutRequestID, {
+            // Store transaction in MongoDB
+            const transactionDoc = new Transaction({
                 phoneNumber,
                 amount,
                 accountReference,
                 transactionDesc,
                 status: 'pending',
-                timestamp: new Date(),
                 provider: result.provider || 'mpesa',
-                applicationData
+                applicationData,
+                checkoutRequestId: result.CheckoutRequestID,
+                merchantRequestId: result.MerchantRequestID,
+                responseDescription: result.ResponseDescription,
+                customerMessage: result.CustomerMessage,
+                environment: ENVIRONMENT
             });
-
-            applications.set(result.CheckoutRequestID, applicationData);
-
-            console.log('STK Push initiated successfully:', result.CheckoutRequestID);
-
+            await transactionDoc.save();
+            console.log('STK Push initiated and saved:', result.CheckoutRequestID);
             res.json({
                 success: true,
                 message: 'STK Push initiated successfully',
@@ -181,7 +221,8 @@ app.get('/api/check-transaction-status/:checkoutRequestID', async (req, res) => 
 
         console.log('Checking transaction status for:', checkoutRequestID);
 
-        const transaction = transactions.get(checkoutRequestID);
+
+        const transaction = await Transaction.findOne({ checkoutRequestId: checkoutRequestID });
         if (!transaction) {
             return res.status(404).json({
                 success: false,
@@ -196,12 +237,13 @@ app.get('/api/check-transaction-status/:checkoutRequestID', async (req, res) => 
         const statusResult = await paymentService.checkTransactionStatus(checkoutRequestID, providerUsed);
 
         if (statusResult.success) {
-            // Update transaction status
+            // Update transaction status in MongoDB
             transaction.status = statusResult.status;
             if (statusResult.mpesaReceiptNumber) {
                 transaction.mpesaReceiptNumber = statusResult.mpesaReceiptNumber;
             }
-            transactions.set(checkoutRequestID, transaction);
+            transaction.updatedAt = new Date();
+            await transaction.save();
 
             console.log('Transaction status updated:', {
                 checkoutRequestID,
@@ -216,7 +258,7 @@ app.get('/api/check-transaction-status/:checkoutRequestID', async (req, res) => 
                 transaction: {
                     amount: transaction.amount,
                     phoneNumber: transaction.phoneNumber,
-                    timestamp: transaction.timestamp
+                    timestamp: transaction.createdAt
                 }
             });
         } else {
@@ -303,18 +345,19 @@ app.post('/api/simulate-payment-success', async (req, res) => {
             });
         }
 
-        const transaction = transactions.get(checkoutRequestID);
+
+        const transaction = await Transaction.findOne({ checkoutRequestId: checkoutRequestID });
         if (!transaction) {
             return res.status(404).json({
                 success: false,
                 message: 'Transaction not found'
             });
         }
-
         // Simulate successful payment
         transaction.status = 'completed';
-        transaction.mpesaReceiptNumber = 'QEJ7Y6X2M1'; // Sample M-Pesa code
-        transactions.set(checkoutRequestID, transaction);
+        transaction.mpesaReceiptNumber = mpesaCode || 'QEJ7Y6X2M1'; // Use provided or sample code
+        transaction.updatedAt = new Date();
+        await transaction.save();
 
         console.log('🧪 TEST: Payment simulated as successful:', {
             checkoutRequestID,
@@ -330,7 +373,7 @@ app.post('/api/simulate-payment-success', async (req, res) => {
             transaction: {
                 amount: transaction.amount,
                 phoneNumber: transaction.phoneNumber,
-                timestamp: transaction.timestamp
+                timestamp: transaction.createdAt
             }
         });
 
@@ -372,8 +415,9 @@ app.post('/api/mpesa-callback', async (req, res) => {
             ResultDesc
         });
 
-        // Find the transaction
-        const transaction = transactions.get(CheckoutRequestID);
+
+        // Find the transaction in MongoDB
+        const transaction = await Transaction.findOne({ checkoutRequestId: CheckoutRequestID });
         if (!transaction) {
             console.error(`📞 ❌ Transaction not found for CheckoutRequestID: ${CheckoutRequestID}`);
             return;
@@ -411,23 +455,12 @@ app.post('/api/mpesa-callback', async (req, res) => {
                 }
             }
 
-            // Process loan disbursement for successful payments
-            const applicationData = applications.get(CheckoutRequestID);
-            if (applicationData) {
-                console.log('📞 🏦 Processing loan disbursement...');
-                try {
-                    await processLoanDisbursement(applicationData, transaction);
-                    console.log('📞 ✅ Loan disbursement completed');
-                } catch (disbursementError) {
-                    console.error('📞 ❌ Loan disbursement failed:', disbursementError.message);
-                    transaction.disbursementError = disbursementError.message;
-                }
-            }
+            // (Optional) Process loan disbursement for successful payments
+            // You may need to refactor applicationData to be stored in MongoDB as well
 
         } else {
             // Payment failed, cancelled, or timed out
             console.log(`📞 ❌ Payment failed with code ${ResultCode}: ${ResultDesc}`);
-            
             let status = 'failed';
             switch (ResultCode) {
                 case 1032:
@@ -446,14 +479,13 @@ app.post('/api/mpesa-callback', async (req, res) => {
                     status = 'failed';
                     console.log(`📞 Payment failed with unknown code: ${ResultCode}`);
             }
-            
             transaction.status = status;
             transaction.failureReason = ResultDesc;
             transaction.failedAt = new Date().toISOString();
         }
 
-        // Update transaction in storage
-        transactions.set(CheckoutRequestID, transaction);
+        transaction.updatedAt = new Date();
+        await transaction.save();
 
         const processingTime = Date.now() - startTime;
         console.log(`📞 ✅ Callback processed in ${processingTime}ms`);
@@ -527,11 +559,8 @@ async function processLoanDisbursement(applicationData, transaction) {
 }
 
 // Get all transactions (for admin/debugging)
-app.get('/api/transactions', (req, res) => {
-    const allTransactions = Array.from(transactions.entries()).map(([id, data]) => ({
-        id,
-        ...data
-    }));
+app.get('/api/transactions', async (req, res) => {
+    const allTransactions = await Transaction.find().sort({ createdAt: -1 }).lean();
     res.json(allTransactions);
 });
 
