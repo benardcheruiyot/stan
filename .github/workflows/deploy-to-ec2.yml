@@ -10,6 +10,7 @@ env:
   APP_NAME: 'stan-app'
   APP_PORT: '3004'
   APP_DIR: '/var/www/html/kopesha-loan-app'
+  APP_DOMAIN_DEFAULT: 'kopesha.mkopaji.com'
 
 jobs:
   test:
@@ -121,6 +122,37 @@ jobs:
             exit 1
           fi
 
+    - name: 🔐 Auto-fix TLS certificate and Nginx
+      uses: appleboy/ssh-action@v1.2.1
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: root
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        script: |
+          cd "${{ env.APP_DIR }}"
+          chmod +x tools/fix_mkopaji_www_tls_noninteractive.sh
+
+          APP_DOMAIN="${{ secrets.APP_DOMAIN }}"
+          if [ -z "${APP_DOMAIN}" ]; then
+            APP_DOMAIN="${{ env.APP_DOMAIN_DEFAULT }}"
+          fi
+
+          TLS_EMAIL="${{ secrets.LETSENCRYPT_EMAIL }}"
+          if [ -z "${TLS_EMAIL}" ]; then
+            TLS_EMAIL="admin@mkopaji.com"
+          fi
+
+          echo "🔐 Applying TLS automation for ${APP_DOMAIN}"
+          APP_NAME="${{ env.APP_NAME }}" \
+          APP_PORT="${{ env.APP_PORT }}" \
+          APP_DOMAIN="${APP_DOMAIN}" \
+          INCLUDE_WWW=false \
+          LETSENCRYPT_EMAIL="${TLS_EMAIL}" \
+          ./tools/fix_mkopaji_www_tls_noninteractive.sh
+
+          echo "✅ TLS verification"
+          curl -I --max-time 15 "https://${APP_DOMAIN}" || true
+
     - name: ✅ Deployment Success Notification
       if: success()
       uses: appleboy/ssh-action@v1.2.1
@@ -130,10 +162,14 @@ jobs:
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
           PROCESS_NAME="${{ env.APP_NAME }}-${{ env.APP_PORT }}"
+          APP_DOMAIN="${{ secrets.APP_DOMAIN }}"
+          if [ -z "${APP_DOMAIN}" ]; then
+            APP_DOMAIN="${{ env.APP_DOMAIN_DEFAULT }}"
+          fi
           echo "🎉 Deployment completed successfully!"
           echo "📊 Final status:"
           pm2 status "${PROCESS_NAME}"
-          echo "🌐 Application should be available at: http://${{ secrets.EC2_HOST }}:${{ env.APP_PORT }}"
+          echo "🌐 Application should be available at: https://${APP_DOMAIN}"
 
     - name: 📱 Slack notification (success)
       if: success()
