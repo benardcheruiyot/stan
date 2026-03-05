@@ -1,7 +1,10 @@
 // PM2 Ecosystem Configuration for Production
+const APP_NAME = process.env.APP_NAME || 'stan-app';
+const APP_PORT = Number(process.env.APP_PORT || process.env.PORT || 3004);
+
 module.exports = {
   apps: [{
-    name: 'kopesha.mkopaji.com-3004',
+    name: `${APP_NAME}-${APP_PORT}`,
     script: 'backend/server.js',
     instances: 'max', // Use all available CPU cores
     exec_mode: 'cluster',
@@ -9,11 +12,13 @@ module.exports = {
     // Environment variables
     env: {
       NODE_ENV: 'development',
-      PORT: 3004
+      PORT: APP_PORT,
+      APP_NAME
     },
     env_production: {
       NODE_ENV: 'production',
-      PORT: 3004
+      PORT: APP_PORT,
+      APP_NAME
     },
     
     // Logging
