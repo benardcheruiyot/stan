@@ -7,7 +7,9 @@ on:
 
 env:
   NODE_VERSION: '18'
-  # APP_NAME: 'fundfast-production'  # Removed to prevent deployment errors
+  APP_NAME: 'stan-app'
+  APP_PORT: '3004'
+  APP_DIR: '/var/www/html/kopesha-loan-app'
 
 jobs:
   test:
@@ -59,7 +61,7 @@ jobs:
         username: root
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         source: "."
-        target: "/var/www/html/kopesha-loan-app"
+        target: "${{ env.APP_DIR }}"
         strip_components: 1
 
     - name: 🔄 Restart App with PM2
@@ -69,7 +71,10 @@ jobs:
         username: root
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
-          cd /var/www/html/kopesha-loan-app
+          APP_NAME="${{ env.APP_NAME }}"
+          APP_PORT="${{ env.APP_PORT }}"
+          PROCESS_NAME="${APP_NAME}-${APP_PORT}"
+          cd "${{ env.APP_DIR }}"
           
           echo "🚀 Starting deployment..."
           
@@ -92,11 +97,11 @@ jobs:
           
           # Stop existing PM2 process
           echo "🛑 Stopping existing application..."
-          pm2 delete ${{ env.APP_NAME }} || true
+          pm2 delete "${PROCESS_NAME}" || true
           
           # Start application with PM2
           echo "🚀 Starting application with PM2..."
-          pm2 start ecosystem.config.js --env production
+          APP_NAME="${APP_NAME}" APP_PORT="${APP_PORT}" pm2 start ecosystem.config.js --env production --update-env
           
           # Save PM2 configuration
           pm2 save
@@ -108,11 +113,12 @@ jobs:
           # Health check
           echo "🔍 Performing health check..."
           sleep 5
-          if curl -f http://localhost:3004/api/health > /dev/null 2>&1; then
+          if curl -f "http://localhost:${APP_PORT}/api/health" > /dev/null 2>&1; then
             echo "✅ Health check passed"
           else
             echo "⚠️  Health check failed - checking logs..."
-            pm2 logs ${{ env.APP_NAME }} --lines 20
+            pm2 logs "${PROCESS_NAME}" --lines 80 --nostream || true
+            exit 1
           fi
 
     - name: ✅ Deployment Success Notification
@@ -123,10 +129,11 @@ jobs:
         username: root
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
+          PROCESS_NAME="${{ env.APP_NAME }}-${{ env.APP_PORT }}"
           echo "🎉 Deployment completed successfully!"
           echo "📊 Final status:"
-          pm2 status ${{ env.APP_NAME }}
-          echo "🌐 Application should be available at: http://${{ secrets.EC2_HOST }}:3000"
+          pm2 status "${PROCESS_NAME}"
+          echo "🌐 Application should be available at: http://${{ secrets.EC2_HOST }}:${{ env.APP_PORT }}"
 
     - name: 📱 Slack notification (success)
       if: success()

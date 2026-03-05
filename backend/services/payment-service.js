@@ -32,8 +32,8 @@ class PaymentService {
         
         console.log('🔄 Processing payment via provider (Production)');
         console.log(`📱 Phone: ${phoneNumber}, Amount: KSh ${amount}`);
-        console.log(`🏢 Business: ${process.env.BUSINESS_SHORTCODE}`);
-        console.log(`🌐 Environment: ${process.env.ENVIRONMENT}`);
+        console.log(`🏢 Business: ${process.env.MPESA_BUSINESS_SHORTCODE}`);
+        console.log(`🌐 Environment: ${process.env.MPESA_ENVIRONMENT}`);
         
         try {
             const response = await this.mpesaService.initiateSTKPush(

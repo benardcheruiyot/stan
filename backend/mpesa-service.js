@@ -44,8 +44,8 @@ class MPesaService {
         }
         
         console.log('✅ Production configuration validated');
-        console.log(`📱 Business Short Code: ${process.env.BUSINESS_SHORTCODE}`);
-        console.log(`🌐 Callback URL: ${process.env.CALLBACK_URL}`);
+        console.log(`📱 Business Short Code: ${process.env.MPESA_BUSINESS_SHORTCODE}`);
+        console.log(`🌐 Callback URL: ${process.env.MPESA_CALLBACK_URL}`);
     }
 
     async getAccessToken() {
