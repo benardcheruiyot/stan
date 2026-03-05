@@ -31,7 +31,13 @@ This configures:
 Run on server as root:
 
 ```bash
-sudo APP_NAME=stan APP_DOMAIN=mkopaji.com APP_PORT=3004 ./tools/fix_mkopaji_www_tls_noninteractive.sh
+sudo APP_NAME=stan APP_DOMAIN=mkopaji.com APP_PORT=3004 INCLUDE_WWW=true ./tools/fix_mkopaji_www_tls_noninteractive.sh
+```
+
+For subdomain-only apps (e.g. `kopesha.mkopaji.com`) use:
+
+```bash
+sudo APP_NAME=stan APP_DOMAIN=kopesha.mkopaji.com APP_PORT=3004 INCLUDE_WWW=false ./tools/fix_mkopaji_www_tls_noninteractive.sh
 ```
 
 This creates SAN certificate for:

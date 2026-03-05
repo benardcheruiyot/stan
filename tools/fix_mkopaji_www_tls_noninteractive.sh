@@ -10,10 +10,18 @@ APP_DOMAIN_RAW="${APP_DOMAIN:-app.example.com}"
 DOMAIN="${APP_DOMAIN_RAW#www.}"
 WWW="www.${DOMAIN}"
 APP_PORT="${APP_PORT:-3004}"
+INCLUDE_WWW="${INCLUDE_WWW:-false}"
 EMAIL="${LETSENCRYPT_EMAIL:-admin@${DOMAIN}}"
 SITE_CONF="/etc/nginx/sites-available/${APP_NAME}.conf"
 SITE_LINK="/etc/nginx/sites-enabled/${APP_NAME}.conf"
 BACKUP_DIR="/root/nginx-backups-${APP_NAME}-$(date +%Y%m%d-%H%M%S)"
+
+CERTBOT_DOMAINS=("-d" "${DOMAIN}")
+SERVER_NAMES="${DOMAIN}"
+if [[ "${INCLUDE_WWW}" == "true" ]]; then
+  CERTBOT_DOMAINS+=("-d" "${WWW}")
+  SERVER_NAMES="${DOMAIN} ${WWW}"
+fi
 
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root." >&2
@@ -33,21 +41,21 @@ fi
 
 # Obtain/renew SAN certificate first so cert paths exist in nginx config
 set +e
-certbot certonly --nginx -d "${DOMAIN}" -d "${WWW}" --non-interactive --agree-tos --email "${EMAIL}"
+certbot certonly --nginx "${CERTBOT_DOMAINS[@]}" --non-interactive --agree-tos --email "${EMAIL}"
 CERTBOT_EXIT=$?
 set -e
 
 if [[ ${CERTBOT_EXIT} -ne 0 ]]; then
   echo "certbot --nginx failed; trying standalone mode"
   systemctl stop nginx || true
-  certbot certonly --standalone -d "${DOMAIN}" -d "${WWW}" --non-interactive --agree-tos --email "${EMAIL}"
+  certbot certonly --standalone "${CERTBOT_DOMAINS[@]}" --non-interactive --agree-tos --email "${EMAIL}"
   systemctl start nginx || true
 fi
 
 cat > "${SITE_CONF}.new" <<EOF
 server {
   listen 80;
-  server_name ${DOMAIN} ${WWW};
+  server_name ${SERVER_NAMES};
   return 301 https://${DOMAIN}\$request_uri;
 }
 
@@ -74,6 +82,11 @@ server {
   }
 }
 
+
+EOF
+
+if [[ "${INCLUDE_WWW}" == "true" ]]; then
+cat >> "${SITE_CONF}.new" <<EOF
 server {
   listen 443 ssl http2;
   server_name ${WWW};
@@ -86,6 +99,7 @@ server {
   return 301 https://${DOMAIN}\$request_uri;
 }
 EOF
+fi
 
 mv "${SITE_CONF}.new" "${SITE_CONF}"
 ln -sf "${SITE_CONF}" "${SITE_LINK}"
@@ -95,6 +109,8 @@ systemctl reload nginx
 echo "Verification"
 curl -I --max-time 10 "http://${DOMAIN}" || true
 curl -I --max-time 10 "https://${DOMAIN}" || true
-curl -I --max-time 10 "https://${WWW}" || true
+if [[ "${INCLUDE_WWW}" == "true" ]]; then
+  curl -I --max-time 10 "https://${WWW}" || true
+fi
 
 echo "Done. Backups are in ${BACKUP_DIR}."
